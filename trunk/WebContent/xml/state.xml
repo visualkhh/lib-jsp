@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<items>
+	<item>
+<state>false</state>
+<msg><![CDATA[SqlMapClient operation; SQL [];   
+--- The error occurred in xml/KrcoMngPerson.xml.  
+--- The error occurred while applying a parameter map.  
+--- Check the KrcoMngPerson.insertAdmin-InlineParameterMap.  
+--- Check the statement (update failed). 
+--- Cause: java.sql.SQLException: ORA-01400: NULL을 ("IRIS"."KRT7653"."UPPO_OFFICECD") 안에 삽입할 수 없습니다
+; nested exception is com.ibatis.common.jdbc.exception.NestedSQLException:   
+--- The error occurred in xml/KrcoMngPerson.xml.  
+--- The error occurred while applying a parameter map.  
+--- Check the KrcoMngPerson.insertAdmin-InlineParameterMap.  
+--- Check the statement (update failed).  
+--- Cause: java.sql.SQLException: ORA-01400: NULL을 ("IRIS"."KRT7653"."UPPO_OFFICECD") 안에 삽입할 수 없습니다
+]]></msg>
+</item>
+
+
+</items>

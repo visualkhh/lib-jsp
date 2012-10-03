@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  host사이 -->
+     <Context docBase="3.24" path="/3.24" reloadable="true" source="org.eclipse.jst.j2ee.server:3.24">
+     <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/oracle3_24" password="kosta" type="javax.sql.DataSource" url="jdbc:oracle:thin:@localhost:1521:ORCL" username="scott"/>
+     </Context>
+     
+     <!--  톰캣 쓰레드 개수 늘리기 -->
+          <Connector connectionTimeout="20000" port="8090" protocol="HTTP/1.1" redirectPort="8443"   maxThreads="260"  />
+          
+          
+          <!--  NIO 프로토컬, COMET 쓰는방법 -->
+          <connector connectiontimeout="20000" port="8000" protocol="org.apache.coyote.http11.Http11NioProtocol" useComet="true" redirectPort="8443"/>
+ 

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- web.xml 파일에 비활성화 옵션 추가하기
+<jsp-property-group 에 <ei-ignored>태그값을
+true로 지정 
+예) web.xml
+ -->
+<jsp-config>
+	<jsp-property-group>
+		<url-pattern>*.jsp</url-pattern>
+		<el-ignored>true</el-ignored>
+	</jsp-property-group>
+</jsp-config>
+
+
+
+
+
+
+
+
+
+<!-- 
+/servlet/* 로 접속하는 모든 것들은
+org.apache.catalina.servlets.InvokerServlet 
+라는 클래스가 처리하여라.
+서블릿 수정-->
+   <servlet>
+    <description></description>
+    <display-name>vav</display-name>
+    <servlet-name>invoker</servlet-name>
+    <servlet-class>org.apache.catalina.servlets.InvokerServlet</servlet-class>
+                 <init-param>
+                 <param-name>file</param-name> 
+                 <param-value>count2.dat</param-value>
+             </init-param>
+    
+   </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>invoker</servlet-name>
+    <url-pattern>/servlet/*</url-pattern>
+  </servlet-mapping>
+   <!-- 서블릿 수정끝-->
+   
+   
+   <!-- 섹션 타임아웃설정 -->
+         <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+   
+   
+   
+   
+   
+   
+   <!--  처음페이지설정 -->
+     <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+  
+  <!-- 리스너 -->
+    <listener>
+    <listener-class>com.web.listener.testlistener</listener-class>
+  </listener>
+  
+  <!-- 필터 -->
+  <filter>
+    <filter-name>testfilter</filter-name>
+    <filter-class>com.web.filter.testfilter</filter-class>
+    <init-param>
+      <param-name>gogo</param-name>
+      <param-value>goodjob</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>testfilter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+
+  
+  
+  
+  
+  <!--  //XML에서 <context-param> 는 여러개 존재가능
+     가져다쓸떼 application.getInitParaeter("name") 
+     	System.out.println("Init Param log4j"+config.getServletContext().getInitParameter("log4jConfig"));
+    	System.out.println("Init Param logkConfig"+config.getServletContext().getInitParameter("logkConfig"));
+     -->
+       <context-param>
+             <param-name>name</param-name>
+             <param-value>seo changhun</param-value>
+       </context-param>
+       
+       
+       
+       <!-- 
+       
+          @Override  //시작될때 초기화
+             public void init(FilterConfig arg0) throws ServletException {
+ 
+                           this.filterConfig=arg0;
+                           this.encoding=filterConfig.getInitParameter("encoding"); //초기화만됨
+                           
+                           
+             }
+       
+       
+        -->
+    <filter>
+             <filter-name>TestFileter</filter-name>
+             <filter-class>initparameter.TestFilter</filter-class>
+                    <init-param>
+                           <param-name>encoding</param-name>
+                           <param-value>euc-kr</param-value>
+                    </init-param>
+       </filter>
+       
+       <filter-mapping>
+             <filter-name>TestFileter</filter-name>
+             <url-pattern>*.jsp</url-pattern>
+       </filter-mapping>
+       
+       
+
+  
+  
+  
+  <!--  에러 코드별 처리(web.xml 에서의 에러 코드별 지정) 에러처리 -->
+  <error-page>
+		<error-code>404</error-code>
+		<location>/error/404code.jsp</location>
+  </error-page>
+
+  <error-page>
+		<error-code>500</error-code>
+		<location>/error/500code.jsp</location>
+  </error-page>
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- web.xml 파일에 EL 비활성화 옵션 추가하기
+<jsp-property-group 에 <ei-ignored>태그값을
+true로 지정 
+예) web.xml
+<jsp-config>
+	<jsp-property-group>
+		<url-pattern>*.jsp</url-pattern>
+		<el-ignored>true</el-ignored>
+	</jsp-property-group>
+</jsp-config>
+
+jsp에 비활성화 적용
+<%@ page isELignored ="true"%>
+   -->
+  
+  
+  
+  
+  
+  
+  
+  
+  <!--  웹으로 접속한 사용자가 jsp 파일로 접근 못하게 한다 -->
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>PreventViewingJsps</web-resource-name>
+		<description>웹으로 접속한사용자가 jsp 로 직접접근할수없게한다 </discription>
+		<url-pattern>*.do</url-pattern>
+		<http-method>GET</http-method>
+		<http-method>POST</http-method>
+	</web-resource-collection>
+	<auth-constraint>
+	<role-name></role-name>
+	</auth-constraint>
+</security-constraint>
+
+
+  
