@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+function onloadstart(){
+	//var o =new  Array('a','b','c');
+	//var o = ['ao','ob','oc'];
+	
+	//var o = Array('a','b','c');
+	var o = ['ao','ob',document.getElementById("dd")];
+	var db = document.getElementById("dd");
+	//alert("----1---" + typeof o);
+	//alert("----2---" + typeof db);
+	alert("----1---" + Object.prototype.toString.call(o));
+	alert("----2---" + Object.prototype.toString.call(db));
+	for ( var i = 0; i < o.length; i++) {
+		alert(o[i]);
+	}
+}
+
+window.onload=onloadstart;
+//-->
+</script>
+<div id ="dd"> div</div>
+</body>
+</html>

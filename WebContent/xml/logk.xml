@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<logk:configuration xmlns:logk="http://twitter.com/visualkhh/">
+
+	<!-- Level can be  ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF -->
+	<!--
+	
+		logk는 다양한 로깅레벨을 지원합니다.
+		① FATAL : 가장 크리티컬한 에러가 일어 났을 때 사용합니다.
+		② ERROR : 일반 에러가 일어 났을 때 사용합니다.
+		③ WARN : 에러는 아니지만 주의할 필요가 있을 때 사용합니다.
+		④ INFO : 일반 정보를 나타낼 때 사용합니다.
+		⑤ DEBUG : 일반 정보를 상세히 나타낼 때 사용합니다.
+
+		Pattern to output
+			%d : date
+			%l : priority (level)
+			%c : class,name  category (where the log is from)
+			%m : message
+			%n : line_separator
+	 -->
+	 <logkattribute>
+		<recycle_ms>10000</recycle_ms> <!-- 10sec -->
+	 </logkattribute>
+	 
+	<target id="super_target">
+		<loger>
+			<level>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF</level>
+			<dateformat>yyyy-MM-dd HH:mm:ss,SSS</dateformat>
+			<logformat>%d [%d] %c(line %n) %m</logformat>
+		</loger>
+		<saver>
+			<dateformat>yyyy-MM-dd</dateformat>
+			<save>true</save>
+			<savepath>c:\logk</savepath>
+			<append>true</append>
+			<filename>%c %d</filename>
+		</saver>
+	</target>
+
+	<target id="g"  category="com.kdn.*"  extends="super_target" ></target>
+
+
+</logk:configuration>

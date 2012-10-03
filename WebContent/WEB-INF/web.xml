@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>webJSPUtil</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <listener>
+    <listener-class>com.web.listener.testlistener</listener-class>
+  </listener>
+  
+  
+  
+  <filter>
+    <filter-name>testfilter</filter-name>
+    <filter-class>com.web.filter.testfilter</filter-class>
+    <init-param>
+      <param-name>gogo</param-name>
+      <param-value>goodjob</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>testfilter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+
+
+
+  <servlet>
+    <description></description>
+    <display-name>GunLongPolling</display-name>
+    <servlet-name>GunLongPolling</servlet-name>
+    <servlet-class>com.web.framework.commet.longpolling.GunLongPolling</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/config/longpolling/config.xml</param-value>
+    </init-param>
+  </servlet>
+  
+  
+  
+  
+  <servlet-mapping>
+    <servlet-name>GunLongPolling</servlet-name>
+    <url-pattern>/GunLongPolling/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LongPollingAdd</display-name>
+    <servlet-name>LongPollingAdd</servlet-name>
+    <servlet-class>com.servlet.LongPollingAdd</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LongPollingAdd</servlet-name>
+    <url-pattern>/LongPollingAdd</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>testservlet</display-name>
+    <servlet-name>testservlet</servlet-name>
+    <servlet-class>com.servlet.testservlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>testservlet</servlet-name>
+    <url-pattern>/testservlet</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>1</session-timeout>
+  </session-config>
+  <servlet>
+    <description></description>
+    <display-name>CommetServlet</display-name>
+    <servlet-name>CommetServlet</servlet-name>
+    <servlet-class>com.servlet.CommetServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommetServlet</servlet-name>
+    <url-pattern>/CommetServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BroadcasterServlet</display-name>
+    <servlet-name>BroadcasterServlet</servlet-name>
+    <servlet-class>com.servlet.BroadcasterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BroadcasterServlet</servlet-name>
+    <url-pattern>/BroadcasterServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CommetRequestServlet</display-name>
+    <servlet-name>CommetRequestServlet</servlet-name>
+    <servlet-class>com.servlet.CommetRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommetRequestServlet</servlet-name>
+    <url-pattern>/CommetRequestServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
