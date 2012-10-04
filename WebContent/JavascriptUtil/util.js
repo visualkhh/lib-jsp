@@ -1,9 +1,7 @@
 
 /**
   * Object Object()
-  * @constructor
-  * @since Standard ECMA-262 3rd. Edition
-  * @since Level 2 Document Object Model Core Definition.
+  * @constructor visualkhh@gmail.com    ,   twitter : @visualkhh  ,  facebook : http://www.facebook.com/visualkhh
  */
 
 
@@ -30,6 +28,226 @@ StringUtil.isMatching=function(input_s, matchingSrting_Arr){
 	return result;
 };
 
+/*
+var input = "'30' -> decimal: %20d / bin = %b / oct = %o / hex = %x / HEX = %X";
+var output = format(input, 30, 30, 30, 30, 30);
+var msg = "NUMBERS TEST (1/2)\n";
+   msg += "---------------------------\n"
+   msg += "Input...... " + input + "\n";
+   msg += "Output.... " + output
+alert(msg);
+ */
+//핑거
+StringUtil.format1= (function() {
+	function get_type(variable) {
+		return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase();
+	}
+	function str_repeat(input, multiplier) {
+		for (var output = []; multiplier > 0; output[--multiplier] = input) {/* do nothing */}
+		return output.join('');
+	}
+
+	var str_format = function() {
+		if (!str_format.cache.hasOwnProperty(arguments[0])) {
+			str_format.cache[arguments[0]] = str_format.parse(arguments[0]);
+		}
+		return str_format.format.call(null, str_format.cache[arguments[0]], arguments);
+	};
+
+	str_format.format = function(parse_tree, argv) {
+		var cursor = 1, tree_length = parse_tree.length, node_type = '', arg, output = [], i, k, match, pad, pad_character, pad_length;
+		for (i = 0; i < tree_length; i++) {
+			node_type = get_type(parse_tree[i]);
+			if (node_type === 'string') {
+				output.push(parse_tree[i]);
+			}
+			else if (node_type === 'array') {
+				match = parse_tree[i]; // convenience purposes only
+				if (match[2]) { // keyword argument
+					arg = argv[cursor];
+					for (k = 0; k < match[2].length; k++) {
+						if (!arg.hasOwnProperty(match[2][k])) {
+							throw(sprintf('[sprintf] property "%s" does not exist', match[2][k]));
+						}
+						arg = arg[match[2][k]];
+					}
+				}
+				else if (match[1]) { // positional argument (explicit)
+					arg = argv[match[1]];
+				}
+				else { // positional argument (implicit)
+					arg = argv[cursor++];
+				}
+
+				if (/[^s]/.test(match[8]) && (get_type(arg) != 'number')) {
+					throw(sprintf('[sprintf] expecting number but found %s', get_type(arg)));
+				}
+				switch (match[8]) {
+					case 'b': arg = arg.toString(2); break;
+					case 'c': arg = String.fromCharCode(arg); break;
+					case 'd': arg = parseInt(arg, 10); break;
+					case 'e': arg = match[7] ? arg.toExponential(match[7]) : arg.toExponential(); break;
+					case 'f': arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg); break;
+					case 'o': arg = arg.toString(8); break;
+					case 's': arg = ((arg = String(arg)) && match[7] ? arg.substring(0, match[7]) : arg); break;
+					case 'u': arg = Math.abs(arg); break;
+					case 'x': arg = arg.toString(16); break;
+					case 'X': arg = arg.toString(16).toUpperCase(); break;
+				}
+				arg = (/[def]/.test(match[8]) && match[3] && arg >= 0 ? '+'+ arg : arg);
+				pad_character = match[4] ? match[4] == '0' ? '0' : match[4].charAt(1) : ' ';
+				pad_length = match[6] - String(arg).length;
+				pad = match[6] ? str_repeat(pad_character, pad_length) : '';
+				output.push(match[5] ? arg + pad : pad + arg);
+			}
+		}
+		return output.join('');
+	};
+
+	str_format.cache = {};
+
+	str_format.parse = function(fmt) {
+		var _fmt = fmt, match = [], parse_tree = [], arg_names = 0;
+		while (_fmt) {
+			if ((match = /^[^\x25]+/.exec(_fmt)) !== null) {
+				parse_tree.push(match[0]);
+			}
+			else if ((match = /^\x25{2}/.exec(_fmt)) !== null) {
+				parse_tree.push('%');
+			}
+			else if ((match = /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(_fmt)) !== null) {
+				if (match[2]) {
+					arg_names |= 1;
+					var field_list = [], replacement_field = match[2], field_match = [];
+					if ((field_match = /^([a-z_][a-z_\d]*)/i.exec(replacement_field)) !== null) {
+						field_list.push(field_match[1]);
+						while ((replacement_field = replacement_field.substring(field_match[0].length)) !== '') {
+							if ((field_match = /^\.([a-z_][a-z_\d]*)/i.exec(replacement_field)) !== null) {
+								field_list.push(field_match[1]);
+							}
+							else if ((field_match = /^\[(\d+)\]/.exec(replacement_field)) !== null) {
+								field_list.push(field_match[1]);
+							}
+							else {
+								throw('[sprintf] huh?');
+							}
+						}
+					}
+					else {
+						throw('[sprintf] huh?');
+					}
+					match[2] = field_list;
+				}
+				else {
+					arg_names |= 2;
+				}
+				if (arg_names === 3) {
+					throw('[sprintf] mixing positional and named placeholders is not (yet) supported');
+				}
+				parse_tree.push(match);
+			}
+			else {
+				throw('[sprintf] huh?');
+			}
+			_fmt = _fmt.substring(match[0].length);
+		}
+		return parse_tree;
+	};
+
+	return str_format;
+})();
+
+
+
+StringUtil.format2=function()
+{
+	if (!arguments || arguments.length < 1 || !RegExp)
+	{
+		return;
+	}
+	var str = arguments[0];
+	var re = /([^%]*)%('.|0|\x20)?(-)?(\d+)?(\.\d+)?(%|b|c|d|u|f|o|s|x|X)(.*)/;
+	var a = b = [], numSubstitutions = 0, numMatches = 0;
+	while (a = re.exec(str))
+	{
+		var leftpart = a[1], pPad = a[2], pJustify = a[3], pMinLength = a[4];
+		var pPrecision = a[5], pType = a[6], rightPart = a[7];
+		
+		//alert(a + '\n' + [a[0], leftpart, pPad, pJustify, pMinLength, pPrecision);
+
+		numMatches++;
+		if (pType == '%')
+		{
+			subst = '%';
+		}else
+		{
+			numSubstitutions++;
+			if (numSubstitutions >= arguments.length)
+			{
+				alert('Error! Not enough function arguments (' + (arguments.length - 1) + ', excluding the string)\nfor the number of substitution parameters in string (' + numSubstitutions + ' so far).');
+			}
+			var param = arguments[numSubstitutions];
+			var pad = '';
+			       if (pPad && pPad.substr(0,1) == "'") pad = leftpart.substr(1,1);
+			  else if (pPad) pad = pPad;
+			var justifyRight = true;
+			       if (pJustify && pJustify === "-") justifyRight = false;
+			var minLength = -1;
+			       if (pMinLength) minLength = parseInt(pMinLength);
+			var precision = -1;
+			       if (pPrecision && pType == 'f') precision = parseInt(pPrecision.substring(1));
+			var subst = param;
+			       if (pType == 'b') subst = parseInt(param).toString(2);
+			  else if (pType == 'c') subst = String.fromCharCode(parseInt(param));
+			  else if (pType == 'd') subst = parseInt(param) ? parseInt(param) : 0;
+			  else if (pType == 'u') subst = Math.abs(param);
+			  else if (pType == 'f') subst = (precision > -1) ? Math.round(parseFloat(param) * Math.pow(10, precision)) / Math.pow(10, precision): parseFloat(param);
+			  else if (pType == 'o') subst = parseInt(param).toString(8);
+			  else if (pType == 's') subst = param;
+			  else if (pType == 'x') subst = ('' + parseInt(param).toString(16)).toLowerCase();
+			  else if (pType == 'X') subst = ('' + parseInt(param).toString(16)).toUpperCase();
+		}
+		str = leftpart + subst + rightPart;
+	}
+	return str;
+};
+
+StringUtil.subBString = function(data_s,blen_n){
+	return data_s.substring(data_s.length-blen_n,data_s.length);
+};
+StringUtil.subAString = function(data_s,alen_n){
+	return data_s.substring(0,alen_n);
+};
+
+StringUtil.lpad=function(fill_s,len_n,full_s){
+	while (len_n > full_s.length) {
+		full_s=fill_s+full_s;
+	};
+	return this.subBString(full_s,len_n);
+};
+StringUtil.rpad=function(fill_s,len_n,full_s){
+	while (len_n > full_s.length) {
+		full_s+=fill_s;
+	};
+	return this.subAString(full_s,len_n);
+};
+
+StringUtil.lAppend=function(count_n,input_s){
+	var s = '', i = 0; 
+	while (i++ < count_n){ 
+		s += input_s; 
+	}
+	return s;
+};
+StringUtil.rAppend=function(count_n,input_s){
+	var s = '', i = 0; 
+	while (i++ < count_n){ 
+		s = input_s+s; 
+	}
+	return s;
+};
+
+
 
 
 function RegExpUtil(){};
@@ -39,11 +257,55 @@ RegExpUtil.is=function(regexp,msg){
 };
 function DateUtil(){};
 DateUtil.prototype = new Object();
-DateUtil.getMilliSecond=function(){
-	return regexp.test(new Date().getTime());
+DateUtil.getFullMilliSecond=function(){
+	return new Date().getTime();
 };
-DateUtil.getSecond=function(){
-	return regexp.test(new Date().getTime()/1000);
+DateUtil.getFullSecond=function(){
+	return new Date().getTime()/1000;
+};
+DateUtil.getMilliSecond=function(){
+	return new Date().getMilliseconds();
+};
+//핑거
+//yyyy yy ,    MM ,dd  ,e , HH hh , mm, ss ,a/p
+DateUtil.getDate  = function(format_s,date_o){
+	if(!date_o){
+		date_o = new Date();
+	}
+	
+	var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+	var timeType = ["오전", "오후"];
+	
+	return format_s.replace(/(yyyy|SSS|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+        switch ($1) {
+            case "yyyy": return date_o.getFullYear();
+            case "yy": return StringUtil.lpad("0",2,(date_o.getFullYear() % 1000).toString());
+            case "MM": return StringUtil.lpad("0",2,(date_o.getMonth() + 1).toString());
+            case "dd": return StringUtil.lpad("0",2, date_o.getDate().toString());
+            case "E": return weekName[d.getDay()];
+            case "HH": return StringUtil.lpad("0",2, date_o.getHours().toString());
+            case "hh": return StringUtil.lpad("0",2, ((h = date_o.getHours() % 12) ? h : 12).toString());
+            case "mm": return StringUtil.lpad("0",2, date_o.getMinutes().toString());
+            case "ss": return StringUtil.lpad("0",2, date_o.getSeconds().toString());
+            case "SSS": return StringUtil.lpad("0",3, date_o.getMilliseconds().toString());
+            case "a/p": return date_o.getHours() < 12 ? timeType[0] : timeType[1];
+            default: return $1;
+        }
+    });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//var sdf = khh.date.SimpleDateFormat('yyyy-MM-dd hh시 mm분 ss초'); 
+	//var sdf = new khh.date.SimpleDateFormat(format_s); 
+	//포맷지정    
+	//return (sdf.format(date_o)); //출력
+
 };
 
 function Validate(){};
@@ -195,6 +457,25 @@ Validate.isPhoneFormat=function(input_s) {
     var format = /^(\d+)-(\d+)-(\d+)$/;
     return isValidFormat(input_s,format);
 };
+Validate.isHangeul=function(input_s) {
+	    var tempStr = "";
+	    var temp = 0;
+	    var onechar;
+	    tempStr = new String(input_s);
+	    temp = tempStr.length;
+	    for(var k=0; k<temp;k++){
+	        onechar = tempStr.charAt(k);
+	        if(escape(onechar).length > 4){
+	           return true;
+	        }
+	    }
+	    return false;
+};
+
+
+
+
+
 
 //////////Converting Util
 
@@ -231,7 +512,7 @@ ConvertingUtil.jsonToAttribute=function(object_o,unionString_s){
             results.push(property.toString() +unionString_s+ "'" + value+"'");
         }
                  
-        return results.join('  ');
+        return results.join(' ');
 };
 ConvertingUtil.trim=function(msg_s){
 	return msg_s.replace(/^\s*|\s*$/g,'');
@@ -282,6 +563,49 @@ ConvertingUtil.domToJson=function(obj){
 		return oAr;
 }
 */
+
+//finger
+ConvertingUtil.delComma=function(number_s){
+	return  this.replaceAll(number_s, ",", "");
+};
+
+//금액 입력시 "," 자동 입력
+ConvertingUtil.addComma = function( number_s  ){
+	return this.addChar(number_s,3,",");
+};
+ConvertingUtil.addChar = function( number_s , jumpsize_n,addchar_s )
+{
+/*	if(!jumpsize_n){
+		jumpsize_n=3;
+	}
+	*/
+	
+	number_s = this.delComma( number_s );
+    var src;
+    var i; 
+    var	factor; 
+    var	su; 
+
+    factor = number_s.length % jumpsize_n; 
+    su     = (number_s.length - factor) / jumpsize_n;
+    src    =  number_s.substring(0,factor);
+
+    for(i=0; i < su ; i++)
+    {
+		if((factor == 0) && (i == 0))       // "XXX" 인경우
+		{
+			src += number_s.substring(factor+(jumpsize_n*i), factor+jumpsize_n+(jumpsize_n*i));  
+		}
+	    else
+		{
+		    src += addchar_s  ;
+			src += number_s.substring(factor+(jumpsize_n*i), factor+3+(jumpsize_n*i));  
+		}
+    }
+    number_s = src; 
+
+    return number_s; 
+};
 
 
 //////////Window Util
@@ -527,7 +851,15 @@ CookieUtil.setCookie = function (name_s, value_s, expireSecond_n) {
 };
 
 
+//finger
+CookieUtil.delCookie = function (name_s) {
+    var today = new Date();
 
+    today.setDate(today.getDate() - 1);
+    var value = getCookie(name);
+    if(value != "")
+        document.cookie = name + "=; expires=" + today.toGMTString();
+};
 
 
 
@@ -539,8 +871,22 @@ EventUtil.TYPE_CLICK="click";
 EventUtil.TYPE_ONLOAD="onload";
 EventUtil.TYPE_MOUSEDOWN="mousedown";
 EventUtil.TYPE_MOUSEUP="mouseup";
+EventUtil.TYPE_MOUSEOUT="mouseout";
+EventUtil.TYPE_MOUSEOVER="mouseover";
 EventUtil.TYPE_MOUSEMOVE="mousemove";
+EventUtil.TYPE_MOUSEWHEEL="mousewheel";
 EventUtil.TYPE_CHANGE="change";
+EventUtil.TYPE_KEYPRESS="keypress";
+EventUtil.TYPE_KEYDOWN="keydown";
+EventUtil.TYPE_KEYUP="keyup";
+EventUtil.TYPE_PASTE="paste";//클립 보드의 내용을 문서에 붙여 넣기 전에 발생합니다.
+EventUtil.TYPE_COPY="copy";//선택이 클립 보드에 복사 oncopy 이벤트 전에되기 전에 발생합니다.
+EventUtil.TYPE_CUT="cut";//선택이 클립 보드에 복사 cut 이벤트 전에되기 전에 발생합니다.
+EventUtil.TYPE_UNLOAD="unload";
+EventUtil.TYPE_SELECT="select";
+EventUtil.TYPE_SCROLL="scroll";
+EventUtil.TYPE_DRAG="drag";
+EventUtil.TYPE_DRAGEND="dragend";
 EventUtil.getEventName=function(type_event_s){
 	var accept_event="";
 	 if (window.addEventListener) {   // all browsers except IE before version 9
@@ -557,8 +903,36 @@ EventUtil.getEventName=function(type_event_s){
 			 accept_event="mousemove";
 		 }else if(type_event_s==this.TYPE_CHANGE){
 			 accept_event="change";
+		 }else if(type_event_s==this.TYPE_KEYPRESS){
+			 accept_event="keypress";
+		 }else if(type_event_s==this.TYPE_KEYDOWN){
+			 accept_event="keydown";
+		 }else if(type_event_s==this.TYPE_KEYUP){
+			 accept_event="keyup";
+		 }else if(type_event_s==this.TYPE_MOUSEOUT){
+			 accept_event="mouseout";
+		 }else if(type_event_s==this.TYPE_MOUSEOVER){
+			 accept_event="mouseover";
+		 }else if(type_event_s==this.TYPE_MOUSEWHEEL){
+			 accept_event="mousewheel";
+		 }else if(type_event_s==this.TYPE_PASTE){
+			 accept_event="paste";
+		 }else if(type_event_s==this.TYPE_COPY){
+			 accept_event="copy";
+		 }else if(type_event_s==this.TYPE_CUT){
+			 accept_event="cut";
+		 }else if(type_event_s==this.TYPE_UNLOAD){
+			 accept_event="unload";
+		 }else if(type_event_s==this.TYPE_SELECT){
+			 accept_event="select";
+		 }else if(type_event_s==this.TYPE_SCROLL){
+			 accept_event="scroll";
+		 }else if(type_event_s==this.TYPE_DRAG){
+			 accept_event="drag";
+		 }else if(type_event_s==this.TYPE_DRAGEND){
+			 accept_event="dragend";
 		 }
-		 
+	 
 		 
     }else {
         if (window.attachEvent) {    // IE before version 9
@@ -571,13 +945,42 @@ EventUtil.getEventName=function(type_event_s){
 		 }else if(type_event_s==this.TYPE_MOUSEUP){
 			 accept_event="onlosecapture";
 		 }else if(type_event_s==this.TYPE_MOUSEMOVE){
-			 accept_event="mousemove";
+			 accept_event="onmousemove"; //의심.
 		 }else if(type_event_s==this.TYPE_CHANGE){
 			 accept_event="onchange";
+		 }else if(type_event_s==this.TYPE_KEYPRESS){
+			 accept_event="onkeypress";
+		 }else if(type_event_s==this.TYPE_KEYDOWN){
+			 accept_event="onkeydown";
+		 }else if(type_event_s==this.TYPE_KEYUP){
+			 accept_event="onkeyup";
+		 }else if(type_event_s==this.TYPE_MOUSEOUT){
+			 accept_event="onmouseout";
+		 }else if(type_event_s==this.TYPE_MOUSEOVER){
+			 accept_event="onmouseover";
+		 }else if(type_event_s==this.TYPE_MOUSEWHEEL){
+			 accept_event="onmousewheel";
+		 }else if(type_event_s==this.TYPE_PASTE){
+			 accept_event="onpaste";
+		}else if(type_event_s==this.TYPE_COPY){
+			accept_event="copy";
+		}else if(type_event_s==this.TYPE_CUT){
+			accept_event="cut";
+		}else if(type_event_s==this.TYPE_UNLOAD){
+			 accept_event="onunload";
+		}else if(type_event_s==this.TYPE_SELECT){
+			 accept_event="onselect";
+		}else if(type_event_s==this.TYPE_SCROLL){
+			 accept_event="onscroll";
+		}else if(type_event_s==this.TYPE_DRAG){
+			 accept_event="ondrag";
+		 }else if(type_event_s==this.TYPE_DRAGEND){
+			 accept_event="ondragend";
 		 }
+   		 
+   		 
         }
     }
-	 
 	 return accept_event;
 };
 EventUtil.addEventListener=function(obj_o ,type_event_s,function_f){
@@ -636,6 +1039,13 @@ EventUtil.isEnter=function(event_o){
 };
 
 
+EventUtil.srcElement=function(event_o){
+	if(!event_o){
+		event_o=event;
+	}
+	return event.srcElement;
+};
+
 
 
 //////////RequestUtil
@@ -682,7 +1092,7 @@ RexUtil.prototype = new Object();
 
 
 ///////////기본적인..유틸
-function JavaScriptUtil(){};
+function JavaScriptUtil (){};
 JavaScriptUtil.prototype = new Object();
 JavaScriptUtil.UNIQUEID=0;
 JavaScriptUtil.getNextNumber=function(object_o){
@@ -819,25 +1229,13 @@ JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 };
 
 
-JavaScriptUtil.autoFocus = function(object_o_s,length_n,focusObject_o){
-	var input_data_s ="";
-	if(this.isObject(objectz_o)){
-		input_data_s = objectz_o.value;
-	}else if(this.isString(object_o_s)){
-		input_data_s = object_o_s;
-	}
-	
-	
-	if(input_data_s.length >= length_n){
-		focusObject_o.focus();
-		focusObject_o.select();
-	}
-};
 
-JavaScriptUtil.getRandomInt(size_n){
+JavaScriptUtil.getRandomInt=function(size_n){
 //	 var result = Math.floor(Math.random() * 10) + 1;
 	 return Math.floor(Math.random() * size_n);
 };
+
+
 
 
 
@@ -920,7 +1318,496 @@ FormatUtil.format_mask=function(obj, mask){
 
 
 
+// 핑거
 
 
+function Selector(){};
+Selector.prototype = new Object();
+Selector.ei = function (eid_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.getElementById(eid_s);
+};
+Selector.ec = function (eclassname_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.getElementsByClassName(eclassname_s);
+};
+Selector.en = function (ename_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.getElementsByName(ename_s);
+};
+Selector.etn = function (tagname_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.getElementsByTagName(tagname_s);
+};
+
+
+
+
+function FocusUtil(){};
+FocusUtil.prototype = new Object();
+FocusUtil.lengthChk= function(object_o_s,length_n,focusObject_o,selecte_b){
+	if(!selecte_b){
+		selecte_b=false;
+	}
+	
+	
+	var input_data_s ="";
+	if(JavaScriptUtil.isObject(object_o_s)){
+		input_data_s = object_o_s.value;
+	}else if(JavaScriptUtil.isString(object_o_s)){
+		input_data_s = object_o_s;
+	}
+	if(input_data_s.length >= length_n){
+		focusObject_o.focus();
+		if(selecte_b){
+			focusObject_o.select();
+		}
+	}
+};
+
+
+
+
+
+
+
+function Debug(){};
+Debug.prototype = new Object();
+//var Debug = new Object();
+//Debug.prototype=Object.prototype;
+ 
+
+//이거바꾸면aler로도 가능함니다.
+//console.log;
+Debug.loger=null;
+Debug.LEVEL_OFF="OFF";
+Debug.LEVEL_ALL="ALL";
+Debug.LEVEL_DEBUG="DEBUG";
+Debug.LEVEL_INFO="INFO";
+Debug.LEVEL_WARN="WARN";
+Debug.LEVEL_ERROR="ERROR";
+Debug.LEVEL=Debug.LEVEL_ALL;
+
+Debug.dateformat="yyyy-MM-dd HH:mm:ss,SSS";
+Debug.format="%d [%l]   >>  %m";
+//<logformat>%d [%l] %c(%f)(line %n)  >>  %m   %e  </logformat>
+/*
+%d : date
+%l : priority (level)
+//%c : class,name  category (where the log is from)
+%m : message
+//%n : line_
+//%e : exception message
+//%f : MethodName
+//%r : EnterChar
+ */
+
+try{
+	Debug.loger  = console.log;
+}catch(e){
+};
+
+
+/*
+	Debug.loger=function(msg_s){
+	Debug.output(msg_s);
+};
+
+
+Debug.setOutPutObject = function(obj_o){
+	Debug.output = obj_o;
+};
+*/
+
+
+
+
+Debug.debug = function (msg_s) {
+	this.log(this.LEVEL_DEBUG, msg_s);
+};
+
+Debug.info = function (msg_s) {
+	this.log(this.LEVEL_INFO, msg_s);
+};
+Debug.warn = function (msg_s) {
+	this.log(this.LEVEL_WARN, msg_s);
+};
+Debug.error = function (msg_s) {
+	this.log(this.LEVEL_ERROR, msg_s);
+};
+
+
+Debug.log = function (level_s,msg_s) {
+	var sw=false;
+	if(this.LEVEL==this.LEVEL_ALL){
+		sw = true;
+	}
+	else if(this.LEVEL==this.LEVEL_OFF){
+		sw = true;
+	}
+	else if(this.LEVEL==level_s){
+		sw = true;
+	};
+	if(sw){
+		try{
+			if(this.loger){
+				
+				
+				var logmsg_s = 	this.format.replace(/(%d|%m|%l)/gi, function($1) {
+					        switch ($1) {
+					        	case "%m": return msg_s;
+					            case "%d": return DateUtil.getDate(Debug.dateformat);
+					            case "%l": return Debug.LEVEL;
+					         /*   
+					          	case "yy": return StringUtil.lpad("0",2,(date_o.getFullYear() % 1000).toString());
+					            case "MM": return StringUtil.lpad("0",2,(date_o.getMonth() + 1).toString());
+					            case "dd": return StringUtil.lpad("0",2, date_o.getDate().toString());
+					            case "E": return weekName[d.getDay()];
+					            case "HH": return StringUtil.lpad("0",2, date_o.getHours().toString());
+					            case "hh": return StringUtil.lpad("0",2, ((h = date_o.getHours() % 12) ? h : 12).toString());
+					            case "mm": return StringUtil.lpad("0",2, date_o.getMinutes().toString());
+					            case "ss": return StringUtil.lpad("0",2, date_o.getSeconds().toString());
+					            case "SSSS": return StringUtil.lpad("0",4, date_o.getMilliseconds().toString());
+					            case "a/p": return date_o.getHours() < 12 ? timeType[0] : timeType[1];
+					            */
+					            default: return $1;
+					        }
+					    });
+				
+				
+				
+				eval(this.loger(logmsg_s));
+			}
+		}catch (e) {
+		}
+	}
+};
+
+/*
+Debug.good='a';
+Debug.prototype.gogo='gogo';
+Debug.prototype.setName = function (name) {
+    alert(this.gogo+"-----"+this.good+name);
+};
+Debug.hetName = function (name) {
+    alert(this.gogo+this.good+name);
+};
+*/
+
+
+
+
+//var CallStackUtil = new Object();
+function CallStackUtil (){};
+CallStackUtil.prototype = new Object();
+
+CallStackUtil.getFunctionName = function(caller_o){
+		var f = arguments.callee.caller; 
+		if(caller_o) f = f.caller; 
+		
+		var pat = /^function\s+([a-zA-Z0-9_]+)\s*\(/i; 
+		pat.exec(f); 
+		return RegExp.$1; 
+};
+
+CallStackUtil.getCallFunctionStack = function(caller_o){
+	var arr = new Array();
+	var caller_at=arguments.callee.caller;
+	if(caller_o) caller_at = caller_o; 
+	
+	
+	
+	while(true){
+		if(caller_at){
+			arr.push(caller_at);
+			caller_at = caller_at.caller;
+		}else{
+			return arr;
+		}
+	}
+	
+};
+CallStackUtil.getCallFunctionNameStack = function(caller_o){
+	
+	var arr = CallStackUtil.getCallFunctionStack(caller_o);
+	var arr_n = new Array();
+	
+	var pat = /^function\s+([a-zA-Z0-9_]+)\s*\(/i; 
+	for ( var i = 0; i < arr.length; i++) {
+		pat.exec(arr[i]); 
+		if(RegExp.$1 && RegExp.$1!=""){
+			arr_n.push(RegExp.$1); 
+		}
+	}
+	return arr_n;
+	
+};
+
+
+
+
+
+
+
+//var ReflectionUtil = new Object();
+function ReflectionUtil (){};
+ReflectionUtil.prototype = new Object();
+ReflectionUtil.execute=function(str_s){
+	eval(str_s);
+};
+
+
+
+//extend!! !확장
+/*
+Date.prototype.format = function(f) {
+    if (!this.valueOf()) return " ";
+ 
+    var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    var d = this;
+     
+    return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+        switch ($1) {
+            case "yyyy": return d.getFullYear();
+            case "yy": return (d.getFullYear() % 1000).zf(2);
+            case "MM": return (d.getMonth() + 1).zf(2);
+            case "dd": return d.getDate().zf(2);
+            case "E": return weekName[d.getDay()];
+            case "HH": return d.getHours().zf(2);
+            case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+            case "mm": return d.getMinutes().zf(2);
+            case "ss": return d.getSeconds().zf(2);
+            case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+            default: return $1;
+        }
+    });
+};
+ 
+String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+ */
+
+
+/////////class
+/**
+ * Javascript SimpleDateFormat Class
+	 yyyy(year) MM(month) dd(date) HH or hh(24hours/12hours) mm(minutes) ss(seconds)
+	 
+	 ex) alert(new com.kdarkdev.util.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date()));
+ */
+/* use 
+var sdf = com.kdarkdev.util.SimpleDateFormat('yyyy-MM-dd hh시 mm분 ss초'); 
+//포맷지정    
+alert(sdf.format(new Date())); //출력
+*/
+/*
+var khh = (khh == undefined)?{}:khh;
+khh.date = (khh.date == undefined)?{}:khh.date; 
+//khh.date.util = (com.date.util == undefined)?{}:khh.date.util;
+
+
+khh.date.SimpleDateFormat = function(formatString_) {
+	if(formatString_ == undefined || formatString_ == '') {
+		formatString = 'yyyyMMdd';
+	} else {
+		formatString = formatString_;
+	}
+	
+	//private Method
+	plusZero = function (value_, zeroNumber) {
+		var zero = '';
+		var value = value_.toString();
+		if(value.length<zeroNumber) {
+			for(var i=0; i<zeroNumber-value.length; i++) {
+				zero+='0';
+			}
+			
+		}
+		return zero+value;
+	};
+};
+
+khh.date.SimpleDateFormat.prototype = {
+	 
+	format: function(date){
+		var dateRegex = /(y{0,4})([^yMdHhms]*)(M{0,2})([^yMdHhms]*)(d{0,2})([^yMdHhms]*)([Hh]{0,4})([^yMdHhms]*)(m{0,2})([^yMdHhms]*)(s{0,2})([^yMdHhms]*)/g;
+		var dateRegexArray = dateRegex.exec(formatString);
+		
+		var yearFormat = dateRegexArray[1];
+		var monthFormat = dateRegexArray[3];
+		var dayFormat = dateRegexArray[5];
+		var hourFormat = dateRegexArray[7];
+		var minuteFormat = dateRegexArray[9];
+		var secondFormat = dateRegexArray[11];
+		
+		var space1 = dateRegexArray[2].toString();
+		var space2 = dateRegexArray[4].toString();
+		var space3 = dateRegexArray[6].toString();
+		var space4 = dateRegexArray[8].toString();
+		var space5 = dateRegexArray[10].toString();
+		var space6 = dateRegexArray[12].toString();
+		
+		var year = plusZero(date.getFullYear(), yearFormat.length);
+		var month = plusZero(date.getMonth() + 1, monthFormat.length);
+		var day = plusZero(date.getDate(), dayFormat.length);
+		var hour = '';
+		if (hourFormat == 'HH' || hourFormat == 'H') {
+			hour = plusZero(date.getHours(), hourFormat.length);
+		}
+		else 
+			if ((hourFormat == 'hh' || hourFormat == 'h') && date.getHours() > 12) {
+				hour = plusZero(date.getHours() - 12, hourFormat.length);
+			}
+			else 
+				if (hourFormat == 'hhHH') {
+					hour = plusZero(date.getHours() - 12, hourFormat.length - 2) + plusZero(date.getHours(), hourFormat.length - 2);
+				}
+				else 
+					if (hourFormat == 'HHhh') {
+						hour = plusZero(date.getHours(), hourFormat.length - 2) + plusZero(date.getHours() - 12, hourFormat.length - 2);
+					}
+					else {
+						hour = plusZero(date.getHours(), hourFormat.length);
+					}
+		
+		var minute = plusZero(date.getMinutes(), minuteFormat.length);
+		var second = plusZero(date.getSeconds(), secondFormat.length);
+		
+		var toDay = '';
+		if (yearFormat.length > 0) {
+			toDay += year;
+		}
+		if (space1.length > 0) {
+			toDay += space1;
+		}
+		if (monthFormat.length > 0) {
+			toDay += month;
+		}
+		if (space2.length > 0) {
+			toDay += space2;
+		}
+		if (dayFormat.length > 0) {
+			toDay += day;
+		}
+		if (space3.length > 0) {
+			toDay += space3;
+		}
+		if (hourFormat.length > 0) {
+			toDay += hour;
+		}
+		if (space4.length > 0) {
+			toDay += space4;
+		}
+		if (minuteFormat.length > 0) {
+			toDay += minute;
+		}
+		if (space5.length > 0) {
+			toDay += space5;
+		}
+		if (secondFormat.length > 0) {
+			toDay += second;
+		}
+		if (space6.length > 0) {
+			toDay += space6;
+		}
+		
+		return toDay;
+	} 
+};
+
+*/
+
+function ElementUtil (){};
+ElementUtil.prototype = new Object();
+//createElement
+ElementUtil.createE = function(string_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.createElement(string_s);
+};
+ElementUtil.elementToString= function(element_o){
+    if(!element_o || !element_o.tagName) return '';
+    var txt, ax, el= document.createElement("div");
+    el.appendChild(element_o.cloneNode(false));
+    txt= el.innerHTML;
+   /* if(deep){
+        ax= txt.indexOf('>')+1;
+        txt= txt.substring(0, ax)+element_o.innerHTML+ txt.substring(ax);
+    }*/
+    el= null;
+    return txt;
+};
+
+
+
+
+//var ActiveUtil = new Object();
+function ActiveUtil (){};
+ActiveUtil.prototype = new Object();
+ActiveUtil.getObjectStr=function(id_s,clsid_s,codebase_s,version_s){
+	var str ='<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0  codebase='+ codebase_s + '#version=' + version_s +'> </object>';	
+	return str;
+};
+ActiveUtil.getObject=function(id_s,clsid_s,codebase_s,version_s,document_o){
+	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
+	return ElementUtil.cE(str,document_o);
+};
+ActiveUtil.installActive=function(id_s,clsid_s,codebase_s,version_s,document_o){
+	if(!document_o){
+		document_o=document;
+	};
+	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
+	document.writeln(str);
+	//document.writeln('<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0 ');
+	//document.writeln('codebase='+ codebase_s + '#version=' + version_s +'>');
+	//document.writeln('</object>');	
+	
+};
+
+function ClipBoardUtil (){};
+ClipBoardUtil.prototype = new Object();
+ClipBoardUtil.copy= function(string_s){
+	window.clipboardData.setData('Text',string_s);
+};
+
+
+function HistoryUtil (){};
+HistoryUtil.prototype = new Object();
+//history.back();
+
+
+
+
+/*
+애플릿
+    <Applet code="CertUploaderApplet" MAYSCRIPT width="666" height="150" >
+		<PARAM NAME = ARCHIVE VALUE = "/common/popup/AdminLogin/CertUploaderApplet.jar" >
+		<PARAM NAME = "sel0_size" VALUE="35">
+		<PARAM NAME = "sel1_size" VALUE="500">
+		<PARAM NAME = "sel2_size" VALUE="105">
+		<PARAM NAME = "appSize_w" VALUE="666">
+		<PARAM NAME = "appSize_h" VALUE="150">
+
+		<PARAM NAME = "ServerName" VALUE="bptest.shinhan.com">
+		<PARAM NAME = "ServerPort" VALUE="80">
+		<PARAM NAME = "action" VALUE="/admin.pb">
+		<PARAM NAME = "a" VALUE="mng.user.CertBPUploadApp">
+		<PARAM NAME = "c" VALUE="1002">
+		<PARAM NAME = "gubun" VALUE="Real"><!-- 반영시에는 Real로 수정 -->
+	</Applet>
+
+
+ */
 
 
