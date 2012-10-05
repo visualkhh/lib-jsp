@@ -471,6 +471,52 @@ Validate.isHangeul=function(input_s) {
 	    }
 	    return false;
 };
+Validate.isNoHangeul=function(input_s) {
+	var AlphaDigit;
+	var IDLength;
+	var NumberChar, CompChar;
+	var ChkFlag;
+
+	AlphaDigit= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	IDLength = input_s.length;
+
+	for (var i = 0; i < IDLength; i++) {
+		NumberChar = input_s.charAt(i);
+ 		ChkFlag = false;
+ 		for (var j = 0; j < AlphaDigit.length ; j++) {
+    		CompChar = AlphaDigit.charAt(j);
+   			if (NumberChar.toLowerCase() == CompChar.toLowerCase()){
+      			ChkFlag = true;
+   			}
+ 		}
+   		if (ChkFlag == false) return false;
+	}
+	return true;
+};
+Validate.isSpecialChar=function(input_s) {
+	var AlphaDigit;
+	var IDLength;
+	var NumberChar, CompChar;
+	var ChkFlag;
+
+	AlphaDigit= "'<>!@#$%^&*" + '"';
+
+	IDLength = input_s.length;
+
+	for (var i = 0; i < IDLength; i++) {
+		NumberChar = input_s.charAt(i);
+ 		ChkFlag = true;
+ 		for (var j = 0; j < AlphaDigit.length ; j++) {
+    		CompChar = AlphaDigit.charAt(j);
+   			if (NumberChar.toLowerCase() == CompChar.toLowerCase()){
+      			ChkFlag = false;
+   			}
+ 		}
+   		if (ChkFlag == false) return false;
+	}
+	return true;
+}
+
 
 
 
@@ -1031,6 +1077,9 @@ EventUtil.addOnloadEventListener=function(object_o_function_f,function_f){
 };
 
 EventUtil.isEnter=function(event_o){
+	if(!event_o){
+		event_o=window.event;
+	}
 	if(event_o.keyCode == 13){
 		return true;
 	}else{
@@ -1045,6 +1094,62 @@ EventUtil.srcElement=function(event_o){
 	}
 	return event.srcElement;
 };
+//keypress쪽에걸면..ㅎㅎ
+/*
+ *  onkeypress="javascript:onlyNumber()";
+ *     위와같이 사용했을 경우 숫자만 입력가능하게 한다.
+ */
+EventUtil.onlyNumber=function(event_o){
+	if(!event_o){
+		event_o=window.event;
+	}
+	var lkeycode = event_o.keyCode;
+	var sOrg = String.fromCharCode(lkeycode);
+
+  	if(!sOrg.match(/^[\d|\.]/))			// New Code
+		window.event.keyCode = 0;
+};
+
+EventUtil.onlyNumberMinus=function(event_o){
+	if(!event_o){
+		event_o=window.event;
+	}
+	var lkeycode = event_o.keyCode;
+	var sOrg = String.fromCharCode(lkeycode);
+
+  	if(!sOrg.match(/^[\d|\.\-]/))			// New Code
+		window.event.keyCode = 0;
+};
+EventUtil.onlyAlpaNumber() {
+	var lkeycode = window.event.keyCode;
+	var sOrg = String.fromCharCode(lkeycode);
+	//alert ( sOrg ) ;
+	//alert ( "lkeycode:" + lkeycode + ";sOrg" + sOrg ) ;
+
+
+	if  ( lkeycode < 48 )
+	{
+		window.event.keyCode = 0;
+	} else if ( lkeycode >= 48 && lkeycode <= 57 )
+	{
+		// 통과
+	} else if ( lkeycode > 57 && lkeycode < 65 )
+	{
+		window.event.keyCode = 0;
+	} else if ( lkeycode >= 65 && lkeycode <= 90 )
+	{
+		// 통과
+	} else if ( lkeycode > 90 && lkeycode < 97 )
+	{
+		window.event.keyCode = 0;
+	} else if ( lkeycode >= 97 && lkeycode <= 122 )
+	{
+		// 통과
+	} else
+	{
+		window.event.keyCode = 0;
+	}
+}
 
 
 
@@ -1747,6 +1852,13 @@ ElementUtil.elementToString= function(element_o){
     }*/
     el= null;
     return txt;
+};
+ElementUtil.setStyle= function(element_o_s,style_s){
+	if(JavaScriptUtil.isString(element_o_s)){
+		element_o_s = Selector.ei(element_o_s);
+	}
+	element_o_s.style = style_s;
+	return element_o_s;
 };
 
 
