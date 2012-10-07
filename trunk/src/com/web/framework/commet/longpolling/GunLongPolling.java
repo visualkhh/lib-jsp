@@ -1,5 +1,7 @@
 package com.web.framework.commet.longpolling;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import khh.debug.LogK;
+import khh.file.util.FileUtil;
+import khh.string.util.StringUtil;
 
 import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometProcessor;
@@ -22,6 +26,7 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	public final static String CONFIGNAME_LOG4J="log4jConfigLocation";
 	public final static String CONFIGNAME_LOGK="logkConfigLocation";
 	public final static String CONFIGNAME_CONTEXT="contextConfigLocation";
+	public final static String CONFIGNAME_CONTEXT_PATTERN="contextConfigLocationPattern";
 	
 	
 	private LogK log = LogK.getInstance();
@@ -39,32 +44,57 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     @Override
     public void init(ServletConfig config) throws ServletException  {
     	super.init(config);
-    	
     	//서블릿컨텍스트에서
+
+    	//logk config
     	String logkconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOGK);
-    	String log4jconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOG4J);
-    	
-    	//서블릿안쪽에 파라미터에서
-    	String contextConfigLocation=config.getInitParameter(CONFIGNAME_CONTEXT);
     	if(logkconfigpath!=null){
     		log.addConfigfile( config.getServletContext().getRealPath(logkconfigpath) );
     	};
     	
-    	
-    	log.debug("Init Param context : "+contextConfigLocation);
-    	log.debug("Init Param log4j : "+log4jconfigpath);
-    	log.debug("Init Param logkConfig : "+logkconfigpath);
+    	//log4j config
+    	String log4jconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOG4J);
     	
     	
-    	
+    	//서블릿안쪽에 파라미터에서
+    	//longpolling GunConfigPath
+    	String contextConfigLocation=config.getInitParameter(CONFIGNAME_CONTEXT);
     	String realpath  = null;
     	if(contextConfigLocation!=null){
     		realpath = config.getServletContext().getRealPath(contextConfigLocation);
     	}else{
     		realpath = config.getServletContext().getRealPath("/WEB-INF/"+config.getServletName()+".xml");
     	}
+    	
+    	
+    	
+    	//longpolling GunConfig PATTERNPath
+    	String configname_context_pattern=config.getInitParameter(CONFIGNAME_CONTEXT_PATTERN);
+    	
+    	log.debug("Init Param context : "+contextConfigLocation);
+    	log.debug("Init Param log4j : "+log4jconfigpath);
+    	log.debug("Init Param logkConfig : "+logkconfigpath);
+    	final File pattern = new File(configname_context_pattern);
+    	log.debug("Init Param contextConfigLocationPattern : "+configname_context_pattern+"   parent:"+pattern.getParent()+"     name:"+pattern.getName());
+        FilenameFilter filenamefilter = new FilenameFilter() {
+            public boolean accept(File arg0, String filename) {
+                return StringUtil.isFind(pattern.getName(), filename);
+            }
+        };
+
+
+    	
+    	
+
     	try{
     		lpmg.addConfigFile(realpath);
+        	File[] files = FileUtil.getFileList(new File(config.getServletContext().getRealPath(pattern.getParent())), filenamefilter);
+        	for (int j = 0; j < files.length; j++) {
+        		log.debug("Init contextConfig Pattern["+j+"]:  " +files[j].getAbsolutePath() );
+        		lpmg.addConfigFile(files[j].getAbsolutePath());
+			}
+    		
+    		
     		lpmg.setting();
     		lpmg.start();
     		

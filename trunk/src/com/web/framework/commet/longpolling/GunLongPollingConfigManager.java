@@ -84,11 +84,14 @@ public class GunLongPollingConfigManager {
 	private String functionxpath="/shot/function";
 	private String targetxpath="/shot/target";
 	private void setConfig() {
+		
+		//global settingConfig
 		for (int i = 0; i < configlist.size(); i++) {
 			try{
+				log.debug("configlist global "+configlist.size()+"    ["+i+"]");
 				XMLparser parser = new XMLparser(configlist.get(i));
 				
-				//db
+				//global db
 				int jndisize = parser.getInt("count("+jndixpath+")");
 				log.debug("outer JNDI size : "+jndisize);
 				for (int j = 1; j <= jndisize; j++) {
@@ -96,19 +99,15 @@ public class GunLongPollingConfigManager {
 					String id  			=	parser.getString(contextpath+"/@id");
 					final String name 	=	parser.getString(contextpath+"/@name");
 					Integer maxsize 	=	parser.getInt(contextpath+"/@maxsize");
+					log.debug("outer JNDI id:"+id+" name: "+name+"   db/jndi["+j+"]   maxsize:"+maxsize);
 					dbpool.addConnectionCreator(id, new ConnectionCreator_I() {
 						public Connection getMakeConnection() throws Exception {
 							return ConnectionWebUtil.getConnectionByJNDI(name);
 						}
-					}, maxsize==null?0:maxsize); 
+					}, maxsize==null?50:maxsize); 
 					
-					log.debug("outer JNDI id:"+id+" name: "+name+"   db/jndi["+j+"]   maxsize:"+maxsize);
 					
 				}
-				
-				
-				
-				
 				
 				
 				//global gun
@@ -180,10 +179,98 @@ public class GunLongPollingConfigManager {
 					
 					functionlist.add(fnc);
 				}
+				
+				
 			}catch (Exception e) {
-				e.printStackTrace();
+				try {
+					log.error("ConfigFile Error "+configlist.get(i).getAbsolutePath(),e);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				//e.printStackTrace();
 			}
 		}
+		
+		
+		
+		
+		
+		//private
+		
+		for (int i = 0; i < configlist.size(); i++) {
+			try{
+				log.debug("configlist private "+configlist.size()+"    ["+i+"]");
+				XMLparser parser = new XMLparser(configlist.get(i));
+				
+				
+				
+				//function
+				int functionsize = parser.getInt("count("+functionxpath+")");
+				log.debug("FUNCTION size : "+functionsize);
+				for (int j = 1; j <= functionsize; j++) {
+					String contextpath	=	functionxpath+"["+j+"]";
+					String gunpath		=	functionxpath+"["+j+"]/gun";
+					String id			=	parser.getString(contextpath+"/@id");
+					String classpath	=	parser.getString(contextpath+"/@class");
+					Boolean pair		=	parser.getBoolean(contextpath+"/@pair");
+					Boolean broadcast	=	parser.getBoolean(contextpath+"/@broadcast");
+					int subgunsize		=	parser.getInt("count("+gunpath+")");
+					
+					Function fnc 		=	(Function) ReflectionUtil.newClass(classpath);
+					fnc.setNodeid(id);
+					fnc.setClasspath(classpath);
+					fnc.setPair(pair==null?false:pair);
+					fnc.setBroadcast(broadcast==null?false:broadcast);
+//					System.out.println("config  :  "+fnc.getNodeid()+"      "+fnc.isPair());
+					log.debug(fnc.getNodeid()+" FUNCTION   pair:"+fnc.isPair()+"  broadcast:"+fnc.isBroadcast()+"    GUNsize : "+subgunsize);
+					for (int k = 1; k <= subgunsize; k++) {
+						String gun_ref  =  parser.getString(gunpath+"["+k+"]/@ref");
+						Gun gun=null;
+						if(gun_ref==null){
+							String gunid  =  parser.getString(gunpath+"["+k+"]/@id");
+							String gunclasspath = parser.getString(gunpath+"["+k+"]/@class");
+							int guninterval = parser.getInt(gunpath+"["+k+"]/@interval");
+							Boolean gunpair = parser.getBoolean(gunpath+"["+k+"]/@pair");
+							gun = (Gun) ReflectionUtil.newClass(gunclasspath);
+							gun.setNodeid(gunid);
+							//gun.setPair(pair==null?false:gunpair);//의심.
+							gun.setPair(gunpair==null?false:gunpair);
+							gun.setClasspath(gunclasspath);
+							gun.setInterval(guninterval);
+							log.debug(gun.getNodeid()+" GUN["+k+"]  pair : "+gun.isPair());
+							gunlist.add(gun);
+						}else{
+							for (int x = 0; x < gunlist.size(); x++) {
+								if(gunlist.get(x).getNodeid().equals(gun_ref) || gunlist.get(x).getNodeid()==gun_ref){
+									gun = gunlist.get(x);
+									break;
+								}
+							}
+						}
+//						System.out.println(gun+"    "+gunpath+"["+k+"]/@ref"+"      "+parser.getString(gunpath+"["+k+"]/@ref"));
+						if(gun!=null)
+						fnc.addGun(gun);
+					}
+					
+					functionlist.add(fnc);
+				}
+				
+				
+			}catch (Exception e) {
+				try {
+					log.error("ConfigFile Error "+configlist.get(i).getAbsolutePath(),e);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				//e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		
+		
 	}
 	
 	

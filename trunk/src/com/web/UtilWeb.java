@@ -1,10 +1,13 @@
 package com.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class UtilWeb {
@@ -34,6 +37,19 @@ public class UtilWeb {
 	}
 	
 	//getServletContext
+	
+	public static void write(HttpServletResponse response,String info) throws IOException{
+		//HttpServletResponse response = getCometEvent().getHttpServletResponse();
+		PrintWriter out = response.getWriter();
+		out.println(info);
+		out.flush();
+		response.flushBuffer();
+	}
+	
+	
+	
+	
+	
 	public static ServletContext getServletContext(ServletConfig config){
 		return config.getServletContext();
 	}
