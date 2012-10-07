@@ -30,7 +30,7 @@ Spring에서는 DataSource를 애플리케이션의 다른 서비스 객체들�
  
  
    
-      <listener>
+    <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     
