@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
 
+import khh.debug.LogK;
 import khh.interfaces.StrEvent_Interface;
 import khh.std.adapter.Adapter_Std;
 
@@ -22,6 +23,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	private boolean broadcast						= false;
 	private boolean standby							= false;
 	private boolean pair							= false;
+	private LogK log = LogK.getInstance();
 	// ArrayList<Event_Interface> listener = new ArrayList<Event_Interface>();
 	// public ArrayList<Gun> getGun() {
 	// return gun;
@@ -69,7 +71,8 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 			    		eventlist.remove(event);
 						event.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						event=null;
+						//e.printStackTrace();
 					} // 요청 처리 완료. 
 		    } else if (CometEvent.EventType.END == event.getEventType()) { 		// 요청 처리가 완료되었을 때
 //		    	getCometEventList().remove(event);
@@ -78,7 +81,9 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 			    	  eventlist.remove(event);
 			    	  event.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.debug("function event close Exception",e);
+					event=null;
+					//e.printStackTrace();
 				} // 요청 처리 완료. 
 		    } else if (CometEvent.EventType.READ == event.getEventType()) { 	// 읽을께있을때.
 		    } 
@@ -247,6 +252,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 		try{
 			cometevent.close();
 		}catch (Exception e) {
+			cometevent=null;
 		}
 		
 		return sw;
