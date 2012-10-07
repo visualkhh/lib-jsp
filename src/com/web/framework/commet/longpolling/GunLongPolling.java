@@ -166,8 +166,10 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 					 
 					 event.close(); //안쪽에서도하지만 여기서도..
 				} catch (Exception e) {
+					event.close();
+					event=null;
 				}
-			    	event.close(); // 요청 처리 완료. 
+			    	//event.close(); // 요청 처리 완료. 
 	    } else if (CometEvent.EventType.END == event.getEventType()) {
 	      // 요청 처리가 완료되었을 때 
 	      //log("End event"); 
@@ -183,8 +185,8 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 				 }
 				 log.debug("END fnc RemoveEvent id : "+fnc.getNodeid());
 				 fnc.removeCometEvent(event);
-				 
 				 event.close(); //안쪽에서도하지만 여기서도..
+				 event=null;
 			} catch (Exception e) {
 //				e.printStackTrace();
 			}
