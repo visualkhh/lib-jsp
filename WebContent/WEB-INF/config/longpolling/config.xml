@@ -7,6 +7,12 @@ gun 에는 인터발 시간이있고
 function 에는 broadcast = "true"  하면 브로드 케스팅할수있는놈이 된다
 pair 는 cometevent가 개인당하나씩 들어간다 쓰레드생성되서
  -->
+ 
+ 	<db>
+		<jndi id="mproject" name="jdbc/mproject" maxsize="100"></jndi>
+	</db>
+	
+	
 	<gun id="gun_hhk"   class="com.web.framework.commet.GunHHK"  interval="3000" ></gun>
 	<gun id="gun_khh"   class="com.web.framework.commet.GunKHH"  interval="3000" ></gun>
 	<gun id="gun_script"   class="com.web.framework.commet.GunScript"  interval="1000" ></gun>
