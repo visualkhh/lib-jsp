@@ -1,5 +1,6 @@
 
-<%@page import="com.kdn.util.conversion.ConversionUtil"%>
+<%@page import="khh.string.util.StringUtil"%>
+<%@page import="khh.conversion.util.ConversionUtil"%>
 <%@page import="java.io.UnsupportedEncodingException"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
@@ -15,14 +16,14 @@
 String result="";
 result = request.getParameter("in");
 
-System.out.println(ConversionUtil.urlEncode("±èÇöÇÏ", ConversionUtil.SET_UTF_8));
-System.out.println(ConversionUtil.urlDecode(result, ConversionUtil.SET_EUC_KR));
+System.out.println(StringUtil.urlEncode("±èÇöÇÏ", StringUtil.SET_UTF_8));
+System.out.println(StringUtil.urlDecode(result, StringUtil.SET_EUC_KR));
 
 System.out.println("firssest    "+result);
 
 String new_str="";
 		try{
-			new_str = ConversionUtil.stringConversion(result, ConversionUtil.SET_8859_1, ConversionUtil.SET_KSC5601);
+			new_str = StringUtil.stringCharSetConversion(result, StringUtil.SET_8859_1, StringUtil.SET_KSC5601);
 			//String new_str = new String(result.getBytes("8859_1"),"KSC5601" );
 		}catch(UnsupportedEncodingException e){
 		}catch(Exception e){
@@ -34,6 +35,6 @@ System.out.println("hangule    "+result);
 %>
 
 <%=new_str %>
-<%=ConversionUtil.urlDecode(result, ConversionUtil.SET_EUC_KR) %>
+<%=StringUtil.urlDecode(result, StringUtil.SET_EUC_KR) %>
 </body>
 </html>

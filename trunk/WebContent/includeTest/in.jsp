@@ -1,5 +1,4 @@
-<%@page import="com.kdn.util.property.PropertyUtil"%>
-<%@page import="com.kdn.util.debug.LogK"%>
+<%@page import="khh.property.util.PropertyUtil"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 »§²Ù¶Ë²Ù
