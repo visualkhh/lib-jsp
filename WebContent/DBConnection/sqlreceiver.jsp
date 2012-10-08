@@ -1,10 +1,10 @@
-<%@page import="com.kdn.util.db.DBUtil"%>
+<%@page import="khh.db.util.DBUtil"%>
+<%@page import="khh.db.util.ConnectionUtil"%>
 <%@page import="com.web.UtilWeb"%>
 <%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="com.kdn.util.db.ConnectionUtil"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 
