@@ -1,8 +1,8 @@
+<%@page import="khh.db.util.DBUtil"%>
+<%@page import="khh.db.util.ConnectionUtil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="com.kdn.util.db.DBUtil"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="com.kdn.util.db.ConnectionUtil"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
