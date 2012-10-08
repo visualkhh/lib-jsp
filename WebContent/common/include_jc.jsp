@@ -1,6 +1,6 @@
+<%@page import="khh.property.util.PropertyUtil"%>
+<%@page import="khh.collection.DuplicationArrayList"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.kdn.util.property.PropertyUtil"%>
-<%@page import="com.kdn.util.collection.DuplicationArrayList"%>
 <%@page import="com.web.UtilWeb"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
