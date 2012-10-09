@@ -7,6 +7,7 @@ import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,8 +89,12 @@ public class UtilWeb {
 	
 	
 	//finger
-	//cookie
 
+	public static void forword(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
+		 request.getRequestDispatcher(path).forward(request, response); 
+	}
+	
+	//cookie
 	/**
 	 * 지정된 키값에 대한 쿠키의 값을 꺼내 온다
 	 *
