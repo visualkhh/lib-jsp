@@ -1334,6 +1334,9 @@ JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 };
 
 
+//for (var prop in obj) 
+//	  if (!$.isFunction (obj[prop])) $content.append (
+//	          "<b>" + prop + "</b>  = " + obj[prop] + "<br />");
 
 JavaScriptUtil.getRandomInt=function(size_n){
 //	 var result = Math.floor(Math.random() * 10) + 1;
