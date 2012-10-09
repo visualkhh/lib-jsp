@@ -1520,7 +1520,13 @@ Debug.format="%d [%l]   >>  %m";
 
 try{
 	Debug.loger  = console.log;
+	if(!this.console){//Console global variable fix for IE
+		window.console={
+				log:function(){}
+		}
+	}
 }catch(e){
+	Debug.loger = function(){};
 };
 
 
