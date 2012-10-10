@@ -11,7 +11,7 @@
 
 var a = "5555";
 var b="6666";
-
+11ffff
 alert(Number(a)+Number(b));
 </script>
 </body>
