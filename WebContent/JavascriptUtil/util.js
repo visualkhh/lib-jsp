@@ -212,10 +212,10 @@ StringUtil.format2=function()
 	return str;
 };
 
-StringUtil.subBString = function(data_s,blen_n){
+StringUtil.rsubString = function(data_s,blen_n){
 	return data_s.substring(data_s.length-blen_n,data_s.length);
 };
-StringUtil.subAString = function(data_s,alen_n){
+StringUtil.lsubString = function(data_s,alen_n){
 	return data_s.substring(0,alen_n);
 };
 
@@ -232,7 +232,7 @@ StringUtil.rpad=function(fill_s,len_n,full_s){
 	return this.subAString(full_s,len_n);
 };
 
-StringUtil.lAppend=function(count_n,input_s){
+StringUtil.lappend=function(count_n,input_s){
 	var s = '', i = 0; 
 	while (i++ < count_n){ 
 		s += input_s; 
@@ -245,6 +245,217 @@ StringUtil.rAppend=function(count_n,input_s){
 		s = input_s+s; 
 	}
 	return s;
+};
+StringUtil.trim=function(input_s){
+	//return input_s.replace(/(^\s*)|(\s*$)/g, "");
+	return input_s.replace(/(^\s*)|(\s*$)/gi, "");
+};
+StringUtil.ltrim=function(input_s){
+	return input_s.replace(/(^\s*)/, "");
+};
+StringUtil.rtrim=function(input_s){
+	return input_s.replace(/(\s*$)/, "");
+};
+StringUtil.deleteSpace=function(input_s){
+	return input_s.replace(/\s/g,'');
+};
+StringUtil.deleteChar=function(input_s,del_s){
+	return StringUtil.replaceAll(input_s,del_s,'');
+};
+StringUtil.replaceAll=function(msg_s,before_s,after_s){
+	var regexp = new RegExp(before_s,"gi");
+	return msg_s.replace(regexp,after_s);
+};
+
+StringUtil.isEmpty =function(input_s) {
+	
+    if ( input_s == null || input_s.replace(/ /gi,"") == "") {
+        return true;
+    }
+    return false;
+};
+
+StringUtil.isInSpecialChar = function(input_s) {
+/*    var deny_pattern = /[^(-Ra-zA-Z0-9-R\s-R\u3131-\u314e\u314f-\u3163\uac00-\ud7a3)]/;
+    if(deny_pattern.test(input_s))
+    {
+        return true;
+    }
+    return false;
+    */
+	
+	   re = /[~!@\#$%^&*\()\=+_']/gi;
+       if(re.test(input_s)){
+    	   return true;;
+       }
+       return false;
+
+
+};
+
+StringUtil.isOnlySpecialChar = function(input_s) {
+	  var deny_pattern = /[^~!@\#$%^&*\()\=+_']+/g;
+	  if(deny_pattern.test(input_s))
+	    {
+	        return false;
+	    }
+	    return true;
+};
+StringUtil.removeComma=function(input_s) {
+    return input_s.replace(/,/gi,"");
+};
+//금액 입력시 "," 자동 입력
+StringUtil.addComma = function( number_s  ){
+	return this.raddGroupChar(number_s,3,",");
+};
+StringUtil.raddGroupChar = function( number_s , jumpsize_n,addchar_s )
+{
+/*	if(!jumpsize_n){
+		jumpsize_n=3;
+	}
+	*/
+	
+	//number_s = this.delComma( number_s );
+	number_s = StringUtil.deleteChar(number_s, addchar_s);
+    var src;
+    var i; 
+    var	factor; 
+    var	su; 
+
+    factor = number_s.length % jumpsize_n; 
+    su     = (number_s.length - factor) / jumpsize_n;
+    src    =  number_s.substring(0,factor);
+
+    for(i=0; i < su ; i++)
+    {
+		if((factor == 0) && (i == 0))       // "XXX" 인경우
+		{
+			src += number_s.substring(factor+(jumpsize_n*i), factor+jumpsize_n+(jumpsize_n*i));  
+		}
+	    else
+		{
+		    src += addchar_s  ;
+			src += number_s.substring(factor+(jumpsize_n*i), factor+3+(jumpsize_n*i));  
+		}
+    }
+    number_s = src; 
+
+    return number_s; 
+};
+
+
+
+/*
+function isNumber(input) {
+    var chars = "0123456789";
+    return isCharsOnly(input,chars);
+}*/
+StringUtil.isInNumber =function(string_s) {
+    var deny_pattern = /[0-9]/;
+    if(deny_pattern.test(string_s))
+    {
+        return true;
+    }
+    return false;
+};
+StringUtil.isOnlyNumber =function(string_s) {
+  /*  var deny_pattern = /[^(0-9)]/gi;
+    if(deny_pattern.test(string_s))
+    {
+        return false;
+    }
+    return true;
+    */
+	  var deny_pattern = /[^\d]+/g;
+	    if(deny_pattern.test(string_s))
+	    {
+	        return false;
+	    }
+	    return true;
+};
+StringUtil.getOnlyNumber=function(msg_s){
+	return msg_s.replace(/[^\d]+/g, ''); 
+};
+
+
+StringUtil.isInAlphabet=function(input_s) {
+	var pattern = /[a-zA-Z]/g;
+	return (pattern.test(input_s)) ? true: false ;
+};
+StringUtil.isOnlyAlphabet=function(input_s) {
+    var pattern = /^[a-zA-Z]+$/;
+    return (pattern.test(input_s)) ? true : false;
+};
+
+StringUtil.isInAlphabetUpper=function (input_s) {
+    var pattern = /[A-Z]/g;
+    return (pattern.test(input_s)) ? true : false;
+};
+StringUtil.isOnlyAlphabetUpper=function (input_s) {
+    var pattern = /^[A-Z]+$/;
+    return (pattern.test(input_s)) ? true : false;
+};
+
+StringUtil.isInAlphabetLower=function(input_s) {
+	var pattern = /[a-z]/g;
+	return (pattern.test(input_s)) ? true : false;
+};
+StringUtil.isOnlyAlphabetLower=function(input_s) {
+    var pattern = /^[a-z]+$/;
+    return (pattern.test(input_s)) ? true : false;
+};
+
+
+//자바스크립트 한글 깨지는 게있어서 한글로 정규식은 못만듬
+StringUtil.isInHangeul=function(input_s) {
+	//var pattern= /[ㄱ-ㅎ|ㅏ-ㅣ|가-힝]/;
+	var pattern = /[\u3131-\u314e|\u314f-\u3163|\uac00-\ud7a3]/g;
+	return (pattern.test(input_s)) ? true : false;
+    //var pattern= /[ㄱ-ㅎ|ㅏ-ㅣ|가-힝]/;
+    //return (pattern.test(input_s)) ? true : false;
+  /*
+    var tempStr = "";
+    var temp = 0;
+    var onechar;
+    tempStr = new String(input_s);
+    temp = tempStr.length;
+    for(var k=0; k<temp;k++){
+        onechar = tempStr.charAt(k);
+        if(escape(onechar).length > 4){
+           return true;
+        }
+    }
+    return false;
+    */
+    //if((event.keyCode < 12592) || (event.keyCode > 12687))
+    //event.returnValue = false
+};
+StringUtil.isOnlyHangeul=function(input_s) {
+   // var pattern= /[ㄱ-ㅎㅏ-ㅣ가-힝]+/g;
+   // return (pattern.test(input_s)) ? true : false;
+	var pattern = /^[\u3131-\u314e|\u314f-\u3163|\uac00-\ud7a3]*$/g;
+	return (pattern.test(input_s)) ? true : false;
+};
+//var chars = "abcdefghijklmnopqrstuvwxyz";
+//return isCharsOnly(input_s,chars);
+StringUtil.isOnlyChars = function(input_s,chars) {
+    for (var inx = 0; inx < input_s.length; inx++) {
+       if (chars.indexOf(input_s.charAt(inx)) == -1)
+           return false;
+    }
+    return true;
+};
+
+
+
+StringUtil.encodeURI=function(url_s){
+	return encodeURI(url_s);
+};
+StringUtil.decodeURI=function(url_s){
+	return decodeURI(url_s);
+};
+StringUtil.getUnicode = function(input_s){
+	return escape(input_s);
 };
 
 
@@ -360,7 +571,7 @@ Validate.isPersonalNumber=function(personalNumber_s){
 	            return false; 
 	        } 
 	    } 
-	    for(i = 0; i < 12; i ++) { 
+	    for(var i = 0; i < 12; i ++) { 
 	        check += personal_no.charAt(i) * mul; 
 	        mul ++; 
 	        if(mul > 9) { 
@@ -457,6 +668,8 @@ Validate.isPhoneFormat=function(input_s) {
     var format = /^(\d+)-(\d+)-(\d+)$/;
     return isValidFormat(input_s,format);
 };
+
+/*
 Validate.isHangeul=function(input_s) {
 	    var tempStr = "";
 	    var temp = 0;
@@ -493,6 +706,10 @@ Validate.isNoHangeul=function(input_s) {
 	}
 	return true;
 };
+*/
+
+//쓰지말것
+/*
 Validate.isSpecialChar=function(input_s) {
 	var AlphaDigit;
 	var IDLength;
@@ -516,7 +733,7 @@ Validate.isSpecialChar=function(input_s) {
 	}
 	return true;
 }
-
+*/
 
 
 
@@ -534,9 +751,16 @@ ConvertingUtil.prototype = new Object();
  * @param {String} inputStr_s
  * @returns {Char}
 */  
+//유니코드 또는 아스키 코드 번호를, 문자로 변환
+ConvertingUtil.fromCharCode=function(inputStr_s){
+	return String.fromCharCode(inputStr_s);
+};
 ConvertingUtil.keyCodeToCharcode=function(inputStr_s){
 	return String.fromCharCode(inputStr_s);
 };
+//한글은 유니코드 번호로 나옴
+//십진수인 44032 를 16진수로는 AC00
+//A 같은 영문자는 그냥 10진수 아스키 코드로 나옵니다
 ConvertingUtil.charToCode=function(inputStr_c){
 	return inputStr_c.charCodeAt(0);
 };
@@ -560,23 +784,29 @@ ConvertingUtil.jsonToAttribute=function(object_o,unionString_s){
                  
         return results.join(' ');
 };
-ConvertingUtil.trim=function(msg_s){
+//쓰지말것
+/*ConvertingUtil.trim=function(msg_s){
 	return msg_s.replace(/^\s*|\s*$/g,'');
 };
 ConvertingUtil.onlyNumber=function(msg_s){
 	return msg_s.replace(/[^\d]+/g, ''); 
 };
+
 ConvertingUtil.encodeURI=function(url_s){
 	return encodeURI(url_s);
 };
 ConvertingUtil.decodeURI=function(url_s){
 	return decodeURI(url_s);
 };
+*/
+//쓰지말것
+/*
 ConvertingUtil.replaceAll=function(msg_s,before_s,after_s){
 var regexp = new RegExp(before_s,"gi");
 	return msg_s.replace(regexp,after_s);
 	
 };
+*/
 
 
 /*  파라미터 넘어오는거 보는 방법  가변파라미터 처리 가능 
@@ -611,22 +841,22 @@ ConvertingUtil.domToJson=function(obj){
 */
 
 //finger
+/*
 ConvertingUtil.delComma=function(number_s){
 	return  this.replaceAll(number_s, ",", "");
 };
-
 //금액 입력시 "," 자동 입력
 ConvertingUtil.addComma = function( number_s  ){
 	return this.addChar(number_s,3,",");
 };
 ConvertingUtil.addChar = function( number_s , jumpsize_n,addchar_s )
 {
-/*	if(!jumpsize_n){
-		jumpsize_n=3;
-	}
-	*/
+//	if(!jumpsize_n){
+//		jumpsize_n=3;
+//	}
 	
-	number_s = this.delComma( number_s );
+	//number_s = this.delComma( number_s );
+	number_s = StringUtil.deleteChar(number_s, addchar_s);
     var src;
     var i; 
     var	factor; 
@@ -652,6 +882,7 @@ ConvertingUtil.addChar = function( number_s , jumpsize_n,addchar_s )
 
     return number_s; 
 };
+*/
 
 
 //////////Window Util
@@ -876,8 +1107,8 @@ CookieUtil.prototype = new Object();
 
 
 CookieUtil.getCookie=function(name_s) {
-    var first;
-    var str = name_s + "=";
+   // var first;
+   // var str = name_s + "=";
    var ar = document.cookie.split("; ");
    for(var i=0; i<ar.length; i++) {
          var c = ar[i];
@@ -1120,9 +1351,9 @@ EventUtil.onlyNumberMinus=function(event_o){
   	if(!sOrg.match(/^[\d|\.\-]/))			// New Code
 		window.event.keyCode = 0;
 };
-EventUtil.onlyAlpaNumber() {
+EventUtil.onlyAlpaNumber = function () {
 	var lkeycode = window.event.keyCode;
-	var sOrg = String.fromCharCode(lkeycode);
+	//var sOrg = String.fromCharCode(lkeycode);
 	//alert ( sOrg ) ;
 	//alert ( "lkeycode:" + lkeycode + ";sOrg" + sOrg ) ;
 
@@ -1149,7 +1380,7 @@ EventUtil.onlyAlpaNumber() {
 	{
 		window.event.keyCode = 0;
 	}
-}
+};
 
 
 
@@ -1201,11 +1432,9 @@ function JavaScriptUtil (){};
 JavaScriptUtil.prototype = new Object();
 JavaScriptUtil.UNIQUEID=0;
 JavaScriptUtil.getNextNumber=function(object_o){
-	return  this.UNIQUEID++;
+	return  JavaScriptUtil.UNIQUEID++;
 };
-JavaScriptUtil.removeComma=function(input_s) {
-    return input_s.replace(/,/gi,"");
-};
+
 /*  Null 값 Check */
 JavaScriptUtil.isNull = function(object_o) {
 	if(object_o) {
@@ -1213,59 +1442,7 @@ JavaScriptUtil.isNull = function(object_o) {
 	}
 	return false;
 };
-/*
-function isNumber(input) {
-    var chars = "0123456789";
-    return isCharsOnly(input,chars);
-}*/
-JavaScriptUtil.isNumberData =function(string_s) {
-	var str = string_s.value;
-	if(isNaN(str)){
-		return false;
-	}else if(str.length == 0){
-		return false;
-	}// end fi
 
-	for(var i=0; i < str.length; i++){
-		if(!('0' <= str.charAt(i) &&
-             str.charAt(i) <= '9'))
-		{
-			return false;
-		}// end fi
-	}// end for
-	return true;
-};
-/********************************************************************
-* 입력값에 스페이스 이외의 의미있는 값이 있는지 체크
-* ex)if(isEmpty(form.keyword)) {
-*		alert("검색조건을 입력하세요.");
-*	}
-********************************************************************/
-JavaScriptUtil.isEmpty =function(input_s) {
-    if (input_s.value == null || input_s.value.replace(/ /gi,"") == "") {
-        return true;
-    }
-    return false;
-};
-JavaScriptUtil.isAlphabet=function(input_s) {
-    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    return isCharsOnly(input_s,chars);
-};
-JavaScriptUtil.isAlphabetUpper=function (input_s) {
-var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-return isCharsOnly(input_s,chars);
-};
-JavaScriptUtil.isAlphabetLower=function(input_s) {
-var chars = "abcdefghijklmnopqrstuvwxyz";
-return isCharsOnly(input_s,chars);
-};
-JavaScriptUtil.isCharsOnly = function(input,chars) {
-    for (var inx = 0; inx < input.value.length; inx++) {
-       if (chars.indexOf(input.value.charAt(inx)) == -1)
-           return false;
-    }
-    return true;
-};
 JavaScriptUtil.isArray=function(object_o){
 	return  Object.prototype.toString.call(object_o)=='[object Array]	';
 };
@@ -1280,9 +1457,9 @@ JavaScriptUtil.isFunction=function(object_o){
 };
 JavaScriptUtil.isObject=function(object_o){
 	var sw=false;
-	if(this.isNetscape()){
+	if(JavaScriptUtil.isNetscape()){
 		sw  = Object.prototype.toString.call(object_o)=='[object Object]' || Object.prototype.toString.call(object_o)=='[object global]';
-	}else if(this.isInternetExplorer()){
+	}else if(JavaScriptUtil.isInternetExplorer()){
 		sw  = Object.prototype.toString.call(object_o)=='[object Object]';
 	}
 	return sw ;
@@ -1304,7 +1481,7 @@ JavaScriptUtil.copyObject=function(object_o){
     }
 	return  return_obj;
 };
-/* 왠만하면 copyObject쓰세요  이건 제이슨 값만 복사되더라구요*/
+/* 왠만하면 copyObject쓰세요  이건 제이슨 값만 복사됨*/
 JavaScriptUtil.copyJson=function(object_o){
 	return  JSON.parse(JSON.stringify(object_o));
 };
@@ -1317,15 +1494,15 @@ JavaScriptUtil.getBrowserType=function(navigator_o){
 };
 
 JavaScriptUtil.isNetscape=function(){
-	return this.getBrowserType()=='Netscape';
+	return JavaScriptUtil.getBrowserType()=='Netscape';
 };
 
 JavaScriptUtil.isInternetExplorer=function(){
-	return  this.getBrowserType()=='Microsoft Internet Explorer';
+	return  JavaScriptUtil.getBrowserType()=='Microsoft Internet Explorer';
 };
 
 JavaScriptUtil.extend = function(superreobject_o,childobject_o){
-	var return_obj = this.copyObject(childobject_o);
+	var return_obj = JavaScriptUtil.copyObject(childobject_o);
 	
     for (var property in superreobject_o) {
     	return_obj[property] = superreobject_o[property]; 
@@ -1409,7 +1586,7 @@ FormatUtil.format_mask=function(obj, mask){
     var tStr="";
     var i;
     var j=0;
-    var tLen = sStr.length +1 ;
+    //var tLen = sStr.length +1 ;
     for(i=0; i< sStr.length; i++){
         tStr += sStr.charAt(i);
         j++;
@@ -1448,6 +1625,8 @@ Selector.en = function (ename_s,document_o){
 		document_o=document;
 	}
 	return document_o.getElementsByName(ename_s);
+	//	obj = (IE4 == 1) ? eval("document.all." + objName) : document.forms[0].elements[objName];
+	//return obj;
 };
 Selector.etn = function (tagname_s,document_o){
 	if(!document_o){
@@ -1523,8 +1702,8 @@ try{
 	if(!this.console){//Console global variable fix for IE
 		window.console={
 				log:function(){}
-		}
-	}
+		};
+	};
 }catch(e){
 	Debug.loger = function(){};
 };
@@ -1852,7 +2031,8 @@ ElementUtil.createE = function(string_s,document_o){
 };
 ElementUtil.elementToString= function(element_o){
     if(!element_o || !element_o.tagName) return '';
-    var txt, ax, el= document.createElement("div");
+   // var txt, ax, el= document.createElement("div");
+    var txt, el= document.createElement("div");
     el.appendChild(element_o.cloneNode(false));
     txt= el.innerHTML;
    /* if(deep){
