@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+window.alert=function(str){
+	var  a = document.getElementById("aa");
+	a.innerHTML=a.innerHTML+str+"<br>";
+	// Dialog Link
+/*	$('#dialog_link').click(function(){
+		$('#dialog').dialog('open');
+		return false;
+	});
+	*/
+}
+window.onload=function(){
+	
+	//alert(1);
+};
+</script>
+<body>
+<input type="button" id="alert_btn" value="alert"  onClick="alert('aaaaaaaaaa')"/>
+<div id="aa"></div>
+</body>
+</html>
