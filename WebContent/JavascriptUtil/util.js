@@ -893,19 +893,21 @@ WindowUtil.newWindow=function(url){
     window.open(url);
 };
 
-WindowUtil.newPopup=function(url,width_n,height_n,name_s){
+WindowUtil.newPopup=function(url,width_n,height_n,params_s,name_s){
     var winl = ScreenUtil.getCenterWidth();
     var wint = ScreenUtil.getCenterHeight();
     if(!name_s){
     	name_s='new_WindowName';
     }
+    if(!params_s){
+    	params_s="scrollbars=NO,resizable = YES, status=yes";
+    }
     winl -= (width_n/2);
     wint -= (height_n/2);
     //toolbar=no,menubar=no,location=no,scrollbars=no,status=no
-    var winprops = "width="+width_n+",height="+height_n+",top="+wint+",left="+winl+",scrollbars=NO,resizable = YES, status=yes";
+    var winprops = "width="+width_n+",height="+height_n+",top="+wint+",left="+winl+","+params_s;
     window.open(url,name_s,winprops);
 };
-
 
 WindowUtil.resize=function(window_o_width_n,width_n_height_n,height_n){
 	if(JavaScriptUtil.isNumber(window_o_width_n)){
