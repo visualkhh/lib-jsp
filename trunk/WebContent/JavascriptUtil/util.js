@@ -923,6 +923,25 @@ WindowUtil.close=function(window_o){
 	}
 	window_o.close();
 };
+WindowUtil.closeOpener=function(window_o){
+	if(!window_o){
+		window_o = self;
+	}
+		var op = WindowUtil.getOpener(window_o);
+	try{
+		if(op){
+			op.close();
+		};
+	}catch(e){
+	}
+};
+
+WindowUtil.getOpener=function(window_o){
+	if(!window_o){
+		window_o = self;
+	}
+	window_o.opener();
+};
 
 
 WindowUtil.getWindowWidth=function(window_o){
