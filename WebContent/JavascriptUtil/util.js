@@ -901,6 +901,7 @@ WindowUtil.newPopup=function(url,width_n,height_n,name_s){
     }
     winl -= (width_n/2);
     wint -= (height_n/2);
+    //toolbar=no,menubar=no,location=no,scrollbars=no,status=no
     var winprops = "width="+width_n+",height="+height_n+",top="+wint+",left="+winl+",scrollbars=NO,resizable = YES, status=yes";
     window.open(url,name_s,winprops);
 };
