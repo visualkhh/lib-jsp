@@ -917,6 +917,18 @@ WindowUtil.resize=function(window_o_width_n,width_n_height_n,height_n){
 	}
 	window_o_width_n.resizeTo(width_n_height_n,height_n);
 };
+	/*
+	// 버전이 6.x 이거나 5.x 일때
+	if (appVer=="5" || appVer=="6") {
+		self.opener=self;
+		opener.close();
+	} 
+	else {
+		top.window.opener=top;
+		top.window.open('', '_parent', '');
+		top.window.close();
+	}
+	*/
 WindowUtil.close=function(window_o){
 	if(!window_o){
 		window_o = self;
@@ -940,7 +952,7 @@ WindowUtil.getOpener=function(window_o){
 	if(!window_o){
 		window_o = self;
 	}
-	window_o.opener();
+	return window_o.opener;
 };
 
 
@@ -1511,7 +1523,12 @@ JavaScriptUtil.getBrowserType=function(navigator_o){
 	}
 	return  navigator_o.appName;
 };
-
+JavaScriptUtil.getBrowserVersion=function(navigator_o){
+	if(!navigator_o){
+		navigator_o = navigator;
+	}
+	return  navigator_o.appVersion;
+};
 JavaScriptUtil.isNetscape=function(){
 	return JavaScriptUtil.getBrowserType()=='Netscape';
 };
