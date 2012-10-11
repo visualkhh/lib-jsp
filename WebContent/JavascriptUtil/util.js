@@ -15,16 +15,27 @@ StringUtil.prototype = new Object();
  * @returns {Array}.
 */  
 
-StringUtil.isMatching=function(input_s, matchingSrting_Arr){
-	var result  = Array();
+StringUtil.isMatching=function(input_s, matchingSrting_arr_s){
+	var result  = new Array();
 	var arrindex = 0 ;
-	for(var i=0; i <matchingSrting_Arr.length;i++){
-		var index = input_s.indexOf(matchingSrting_Arr[i]);
+	if(JavaScriptUtil.isArray(matchingSrting_arr_s)){
+		for(var i=0; i <matchingSrting_arr_s.length;i++){
+			var index = input_s.indexOf(matchingSrting_arr_s[i]);
+			if(index>=0){
+				result[arrindex]=matchingSrting_arr_s[i];
+				arrindex++;
+			}
+		}
+	}else if(JavaScriptUtil.isString(matchingSrting_arr_s)){
+		var index = input_s.indexOf(matchingSrting_arr_s);
 		if(index>=0){
-			result[arrindex]=matchingSrting_Arr[i];
-			index++;
+			result[arrindex]=matchingSrting_arr_s;
+			arrindex++;
 		}
 	}
+	//result.push();
+	//result.pop();
+	
 	return result;
 };
 
@@ -458,6 +469,13 @@ StringUtil.getUnicode = function(input_s){
 	return escape(input_s);
 };
 
+StringUtil.upper=function(inputStr_s){
+	return String(inputStr_s).toUpperCase();
+};
+StringUtil.lower=function(inputStr_s){
+	return  String(inputStr_s).toLowerCase();
+};
+
 
 
 
@@ -764,13 +782,14 @@ ConvertingUtil.keyCodeToCharcode=function(inputStr_s){
 ConvertingUtil.charToCode=function(inputStr_c){
 	return inputStr_c.charCodeAt(0);
 };
-
+/*
 ConvertingUtil.toUpperCase=function(inputStr_s){
 	return String(inputStr_s).toUpperCase();
 };
 ConvertingUtil.toLowerCase=function(inputStr_s){
 	return  String(inputStr_s).toLowerCase();
 };
+*/
 ConvertingUtil.jsonToAttribute=function(object_o,unionString_s){
 	if(!unionString_s){
 		unionString_s='=';
@@ -892,22 +911,63 @@ WindowUtil.prototype = new Object();
 WindowUtil.newWindow=function(url){
     window.open(url);
 };
-
-WindowUtil.newPopup=function(url,width_n,height_n,params_s,name_s){
+//params_s_name_s 까지만 넣으면 이름으로 관주 name_s 넣으면  params_s_name_s 파라미터로 인정
+WindowUtil.newPopup=function(url,width_n,height_n,params_s_name_s,name_s){
     var winl = ScreenUtil.getCenterWidth();
     var wint = ScreenUtil.getCenterHeight();
-    if(!name_s){
-    	name_s='new_WindowName';
+    var name_v="";
+    var params_v="";
+    /*
+     if(!name_s){
+    	name_v		= 'new_WindowName';
+    	params_v	= "scrollbars=NO,resizable = YES, status=yes";
+    }else{
+    	name_v=name_s;
+    	params_v=params_s_name_s;
     }
-    if(!params_s){
-    	params_s="scrollbars=NO,resizable = YES, status=yes";
+     */    
+    
+    if(!params_s_name_s){
+    	name_v 		= "new_WindowName";
+    	params_v	= "scrollbars=NO,resizable = YES, status=yes";
+    }else{
+    	if(!name_s){
+    		name_v		= params_s_name_s;
+    		params_v	= "scrollbars=NO,resizable = YES, status=yes";
+    	}else{
+    		name_v		= name_s;
+    		params_v	= params_s_name_s;
+    	}
     }
     winl -= (width_n/2);
     wint -= (height_n/2);
+    
+    
+    
+    var location_v="";
+    var result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "WIDTH")
+    if(result_arr.length<=0){
+    	location_v+=",width="+width_n;
+    }
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "HEIGHT")
+    if(result_arr.length<=0){
+    	location_v+=",height="+height_n;
+    }
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "TOP")
+    if(result_arr.length<=0){
+    	location_v+=",top="+wint;
+    }
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "LEFT")
+    if(result_arr.length<=0){
+    	location_v+=",left="+winl;
+    }
+    
+    
     //toolbar=no,menubar=no,location=no,scrollbars=no,status=no
-    var winprops = "width="+width_n+",height="+height_n+",top="+wint+",left="+winl+","+params_s;
-    window.open(url,name_s,winprops);
+    var winprops = location_v+","+params_v;
+    window.open(url,name_v,winprops);
 };
+
 
 WindowUtil.resize=function(window_o_width_n,width_n_height_n,height_n){
 	if(JavaScriptUtil.isNumber(window_o_width_n)){
