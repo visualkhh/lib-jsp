@@ -85,7 +85,10 @@ public class UtilWeb {
 	public static String getBasePath(HttpServletRequest request){
 		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+getContextPath(request)+"/";
 	}
-	
+//http://localhost:8080/test/index.jsp  ->  localhost
+	public static String getServerName(HttpServletRequest request){
+		return request.getServerName();
+	}
 	
 	
 	//finger
