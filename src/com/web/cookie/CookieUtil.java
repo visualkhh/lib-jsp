@@ -81,20 +81,24 @@ public class CookieUtil {
 	* @param response HttpServletResponse
 	* @param name 쿠키의 이름
 	* @param value 쿠키의 값
-	* @param iMinute 쿠키가 유효할 시간(분단위)
+	* @param Second 쿠키가 유효할 시간(초단위)
 	*/
 	public static void setCookie(
-		HttpServletResponse response, String name, String value, int iMinute)
+		HttpServletResponse response, String name, String value, int second)
 		throws Exception {
 
+		if(value!=null)
 		value = java.net.URLEncoder.encode(value, "euc-kr");
 		Cookie cookie = new Cookie(name, value);
-		cookie.setMaxAge(60 * iMinute);
+		//cookie.setMaxAge(60 * iMinute);
+		cookie.setMaxAge(second);
 		cookie.setPath("/");
 		response.addCookie(cookie);
+		
 	}
 
 
+	
 	/**
 	 * 쿠키를 만든다. 기본 유효 시간은 15일 이다.
 	 *
@@ -102,10 +106,19 @@ public class CookieUtil {
 	 * @param name 쿠키의 이름
 	 * @param value 쿠키의 값
 	 */
-	public static void setCookie(
+	/*public static void setCookie(
 		HttpServletResponse response, String name, String value) 
 		throws Exception {
 
-		setCookie(response, name, value, (60*24*15) );
-	}
+		setCookie(response, name, value, (60*60*24*15) );
+	}*/
+	
+	
+	public static void delCookie(
+			HttpServletResponse response, String name)
+			throws Exception {
+		setCookie(response, name, null, (0) );
+		}
+	
+	
 }
