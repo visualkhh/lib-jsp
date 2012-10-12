@@ -234,13 +234,13 @@ StringUtil.lpad=function(fill_s,len_n,full_s){
 	while (len_n > full_s.length) {
 		full_s=fill_s+full_s;
 	};
-	return this.subBString(full_s,len_n);
+	return this.rsubString(full_s,len_n);
 };
 StringUtil.rpad=function(fill_s,len_n,full_s){
 	while (len_n > full_s.length) {
 		full_s+=fill_s;
 	};
-	return this.subAString(full_s,len_n);
+	return this.lsubString(full_s,len_n);
 };
 
 StringUtil.lappend=function(count_n,input_s){
@@ -1225,12 +1225,19 @@ CookieUtil.setCookie = function (name_s, value_s, expireSecond_n) {
 
 //finger
 CookieUtil.delCookie = function (name_s) {
-    var today = new Date();
-
-    today.setDate(today.getDate() - 1);
-    var value = getCookie(name);
-    if(value != "")
-        document.cookie = name + "=; expires=" + today.toGMTString();
+	CookieUtil.setCookie(name_s, null, -1);
+	
+	/*
+	//var today = new Date();
+    //today.setDate(today.getDate() - 1);
+    var value = CookieUtil.getCookie(name_s);
+    if(value){
+    		var expireDate = new Date();
+    		expireDate.setDate( expireDate.getDate() - 1 );
+    		document.cookie = name_s + "= " + "; expires=" + expireDate.toGMTString() + "; path=/";
+    }
+        //document.cookie = name + "=; expires=" + today.toGMTString();
+        */
 };
 
 
@@ -1798,14 +1805,15 @@ Debug.format="%d [%l]   >>  %m";
  */
 
 try{
-	Debug.loger  = console.log;
-	if(!this.console){//Console global variable fix for IE
+	Debug.loger  =function(msg){ console.log(msg)};
+/*	if(!this.console){//Console global variable fix for IE
 		window.console={
 				log:function(){}
 		};
-	};
+	};*/
 }catch(e){
-	Debug.loger = function(){};
+	/*Debug.LEVEL=Debug.LEVEL_OFF;
+	Debug.loger = function(){};*/
 };
 
 
@@ -1844,16 +1852,13 @@ Debug.log = function (level_s,msg_s) {
 		sw = true;
 	}
 	else if(this.LEVEL==this.LEVEL_OFF){
-		sw = true;
+		sw = false;
 	}
 	else if(this.LEVEL==level_s){
 		sw = true;
 	};
 	if(sw){
-		try{
 			if(this.loger){
-				
-				
 				var logmsg_s = 	this.format.replace(/(%d|%m|%l)/gi, function($1) {
 					        switch ($1) {
 					        	case "%m": return msg_s;
@@ -1876,11 +1881,13 @@ Debug.log = function (level_s,msg_s) {
 					    });
 				
 				
-				
-				eval(this.loger(logmsg_s));
+					try{
+						//(function(){this.loger("a")})();
+						//(eval(function(){Debug.loger.call(logmsg_s)}))();
+						eval(this.loger(logmsg_s));
+					}catch (e) {
+					}
 			}
-		}catch (e) {
-		}
 	}
 };
 
