@@ -996,6 +996,7 @@ WindowUtil.close=function(window_o){
 	if(!window_o){
 		window_o = self;
 	}
+	window_o.open('', '_parent', '');
 	window_o.close();
 };
 WindowUtil.closeOpener=function(window_o){
