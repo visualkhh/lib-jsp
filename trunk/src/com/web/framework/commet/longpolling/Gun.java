@@ -134,7 +134,8 @@ public abstract class Gun extends Thread {
 			    	  getCometEventList().remove(event);
 					event.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					event=null;
+					//e.printStackTrace();
 				} // 요청 처리 완료. 
 		    } else if (CometEvent.EventType.READ == event.getEventType()) { 
 		    } 
