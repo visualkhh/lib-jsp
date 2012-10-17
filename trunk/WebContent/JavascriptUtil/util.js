@@ -1104,7 +1104,7 @@ DocumentUtil.getCenterHeight=function(window_o){
 };
 
 
-DocumentUtil.newPopup=function(element_o,width_n,height_n){
+DocumentUtil.newPopup=function(element_o,width_n_s,height_n_s,left_n_s,top_n_s){
     var dcl = DocumentUtil.getCenterWidth();
     var dct = DocumentUtil.getCenterHeight();
     
@@ -1112,24 +1112,54 @@ DocumentUtil.newPopup=function(element_o,width_n,height_n){
     style.position='absolute';
     
     
-    if(!width_n){
+    if(!width_n_s){
+    	style.width="100px";
     }else{
-    	style.width=width_n;
+    	if(JavaScriptUtil.isNumber(width_n_s)){
+    		style.width=width_n_s+"px";
+    	}else{
+    		style.width=width_n_s;
+    	}
     }
     
-    if(!height_n){
+    if(!height_n_s){
+    	style.height="100px";
     }else{
-    	style.height=height_n;
+    	if(JavaScriptUtil.isNumber(width_n_s)){
+    		style.height=height_n_s+"px";
+    	}else{
+    		style.height=height_n_s;
+    	}
     }
     
-    if(style.width){
+    
+    
+    
+    if(!left_n_s){
     	var left = dcl - ( StringUtil.getOnlyNumber(style.width) / 2 );
     	dcl = left+ StringUtil.getOnlyString(style.width);
+    }else{
+    	if(JavaScriptUtil.isNumber(left_n_s)){
+    		style.left=left_n_s+"px";
+    	}else{
+    		style.left=left_n_s;
+    	}
     }
-    if(style.height){
+    
+    if(!top_n_s){
     	var height = dct - ( StringUtil.getOnlyNumber(style.height) / 2 );
     	dct = height+ StringUtil.getOnlyString(style.height);
+    }else{
+    	if(JavaScriptUtil.isNumber(top_n_s)){
+    		style.top=top_n_s+"px";
+    	}else{
+    		style.top=top_n_s;
+    	}
     }
+    
+    
+    
+  
     style.left=dcl;
     style.top=dct;
     style.display='block';  //'none'
