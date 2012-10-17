@@ -387,6 +387,9 @@ StringUtil.isOnlyNumber =function(string_s) {
 StringUtil.getOnlyNumber=function(msg_s){
 	return msg_s.replace(/[^\d]+/g, ''); 
 };
+StringUtil.getOnlyString=function(msg_s){
+	return msg_s.replace(/[\d]+/g, ''); 
+};
 
 
 StringUtil.isInAlphabet=function(input_s) {
@@ -1066,27 +1069,83 @@ WindowUtil.getWindowLeft=function(window_o){
 };
 
 
+//finger
+function DocumentUtil(){};
+DocumentUtil.prototype = new Object();
+DocumentUtil.getWidth=function(window_o){
+	if(!window_o){
+		window_o =  self;
+	}
+	if(JavaScriptUtil.isNetscape()){
+		return window_o.innerWidth;
+	}else if(JavaScriptUtil.isInternetExplorer()){
+		return window_o.document.documentElement.clientWidth;
+	}
+	
+};
+DocumentUtil.getHeight=function(window_o){
+	if(!window_o){
+		window_o =  self;
+	}
+	if(JavaScriptUtil.isNetscape()){
+		return window_o.innerHeight;
+	}else if(JavaScriptUtil.isInternetExplorer()){
+		return window_o.document.documentElement.clientHeight;
+	}
+};
 
-WindowUtil.getDocumentWidth=function(window_o){
-	if(!window_o){
-		window_o =  self;
-	}
-	if(JavaScriptUtil.isNetscape()){
-		window_o.innerWidth;
-	}else if(JavaScriptUtil.isInternetExplorer()){
-		window_o.document.documentElement.clientWidth;
-	}
+
+DocumentUtil.getCenterWidth=function(window_o){
+	return this.getWidth(window_o)/2;
+	
 };
-WindowUtil.getDocumentHeight=function(window_o){
-	if(!window_o){
-		window_o =  self;
-	}
-	if(JavaScriptUtil.isNetscape()){
-		window_o.innerHeight;
-	}else if(JavaScriptUtil.isInternetExplorer()){
-		window_o.document.documentElement.clientHeight;
-	}
+DocumentUtil.getCenterHeight=function(window_o){
+	return this.getHeight(window_o)/2;
 };
+
+
+DocumentUtil.newPopup=function(element_o,width_n,height_n){
+    var dcl = DocumentUtil.getCenterWidth();
+    var dct = DocumentUtil.getCenterHeight();
+    
+    var style = StyleUtil.getStyle(element_o);
+    style.position='absolute';
+    
+    
+    if(!width_n){
+    }else{
+    	style.width=width_n;
+    }
+    
+    if(!height_n){
+    }else{
+    	style.height=height_n;
+    }
+    
+    if(style.width){
+    	var left = dcl - ( StringUtil.getOnlyNumber(style.width) / 2 );
+    	dcl = left+ StringUtil.getOnlyString(style.width);
+    }
+    if(style.height){
+    	var height = dct - ( StringUtil.getOnlyNumber(style.height) / 2 );
+    	dct = height+ StringUtil.getOnlyString(style.height);
+    }
+    style.left=dcl;
+    style.top=dct;
+    style.display='block';  //'none'
+};
+
+DocumentUtil.show=function(element_o){
+    var style = StyleUtil.getStyle(element_o);
+    style.display='block';  //'none'
+};
+DocumentUtil.close=function(element_o){
+    var style = StyleUtil.getStyle(element_o);
+    style.display='none';  //'block'
+};
+
+
+
 
 
 
@@ -1175,7 +1234,35 @@ LocationUtil.reLoad=function(window_o,optionalArg_b){
 	window_o.location.reload(optionalArg_b);
 };
 
-
+//style util
+function StyleUtil(){};
+StyleUtil.prototype = new Object();
+StyleUtil.getStyle=function(element_o_s) {
+	if(JavaScriptUtil.isString(element_o_s)){
+		element_o_s = Selector.ei(element_o_s);
+	}
+	return element_o_s.style;
+};
+StyleUtil.getCSS=function(element_o_s) {
+	if(JavaScriptUtil.isString(element_o_s)){
+		element_o_s = Selector.ei(element_o_s);
+	}
+	return element_o_s.style.cssText;
+};
+StyleUtil.setStyle= function(element_o_s,style_s){
+	if(JavaScriptUtil.isString(element_o_s)){
+		element_o_s = Selector.ei(element_o_s);
+	}
+	element_o_s.style = style_s;
+	return element_o_s;
+};
+StyleUtil.setCSS= function(element_o_s,css_s){
+	if(JavaScriptUtil.isString(element_o_s)){
+		element_o_s = Selector.ei(element_o_s);
+	}
+	element_o_s.style.cssText = css_s;
+	return element_o_s;
+};
 
 
 ///////////쿠키..유틸
@@ -1266,6 +1353,7 @@ EventUtil.TYPE_SELECT="select";
 EventUtil.TYPE_SCROLL="scroll";
 EventUtil.TYPE_DRAG="drag";
 EventUtil.TYPE_DRAGEND="dragend";
+EventUtil.TYPE_RESIZE="resize";
 EventUtil.getEventName=function(type_event_s){
 	var accept_event="";
 	 if (window.addEventListener) {   // all browsers except IE before version 9
@@ -1310,6 +1398,8 @@ EventUtil.getEventName=function(type_event_s){
 			 accept_event="drag";
 		 }else if(type_event_s==this.TYPE_DRAGEND){
 			 accept_event="dragend";
+		 }else if(type_event_s==this.TYPE_RESIZE){
+			 accept_event="resize";
 		 }
 	 
 		 
@@ -1355,6 +1445,8 @@ EventUtil.getEventName=function(type_event_s){
 			 accept_event="ondrag";
 		 }else if(type_event_s==this.TYPE_DRAGEND){
 			 accept_event="ondragend";
+		 }else if(type_event_s==this.TYPE_RESIZE){
+			 accept_event="onresize";
 		 }
    		 
    		 
@@ -2149,13 +2241,7 @@ ElementUtil.elementToString= function(element_o){
     el= null;
     return txt;
 };
-ElementUtil.setStyle= function(element_o_s,style_s){
-	if(JavaScriptUtil.isString(element_o_s)){
-		element_o_s = Selector.ei(element_o_s);
-	}
-	element_o_s.style = style_s;
-	return element_o_s;
-};
+
 
 
 
