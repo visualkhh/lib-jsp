@@ -12,7 +12,7 @@ var $E=EventUtil;
 var $D=Debug;
 var $DC=DocumentUtil;
 
-
+ 
 function start(){
 	var show_btn = $S.ei("show_btn");
 	var close_btn = $S.ei("close_btn");
@@ -28,7 +28,7 @@ function start(){
 function windowResize(){
 	document.title=a++;
 	var popup = $S.ei("popup");
-	$DC.newPopup(popup,400,200);
+	$DC.newPopup(popup,300,300);
 };
 
 function show(){
@@ -51,10 +51,10 @@ $E.addOnloadEventListener(start);
 
 </script>
 </head>
-<body>
+<body> 
 °¡<br> 
 ³ª<br>
-<div id="popup" style="background-color: blue; width: 100px;height: 100px; ">wowowo</div>
+<div id="popup" style="background-color: blue;  ">wowowo</div>
 LayerPopup.jsp
 <input type="button" id="show_btn" value="show_btn"/>
 <input type="button" id="close_btn" value="close_btn"/>
