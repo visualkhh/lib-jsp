@@ -280,7 +280,7 @@ StringUtil.replaceAll=function(msg_s,before_s,after_s){
 
 StringUtil.isEmpty =function(input_s) {
 	
-    if ( input_s == null || input_s.replace(/ /gi,"") == "") {
+    if ( !input_s || input_s == null || input_s.replace(/ /gi,"") == "") {
         return true;
     }
     return false;
@@ -948,19 +948,19 @@ WindowUtil.newPopup=function(url,width_n,height_n,params_s_name_s,name_s){
     
     
     var location_v="";
-    var result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "WIDTH")
+    var result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "WIDTH");
     if(result_arr.length<=0){
     	location_v+=",width="+width_n;
     }
-    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "HEIGHT")
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "HEIGHT");
     if(result_arr.length<=0){
     	location_v+=",height="+height_n;
     }
-    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "TOP")
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "TOP");
     if(result_arr.length<=0){
     	location_v+=",top="+wint;
     }
-    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "LEFT")
+    result_arr = StringUtil.isMatching(StringUtil.upper(params_s_name_s), "LEFT");
     if(result_arr.length<=0){
     	location_v+=",left="+winl;
     }
