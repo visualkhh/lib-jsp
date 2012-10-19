@@ -1162,7 +1162,7 @@ DocumentUtil.newPopup=function(element_o,width_n_s,height_n_s,left_n_s,top_n_s){
   
     style.left=dcl;
     style.top=dct;
-    style.display='block';  //'none'
+   // style.display='block';  //'none'
 };
 
 DocumentUtil.show=function(element_o){
@@ -1927,7 +1927,7 @@ Debug.format="%d [%l]   >>  %m";
  */
 
 try{
-	Debug.loger  =function(msg){ console.log(msg)};
+	Debug.loger  =function(msg){ console.log(msg);};
 /*	if(!this.console){//Console global variable fix for IE
 		window.console={
 				log:function(){}
@@ -2055,6 +2055,7 @@ CallStackUtil.getCallFunctionStack = function(caller_o){
 			return arr;
 		}
 	}
+	return arr;
 	
 };
 CallStackUtil.getCallFunctionNameStack = function(caller_o){
