@@ -87,6 +87,9 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     	
 
     	try{
+    		log.debug("ServletrContextPathReal "+config.getServletContext().getRealPath(""));
+    		lpmg.setServletConfig(config);
+    		//lpmg.setServletContextRealPath(config.getServletContext().getRealPath("/"));
     		lpmg.addConfigFile(realpath);
         	File[] files = FileUtil.getFileList(new File(config.getServletContext().getRealPath(pattern.getParent())), filenamefilter);
         	for (int j = 0; j < files.length; j++) {
