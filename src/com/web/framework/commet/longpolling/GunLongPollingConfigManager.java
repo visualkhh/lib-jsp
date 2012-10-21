@@ -5,8 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import javax.servlet.ServletConfig;
+
 import khh.db.connection.ConnectionCreator_I;
 import khh.db.connection.pool.ConnectionMultiPool;
+import khh.db.terminal.DBTerminal;
 import khh.debug.LogK;
 import khh.reflection.ReflectionUtil;
 import khh.std.adapter.Adapter_Std;
@@ -80,6 +83,7 @@ public class GunLongPollingConfigManager {
 
 
 	private String jndixpath="/shot/db/jndi";
+	private String jndisqlmapxpath="/shot/db/jndi/sqlmap";
 	private String gunxpath="/shot/gun";
 	private String functionxpath="/shot/function";
 	private String targetxpath="/shot/target";
@@ -93,7 +97,7 @@ public class GunLongPollingConfigManager {
 				
 				//global db
 				int jndisize = parser.getInt("count("+jndixpath+")");
-				log.debug("outer JNDI size : "+jndisize);
+				log.debug("outer JNDI size : "+jndisize+" path:"+jndixpath);
 				for (int j = 1; j <= jndisize; j++) {
 					String contextpath	=	jndixpath+"["+j+"]";
 					String id  			=	parser.getString(contextpath+"/@id");
@@ -108,6 +112,24 @@ public class GunLongPollingConfigManager {
 					
 					
 				}
+				
+				//global  jndisqlmap
+				int jndisqlmapsize = parser.getInt("count("+jndisqlmapxpath+")");
+				log.debug("outer JNDI sqlmap size : "+jndisqlmapsize+" path:"+jndisqlmapxpath);
+				for (int j = 1; j <= jndisqlmapsize; j++) {
+					String contextpath	=	jndisqlmapxpath+"["+j+"]";
+					final String resource 	=	parser.getString(contextpath+"/@resource");
+					log.debug("outer JNDI sqlmap  resource:"+resource);
+					DBTerminal.addConfigfile(getServletConfig().getServletContext().getRealPath(resource));
+				}
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				
 				//global gun
@@ -190,6 +212,15 @@ public class GunLongPollingConfigManager {
 				//e.printStackTrace();
 			}
 		}
+		
+		
+		
+		
+//		DBTerminal.reload(); setConfig 하면 자동 reload
+		
+		
+		
+		
 		
 		
 		
@@ -379,6 +410,24 @@ public class GunLongPollingConfigManager {
 		return null;
 		
 	}
+
+	private ServletConfig servletConfig =null;
+//	private String servletContextRealPath=null;
+//	public String getServletContextRealPath() {
+//		return servletContextRealPath;
+//	}
+//	public void setServletContextRealPath(String servletContextRealPath) {
+//		this.servletContextRealPath = servletContextRealPath;
+//	}
+
+
+	public ServletConfig getServletConfig() {
+		return servletConfig;
+	}
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.servletConfig = servletConfig;
+	}
+	
 	
 	
 	
