@@ -1730,7 +1730,7 @@ JavaScriptUtil.isInternetExplorer=function(){
 	return  JavaScriptUtil.getBrowserType()=='Microsoft Internet Explorer';
 };
 
-JavaScriptUtil.extends = function(superreobject_o,childobject_o){
+JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 	var return_obj = JavaScriptUtil.copyObject(childobject_o);
 	
     for (var property in superreobject_o) {
