@@ -1713,7 +1713,7 @@ JavaScriptUtil.copyJson=function(object_o){
 JavaScriptUtil.getBrowserType=function(navigator_o){
 	if(!navigator_o){
 		navigator_o = navigator;
-	}
+	}  //Netscape , Microsoft Internet Explorer
 	return  navigator_o.appName;
 };
 JavaScriptUtil.getBrowserVersion=function(navigator_o){
@@ -1730,7 +1730,7 @@ JavaScriptUtil.isInternetExplorer=function(){
 	return  JavaScriptUtil.getBrowserType()=='Microsoft Internet Explorer';
 };
 
-JavaScriptUtil.extend = function(superreobject_o,childobject_o){
+JavaScriptUtil.extends = function(superreobject_o,childobject_o){
 	var return_obj = JavaScriptUtil.copyObject(childobject_o);
 	
     for (var property in superreobject_o) {
@@ -2089,7 +2089,7 @@ ReflectionUtil.execute=function(str_s){
 
 
 
-//extend!! !확장
+//extends!! !확장
 /*
 Date.prototype.format = function(f) {
     if (!this.valueOf()) return " ";
@@ -2286,7 +2286,7 @@ ActiveUtil.getObjectStr=function(id_s,clsid_s,codebase_s,version_s){
 };
 ActiveUtil.getObject=function(id_s,clsid_s,codebase_s,version_s,document_o){
 	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
-	return ElementUtil.cE(str,document_o);
+	return ElementUtil.createE(str,document_o);
 };
 ActiveUtil.installActive=function(id_s,clsid_s,codebase_s,version_s,document_o){
 	if(!document_o){
