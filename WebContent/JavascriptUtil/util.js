@@ -478,6 +478,24 @@ StringUtil.upper=function(inputStr_s){
 StringUtil.lower=function(inputStr_s){
 	return  String(inputStr_s).toLowerCase();
 };
+StringUtil.getByteLength=function(inputStr_s){
+		  var byteLength = 0;
+		  var c;
+		  for(var i = 0; i < inputStr_s.length; i++) {
+		    c = escape(inputStr_s.charAt(i));
+
+		    if (c.length == 1) {
+		      byteLength ++;
+		    } else if (c.indexOf("%u") != -1)  {
+		      byteLength += 2;
+		    } else if (c.indexOf("%") != -1)  {
+		      byteLength += c.length/3;
+		    }
+		  }
+		  return byteLength;
+};
+
+
 
 
 
@@ -2252,6 +2270,15 @@ khh.date.SimpleDateFormat.prototype = {
 
 function ElementUtil (){};
 ElementUtil.prototype = new Object();
+
+
+ElementUtil.getAttribute = function(element_o,attributename_s){
+	return element_o.getAttribute(attributename_s);
+};
+ElementUtil.setAttribute = function(element_o,attributename_s,attributeval_s){
+	return element_o.setAttribute(attributename_s, attributeval_s);
+};
+
 //createElement
 ElementUtil.createE = function(string_s,document_o){
 	if(!document_o){
