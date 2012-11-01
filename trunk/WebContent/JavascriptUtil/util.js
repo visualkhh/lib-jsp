@@ -811,19 +811,34 @@ ConvertingUtil.toLowerCase=function(inputStr_s){
 	return  String(inputStr_s).toLowerCase();
 };
 */
-ConvertingUtil.jsonToAttribute=function(object_o,unionString_s){
+ConvertingUtil.serializationToAttribute=function(object_o){
+	return ConvertingUtil.serializationToString(object_o,"="," ","'");
+};
+ConvertingUtil.serializationToParameter=function(object_o){
+	return ConvertingUtil.serializationToString(object_o,"=",'&');
+};
+ConvertingUtil.serializationToString=function(object_o,unionString_s,spilString_s,pairString_s){
 	if(!unionString_s){
-		unionString_s='=';
+		unionString_s="=";
 	}
+	if(!spilString_s){
+		spilString_s=" ";
+	}
+	if(!pairString_s){
+		pairString_s="";
+	}
+	
     var results = [];
     for (var property in object_o) {
         var value = object_o[property];
-        if (value)
-            results.push(property.toString() +unionString_s+ "'" + value+"'");
+        if (value){
+            results.push(property.toString() +unionString_s+ pairString_s + value+pairString_s);
         }
+    }
                  
-        return results.join(' ');
+    return results.join(spilString_s);
 };
+
 //쓰지말것
 /*ConvertingUtil.trim=function(msg_s){
 	return msg_s.replace(/^\s*|\s*$/g,'');
@@ -1677,9 +1692,27 @@ JavaScriptUtil.getNextNumber=function(object_o){
 	return  JavaScriptUtil.UNIQUEID++;
 };
 
+
+
+//isEmptyObject({}) // true
+//isEmptyObject({ foo: "bar" }) // false
+JavaScriptUtil.isEmptyObject = function(object_o) {
+	if(object_o==undefined ||object_o==null ) {
+		return true;
+	}
+	if(JavaScriptUtil.isObject(object_o)){
+	    for (var property in object_o) {
+	    	return false;
+	    };
+	    return true;
+	};
+	
+	
+	return false;
+};
 /*  Null 값 Check */
 JavaScriptUtil.isNull = function(object_o) {
-	if(object_o) {
+	if(object_o==null) {
 		return true;
 	}
 	return false;
@@ -1748,11 +1781,22 @@ JavaScriptUtil.isInternetExplorer=function(){
 	return  JavaScriptUtil.getBrowserType()=='Microsoft Internet Explorer';
 };
 
+JavaScriptUtil.extendclass =function(superClass,subClass){
+	  var F = function (){};
+	  F.prototype = superClass.prototype;
+	  subClass.prototype = new F ();
+	  subClass.prototype.constructor = subClass;
+	  subClass.superClass = superClass.prototype;
+	  if(superClass.prototype.constructor == Object.prototype.constructor){
+		  superClass.prototype.constructor = superClass;
+	  };
+};
+		
 JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 	var return_obj = JavaScriptUtil.copyObject(childobject_o);
 	
     for (var property in superreobject_o) {
-    	return_obj[property] = superreobject_o[property]; 
+    	return_obj[property] = JavaScriptUtil.isEmptyObject(return_obj[property])?superreobject_o[property]:return_obj[property]; 
     }
 	return return_obj;
 };
@@ -1765,6 +1809,12 @@ JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 JavaScriptUtil.getRandomInt=function(size_n){
 //	 var result = Math.floor(Math.random() * 10) + 1;
 	 return Math.floor(Math.random() * size_n);
+};
+JavaScriptUtil.hasOwnProperty=function(object_o,propertyName_s){
+	return object_o.hasOwnProperty(propertyName_s);
+};
+JavaScriptUtil.getTypeOf=function(object_o){
+	return typeof object_o;
 };
 
 
@@ -1945,7 +1995,9 @@ Debug.format="%d [%l]   >>  %m";
  */
 
 try{
-	Debug.loger  =function(msg){ console.log(msg);};
+	Debug.loger  =function(msg){
+		console.log(msg);
+	};
 /*	if(!this.console){//Console global variable fix for IE
 		window.console={
 				log:function(){}
@@ -2336,9 +2388,197 @@ ClipBoardUtil.copy= function(string_s){
 
 function HistoryUtil (){};
 HistoryUtil.prototype = new Object();
-//history.back();
+HistoryUtil.back =function(back_n,histroy_o){
+	if(!histroy_o){
+		histroy_o=history;
+	}
+	histroy_o.back();
+};
 
 
+function XMLUtil (){};
+XMLUtil.prototype = new Object();
+XMLUtil.getXMLObj = function(data_s){
+	var doc;
+	if (JavaScriptUtil.isInternetExplorer()){
+		doc = new ActiveXObject('Microsoft.XMLDOM');
+		doc.async = 'false'
+		doc.loadXML(data_s);
+	} else {
+	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
+	}
+};
+
+function AjaxUtil (){};
+AjaxUtil.prototype = new Object();
+AjaxUtil.READYSTATE_UNINITIALIZED = 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
+AjaxUtil.READYSTATE_LOADING = 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
+AjaxUtil.READYSTATE_LOADED = 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxUtil.READYSTATE_INTERACTIVE = 4; //데이터의 일부를 받은상태
+AjaxUtil.READYSTATE_COMPLETED = 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
+
+AjaxUtil.STATE_OK                        = 200  ; //요청성공
+AjaxUtil.STATE_FORBIDDEN                 = 403  ; //접근거브
+AjaxUtil.STATE_NOTFOUND                 = 404  ; //페이지없어
+AjaxUtil.STATE_INTERNALSERVERERROR     = 500  ; //서버 오류 발생
+
+
+
+AjaxUtil.getAjaxObj = function(window_o){
+	if(!window_o){
+		window_o=window;
+	}
+  if(window_o.ActiveXObject) {
+      try{
+    	  return new ActiveXObject("Msxml2.XMLHTTP"); //윈도우 익스플로러일경우
+      } catch(e){
+             try {
+                   return new ActiveXObject("Microsoft.XMLHTTP"); //윈도우 익스플로러 옛날 버전경우
+             } catch(e1) {
+                   return null;
+             }
+      }
+   } else if (window_o.XMLHttpRequest) {
+          return new XMLHttpRequest(); //윈도우 익스플로러 외 다른         익스플로러 일경우!!
+
+   } else {
+          return null;
+   }
+};
+
+AjaxUtil.getAjaxClass = function(window_o){
+	if(!window_o){
+		window_o=window;
+	}
+  if(window_o.ActiveXObject) {
+      try{
+    	  return ActiveXObject; //윈도우 익스플로러일경우
+      } catch(e){
+             try {
+                   return ActiveXObject; //윈도우 익스플로러 옛날 버전경우
+             } catch(e1) {
+                   return null;
+             }
+      }
+   } else if (window_o.XMLHttpRequest) {
+          return XMLHttpRequest; //윈도우 익스플로러 외 다른         익스플로러 일경우!!
+
+   } else {
+          return null;
+   }
+};
+
+
+AjaxUtil.ajax=function(param_o){
+	var dparam = {
+			url : '',
+			type :'POST',
+			data : null,
+			dataType:"TEXT",
+			async:true,
+			autoStart:true,
+			loop:false,
+			onBeforeProcess:function(){},
+			onSuccess:function(data,readyState,status){},
+			onError:function(data,readyState,status){},
+			onComplete:function(){},
+			onMonitor:function(data,readyState,status){}
+		};
+	var param 		= JavaScriptUtil.extend(dparam,param_o);
+	param.type 		= StringUtil.upper(param.type);
+	param.dataType 	= StringUtil.upper(param.dataType);
+	
+	param.response	= false;
+	param.onRequest	= function(){
+		
+		if(this.response ){//한번했는데 두번 들어올수있으니.
+			return;
+		}
+		
+		if (this.request.readyState == AjaxUtil.READYSTATE_INTERACTIVE || this.request.readyState == AjaxUtil.READYSTATE_COMPLETED) {
+            if (this.request.status == AjaxUtil.STATE_OK) {
+            	var indata =null;
+            	if(this.dataType=='TEXT'){
+            		indata = this.request.responseText;
+            	}else if(this.dataType=='JSON'){
+            		indata = eval("(" + this.request.responseText + ")");
+            	}else if(this.dataType=='XML'){
+            		//indata = XMLUtil.getXMLObj(this.request.responseText);
+            		indata = this.request.responseXML;
+            		//var xdoc = request.responseXML;
+            		//var value = xdoc.getElementsByTagName("value");
+            	}
+            	this.onSuccess(indata,this.request.readyState,this.request.status);
+            }else{
+            	this.onError(this.request.responseText,this.request.readyState,this.request.status);
+            }
+            this.onComplete();
+            param.response=true;
+            if(this.loop){
+            	this.start();
+            }
+		}
+		
+		//loop!~~
+		if(this.request.readyState>3){
+			this.onMonitor(this.request.responseText,this.request.readyState,this.request.status);
+		}else{
+			this.onMonitor(null,this.request.readyState,null);
+		}
+		
+	};
+
+	
+	if(!JavaScriptUtil.isInternetExplorer()){
+		param.request 	= AjaxUtil.getAjaxObj();
+		//this를 위해.
+		param.request.onreadystatechange = function(){
+			param.onRequest.apply(param);
+		};
+	}
+	
+
+	param.start=function(){
+		this.response=false;
+		this.onBeforeProcess();
+		var serializationData = null;
+		var applyURL=null;
+		if(this.type=='GET' && this.data){
+			serializationData=null;
+			applyURL = this.url + '?'+ConvertingUtil.serializationToParameter(this.data);
+		}else if(this.type=='POST' && this.data){
+			applyURL=this.url;
+			serializationData=ConvertingUtil.serializationToParameter(this.data);
+			// var param = "userid="+userid+"&passwd="+passwd; //POST방식으로 넘길 파라미터 설정 (키1=값1&키2=값3&키3=값3.....key=value식으로 여러개일 겨우 '&;구분하여 설정함)
+		};
+
+		
+		if(JavaScriptUtil.isInternetExplorer()){
+			this.request 	= AjaxUtil.getAjaxObj();
+			param.request.onreadystatechange = function(){
+				param.onRequest.apply(param);
+			};
+		}
+
+		this.request.open(this.type, applyURL, this.async);
+
+		///////head!!!!!
+		this.request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+		this.request.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
+		this.request.setRequestHeader("Pragma", "no-cache");
+		
+		this.request.send(serializationData);
+	};
+	param.stop=function(){
+		this.response=true;
+	};
+	if(param.autoStart){
+		param.start();
+	}
+
+	return param;
+
+};
 
 
 /*
