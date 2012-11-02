@@ -2411,16 +2411,16 @@ XMLUtil.getXMLObj = function(data_s){
 
 function AjaxUtil (){};
 AjaxUtil.prototype = new Object();
-AjaxUtil.READYSTATE_UNINITIALIZED = 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
-AjaxUtil.READYSTATE_LOADING = 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
-AjaxUtil.READYSTATE_LOADED = 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
-AjaxUtil.READYSTATE_INTERACTIVE = 4; //데이터의 일부를 받은상태
-AjaxUtil.READYSTATE_COMPLETED = 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
+AjaxUtil.READYSTATE_UNINITIALIZED		= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
+AjaxUtil.READYSTATE_LOADING				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
+AjaxUtil.READYSTATE_LOADED				= 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxUtil.READYSTATE_INTERACTIVE			= 4; //데이터의 일부를 받은상태
+AjaxUtil.READYSTATE_COMPLETED			= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
 
-AjaxUtil.STATE_OK                        = 200  ; //요청성공
-AjaxUtil.STATE_FORBIDDEN                 = 403  ; //접근거브
-AjaxUtil.STATE_NOTFOUND                 = 404  ; //페이지없어
-AjaxUtil.STATE_INTERNALSERVERERROR     = 500  ; //서버 오류 발생
+AjaxUtil.STATE_OK						= 200  ; //요청성공
+AjaxUtil.STATE_FORBIDDEN				= 403  ; //접근거브
+AjaxUtil.STATE_NOTFOUND					= 404  ; //페이지없어
+AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ; //서버 오류 발생
 
 
 
@@ -2487,14 +2487,13 @@ AjaxUtil.ajax=function(param_o){
 	var param 		= JavaScriptUtil.extend(dparam,param_o);
 	param.type 		= StringUtil.upper(param.type);
 	param.dataType 	= StringUtil.upper(param.dataType);
-	
 	param.response	= false;
-	param.onRequest	= function(){
-		
+	param.success	= 0;
+	param.error		= 0;
+	param.onReceive	= function(){
 		if(this.response ){//한번했는데 두번 들어올수있으니.
 			return;
 		}
-		
 		if (this.request.readyState == AjaxUtil.READYSTATE_INTERACTIVE || this.request.readyState == AjaxUtil.READYSTATE_COMPLETED) {
             if (this.request.status == AjaxUtil.STATE_OK) {
             	var indata =null;
@@ -2508,8 +2507,10 @@ AjaxUtil.ajax=function(param_o){
             		//var xdoc = request.responseXML;
             		//var value = xdoc.getElementsByTagName("value");
             	}
+            	this.success++;
             	this.onSuccess(indata,this.request.readyState,this.request.status);
             }else{
+            	this.error++;
             	this.onError(this.request.responseText,this.request.readyState,this.request.status);
             }
             this.onComplete();
@@ -2518,7 +2519,6 @@ AjaxUtil.ajax=function(param_o){
             	this.start();
             }
 		}
-		
 		//loop!~~
 		if(this.request.readyState>3){
 			this.onMonitor(this.request.responseText,this.request.readyState,this.request.status);
@@ -2527,16 +2527,14 @@ AjaxUtil.ajax=function(param_o){
 		}
 		
 	};
-
 	
 	if(!JavaScriptUtil.isInternetExplorer()){
 		param.request 	= AjaxUtil.getAjaxObj();
 		//this를 위해.
 		param.request.onreadystatechange = function(){
-			param.onRequest.apply(param);
+			param.onReceive.apply(param);
 		};
 	}
-	
 
 	param.start=function(){
 		this.response=false;
@@ -2551,22 +2549,16 @@ AjaxUtil.ajax=function(param_o){
 			serializationData=ConvertingUtil.serializationToParameter(this.data);
 			// var param = "userid="+userid+"&passwd="+passwd; //POST방식으로 넘길 파라미터 설정 (키1=값1&키2=값3&키3=값3.....key=value식으로 여러개일 겨우 '&;구분하여 설정함)
 		};
-
-		
 		if(JavaScriptUtil.isInternetExplorer()){
 			this.request 	= AjaxUtil.getAjaxObj();
 			param.request.onreadystatechange = function(){
-				param.onRequest.apply(param);
+				Receive.onRequest.apply(param);
 			};
 		}
-
 		this.request.open(this.type, applyURL, this.async);
-
-		///////head!!!!!
 		this.request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
 		this.request.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
 		this.request.setRequestHeader("Pragma", "no-cache");
-		
 		this.request.send(serializationData);
 	};
 	param.stop=function(){
@@ -2575,9 +2567,7 @@ AjaxUtil.ajax=function(param_o){
 	if(param.autoStart){
 		param.start();
 	}
-
 	return param;
-
 };
 
 
