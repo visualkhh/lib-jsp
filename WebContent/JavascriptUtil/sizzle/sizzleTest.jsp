@@ -22,7 +22,6 @@ function SelectorK(selector_s,context_e) {
 };
 SelectorK.prototype.find = function(selector_s,context_e){
 	var findlist = new Array();
-	
 	this.each(function(index){
 		findlist = findlist.concat(Sizzle(selector_s,this));
 	});
