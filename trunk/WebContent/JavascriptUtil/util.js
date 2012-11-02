@@ -2603,3 +2603,48 @@ AjaxUtil.ajax=function(param_o){
  */
 
 
+
+
+
+////////// 객체 prototype
+//include Sizzle.js
+SelectorK.prototype = new Object();
+SelectorK.prototype.context=null;
+SelectorK.prototype.selector=null;
+SelectorK.prototype.list = new Array();
+function SelectorK(selector_s,context_e) {
+	if(selector_s){
+		this.engin(selector_s,context_e);
+	}
+};
+SelectorK.prototype.find = function(selector_s,context_e){
+	var findlist = new Array();
+	this.each(function(index){
+		findlist = findlist.concat(Sizzle(selector_s,this));
+	});
+	var  selectork = new SelectorK();
+	selectork.list = findlist;
+	selectork.selector = this.selector+" "+selector_s;
+	return selectork;
+};
+SelectorK.prototype.engin = function(selector_s,context_e){
+	this.selector = selector_s;
+	this.context = context_e;
+	this.list = Sizzle(this.selector,this.context);
+};
+SelectorK.prototype.each = function(function_f){
+	for ( var i = 0; i < this.list.length; i++) {
+		function_f.call(this.list[i],i);
+	}
+};
+SelectorK.prototype.get = function(index_n){
+	this.list[i];
+};
+
+
+
+
+
+
+
+
