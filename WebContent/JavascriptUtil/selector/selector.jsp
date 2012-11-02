@@ -9,7 +9,6 @@
 </head>
 <script type="text/javascript">
 
-Document;
 
 SelectorK.prototype = new Object();
 SelectorK.prototype.selector=null;
