@@ -1731,6 +1731,14 @@ JavaScriptUtil.isFunction=function(object_o){
 	return  Object.prototype.toString.call(object_o)=='[object Function]';
 };
 JavaScriptUtil.isObject=function(object_o){
+	if(JavaScriptUtil.getTypeOf(object_o)=='object'){
+		return true;
+	}else{
+		return false;
+	}
+	
+	
+	//g훔.... 브라우저마다 좀다르니...
 	var sw=false;
 	if(JavaScriptUtil.isNetscape()){
 		sw  = Object.prototype.toString.call(object_o)=='[object Object]' || Object.prototype.toString.call(object_o)=='[object global]';
@@ -2402,11 +2410,13 @@ XMLUtil.getXMLObj = function(data_s){
 	var doc;
 	if (JavaScriptUtil.isInternetExplorer()){
 		doc = new ActiveXObject('Microsoft.XMLDOM');
-		doc.async = 'false'
+		doc.async = 'false';
 		doc.loadXML(data_s);
 	} else {
 	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
 	}
+	
+	return doc;
 };
 
 function AjaxUtil (){};
