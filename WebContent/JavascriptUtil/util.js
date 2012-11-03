@@ -1789,7 +1789,7 @@ JavaScriptUtil.isInternetExplorer=function(){
 	return  JavaScriptUtil.getBrowserType()=='Microsoft Internet Explorer';
 };
 
-JavaScriptUtil.extendclass =function(superClass,subClass){
+JavaScriptUtil.extendClass =function(superClass,subClass){
 	  var F = function (){};
 	  F.prototype = superClass.prototype;
 	  subClass.prototype = new F ();
@@ -1800,8 +1800,16 @@ JavaScriptUtil.extendclass =function(superClass,subClass){
 	  };
 };
 		
-JavaScriptUtil.extend = function(superreobject_o,childobject_o){
+JavaScriptUtil.extendClone = function(superreobject_o,childobject_o){
 	var return_obj = JavaScriptUtil.copyObject(childobject_o);
+	
+    for (var property in superreobject_o) {
+    	return_obj[property] = JavaScriptUtil.isEmptyObject(return_obj[property])?superreobject_o[property]:return_obj[property]; 
+    }
+	return return_obj;
+};
+JavaScriptUtil.extend = function(superreobject_o,childobject_o){
+	var return_obj = childobject_o;
 	
     for (var property in superreobject_o) {
     	return_obj[property] = JavaScriptUtil.isEmptyObject(return_obj[property])?superreobject_o[property]:return_obj[property]; 
@@ -2167,7 +2175,517 @@ ReflectionUtil.execute=function(str_s){
 
 
 
-//extends!! !확장
+
+
+function ElementUtil (){};
+ElementUtil.prototype = new Object();
+
+
+ElementUtil.getAttribute = function(element_o,attributename_s){
+	return element_o.getAttribute(attributename_s);
+};
+ElementUtil.setAttribute = function(element_o,attributename_s,attributeval_s){
+	return element_o.setAttribute(attributename_s, attributeval_s);
+};
+
+//createElement
+ElementUtil.createE = function(string_s,document_o){
+	if(!document_o){
+		document_o=document;
+	}
+	return document_o.createElement(string_s);
+};
+ElementUtil.elementToString= function(element_o){
+    if(!element_o || !element_o.tagName) return '';
+   // var txt, ax, el= document.createElement("div");
+    var txt, el= document.createElement("div");
+    el.appendChild(element_o.cloneNode(false));
+    txt= el.innerHTML;
+   /* if(deep){
+        ax= txt.indexOf('>')+1;
+        txt= txt.substring(0, ax)+element_o.innerHTML+ txt.substring(ax);
+    }*/
+    el= null;
+    return txt;
+};
+
+
+
+
+
+//var ActiveUtil = new Object();
+function ActiveUtil (){};
+ActiveUtil.prototype = new Object();
+ActiveUtil.getObjectStr=function(id_s,clsid_s,codebase_s,version_s){
+	var str ='<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0  codebase='+ codebase_s + '#version=' + version_s +'> </object>';	
+	return str;
+};
+ActiveUtil.getObject=function(id_s,clsid_s,codebase_s,version_s,document_o){
+	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
+	return ElementUtil.createE(str,document_o);
+};
+ActiveUtil.installActive=function(id_s,clsid_s,codebase_s,version_s,document_o){
+	if(!document_o){
+		document_o=document;
+	};
+	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
+	document.writeln(str);
+	//document.writeln('<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0 ');
+	//document.writeln('codebase='+ codebase_s + '#version=' + version_s +'>');
+	//document.writeln('</object>');	
+	
+};
+
+function ClipBoardUtil (){};
+ClipBoardUtil.prototype = new Object();
+ClipBoardUtil.copy= function(string_s){
+	window.clipboardData.setData('Text',string_s);
+};
+
+
+function HistoryUtil (){};
+HistoryUtil.prototype = new Object();
+HistoryUtil.back =function(back_n,histroy_o){
+	if(!histroy_o){
+		histroy_o=history;
+	}
+	histroy_o.back();
+};
+
+
+function XMLUtil (){};
+XMLUtil.prototype = new Object();
+XMLUtil.getXMLObj = function(data_s){
+	var doc;
+	if (JavaScriptUtil.isInternetExplorer()){
+		doc = new ActiveXObject('Microsoft.XMLDOM');
+		doc.async = 'false';
+		doc.loadXML(data_s);
+	} else {
+	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
+	}
+	
+	return doc;
+};
+
+function AjaxUtil (){};
+AjaxUtil.prototype = new Object();
+AjaxUtil.READYSTATE_UNINITIALIZED		= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
+AjaxUtil.READYSTATE_LOADING				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
+AjaxUtil.READYSTATE_LOADED				= 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxUtil.READYSTATE_INTERACTIVE			= 4; //데이터의 일부를 받은상태
+AjaxUtil.READYSTATE_COMPLETED			= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
+
+AjaxUtil.STATE_OK						= 200  ; //요청성공
+AjaxUtil.STATE_FORBIDDEN				= 403  ; //접근거브
+AjaxUtil.STATE_NOTFOUND					= 404  ; //페이지없어
+AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ; //서버 오류 발생
+
+
+
+AjaxUtil.getAjaxObj = function(window_o){
+	if(!window_o){
+		window_o=window;
+	}
+  if(window_o.ActiveXObject) {
+      try{
+    	  return new ActiveXObject("Msxml2.XMLHTTP"); //윈도우 익스플로러일경우
+      } catch(e){
+             try {
+                   return new ActiveXObject("Microsoft.XMLHTTP"); //윈도우 익스플로러 옛날 버전경우
+             } catch(e1) {
+                   return null;
+             }
+      }
+   } else if (window_o.XMLHttpRequest) {
+          return new XMLHttpRequest(); //윈도우 익스플로러 외 다른         익스플로러 일경우!!
+
+   } else {
+          return null;
+   }
+};
+
+AjaxUtil.getAjaxClass = function(window_o){
+	if(!window_o){
+		window_o=window;
+	}
+  if(window_o.ActiveXObject) {
+      try{
+    	  return ActiveXObject; //윈도우 익스플로러일경우
+      } catch(e){
+             try {
+                   return ActiveXObject; //윈도우 익스플로러 옛날 버전경우
+             } catch(e1) {
+                   return null;
+             }
+      }
+   } else if (window_o.XMLHttpRequest) {
+          return XMLHttpRequest; //윈도우 익스플로러 외 다른         익스플로러 일경우!!
+
+   } else {
+          return null;
+   }
+};
+
+//이거쓰지마세요-_- 별로 객체적이지 않음   아래 prototype으로 만들어논  AjaxK 사용하길
+AjaxUtil.ajax=function(param_o){
+	var dparam = {
+			url : '',
+			type :'POST',
+			data : null,
+			dataType:"TEXT",
+			async:true,
+			autoStart:true,
+			loop:false,
+			onBeforeProcess:function(){},
+			onSuccess:function(data,readyState,status){},
+			onError:function(data,readyState,status){},
+			onComplete:function(){},
+			onMonitor:function(data,readyState,status){}
+		};
+	var param 		= JavaScriptUtil.extend(dparam,param_o);
+	param.type 		= StringUtil.upper(param.type);
+	param.dataType 	= StringUtil.upper(param.dataType);
+	param.response	= false;
+	param.success	= 0;
+	param.error		= 0;
+	param.onReceive	= function(){
+		if(this.response ){//한번했는데 두번 들어올수있으니.
+			return;
+		}
+		if (this.request.readyState == AjaxUtil.READYSTATE_INTERACTIVE || this.request.readyState == AjaxUtil.READYSTATE_COMPLETED) {
+            if (this.request.status == AjaxUtil.STATE_OK) {
+            	var indata =null;
+            	if(this.dataType=='TEXT'){
+            		indata = this.request.responseText;
+            	}else if(this.dataType=='JSON'){
+            		indata = eval("(" + this.request.responseText + ")");
+            	}else if(this.dataType=='XML'){
+            		//indata = XMLUtil.getXMLObj(this.request.responseText);
+            		indata = this.request.responseXML;
+            		//var xdoc = request.responseXML;
+            		//var value = xdoc.getElementsByTagName("value");
+            	}
+            	this.success++;
+            	this.onSuccess(indata,this.request.readyState,this.request.status);
+            }else{
+            	this.error++;
+            	this.onError(this.request.responseText,this.request.readyState,this.request.status);
+            }
+            this.onComplete();
+            param.response=true;
+            if(this.loop){
+            	this.start();
+            }
+		}
+		//loop!~~
+		if(this.request.readyState>3){
+			this.onMonitor(this.request.responseText,this.request.readyState,this.request.status);
+		}else{
+			this.onMonitor(null,this.request.readyState,null);
+		}
+		
+	};
+	
+	if(!JavaScriptUtil.isInternetExplorer()){
+		param.request 	= AjaxUtil.getAjaxObj();
+		//this를 위해.
+		param.request.onreadystatechange = function(){
+			param.onReceive.apply(param);
+		};
+	}
+
+	param.start=function(){
+		this.response=false;
+		this.onBeforeProcess();
+		var serializationData = null;
+		var applyURL=null;
+		if(this.type=='GET' && this.data){
+			serializationData=null;
+			applyURL = this.url + '?'+ConvertingUtil.serializationToParameter(this.data);
+		}else if(this.type=='POST' && this.data){
+			applyURL=this.url;
+			serializationData=ConvertingUtil.serializationToParameter(this.data);
+			// var param = "userid="+userid+"&passwd="+passwd; //POST방식으로 넘길 파라미터 설정 (키1=값1&키2=값3&키3=값3.....key=value식으로 여러개일 겨우 '&;구분하여 설정함)
+		};
+		if(JavaScriptUtil.isInternetExplorer()){
+			this.request 	= AjaxUtil.getAjaxObj();
+			param.request.onreadystatechange = function(){
+				Receive.onRequest.apply(param);
+			};
+		}
+		this.request.open(this.type, applyURL, this.async);
+		this.request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+		this.request.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
+		this.request.setRequestHeader("Pragma", "no-cache");
+		this.request.send(serializationData);
+	};
+	param.stop=function(){
+		this.response=true;
+	};
+	if(param.autoStart){
+		param.start();
+	}
+	return param;
+};
+
+
+/*
+애플릿
+    <Applet code="CertUploaderApplet" MAYSCRIPT width="666" height="150" >
+		<PARAM NAME = ARCHIVE VALUE = "/common/popup/AdminLogin/CertUploaderApplet.jar" >
+		<PARAM NAME = "sel0_size" VALUE="35">
+		<PARAM NAME = "sel1_size" VALUE="500">
+		<PARAM NAME = "sel2_size" VALUE="105">
+		<PARAM NAME = "appSize_w" VALUE="666">
+		<PARAM NAME = "appSize_h" VALUE="150">
+
+		<PARAM NAME = "ServerName" VALUE="bptest.shinhan.com">
+		<PARAM NAME = "ServerPort" VALUE="80">
+		<PARAM NAME = "action" VALUE="/admin.pb">
+		<PARAM NAME = "a" VALUE="mng.user.CertBPUploadApp">
+		<PARAM NAME = "c" VALUE="1002">
+		<PARAM NAME = "gubun" VALUE="Real"><!-- 반영시에는 Real로 수정 -->
+	</Applet>
+
+
+ */
+
+
+
+
+
+////////// 객체 prototype
+
+
+
+
+//creatClass
+AjaxK.prototype = new Object();
+//AjaxK.prototype	= AjaxUtil.getAjaxObj();
+//AjaxK.prototype.constructor	=AjaxK;
+
+AjaxK.READYSTATE_UNINITIALIZED 			= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
+AjaxK.READYSTATE_LOADING 				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
+AjaxK.READYSTATE_LOADED 				= 3; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxK.READYSTATE_INTERACTIVE 			= 4; //데이터의 일부를 받은상태
+AjaxK.READYSTATE_COMPLETED				= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
+AjaxK.STATE_OK							= 200; //요청성공
+AjaxK.STATE_FORBIDDEN					= 403; //접근거브
+AjaxK.STATE_NOTFOUND					= 404; //페이지없어
+AjaxK.STATE_INTERNALSERVERERROR			= 500; //서버 오류 발생
+
+
+
+AjaxK.prototype.context=null;
+AjaxK.prototype.name=null;
+AjaxK.prototype.requestObj=null;
+
+//param-----start
+AjaxK.prototype.url				= "";
+AjaxK.prototype.type			= "POST";
+AjaxK.prototype.data			= null,
+AjaxK.prototype.dataType		= "TEXT";
+AjaxK.prototype.async			= true;
+AjaxK.prototype.autoStart		= true;
+AjaxK.prototype.loop			= false;
+AjaxK.prototype.onBeforeProcess	= function(){};
+AjaxK.prototype.onSuccess		= function(data,readyState,status){};
+AjaxK.prototype.onError			= function(data,readyState,status){};
+AjaxK.prototype.onComplete		= function(){};
+AjaxK.prototype.onMonitor		= function(readyState,status,data){};
+AjaxK.prototype.outparam		= {
+		url : '',
+		type :'POST',
+		data : null,
+		dataType:"TEXT",
+		async:true,
+		autoStart:true,
+		loop:false,
+		onBeforeProcess:function(){},
+		onSuccess:function(data,readyState,status){},
+		onError:function(data,readyState,status){},
+		onComplete:function(){},
+		onMonitor:function(data,readyState,status){}
+};
+//param------end
+AjaxK.prototype.successCnt 	= 0;
+AjaxK.prototype.errorCnt 	= 0;
+
+
+AjaxK.prototype.responsed = false;
+
+/* 익스경우 이렇게 상속자체를 못한다 -_-8에서 아오ㅉ댜ㅓㅁ자ㅣㅇㅁㅇ
+AjaxRequest.prototype=AjaxUtil.getAjaxObj();
+AjaxRequest.prototype.constructor = AjaxRequest;
+AjaxRequest.prototype.ajaxk=null;
+AjaxRequest.prototype.onreadystatechange=function(){
+	alert(1);
+};
+
+function AjaxRequest(ajaxk_o){
+	this.ajaxk=ajaxk_o;
+};
+*/
+AjaxK.prototype.onreadystatechange 	= function(){};
+function AjaxK(param_o,name_s){
+	
+	if(param_o){
+		this.setParam(param_o);
+	}else{
+		throw "no input param obj";
+		return;
+	}
+	if(name_s){
+		this.setName(name_s);
+	}
+	
+	this.context = this;
+	this.outparam.ajaxk = this;//리터널을위해
+	this.requestObj = AjaxUtil.getAjaxObj();//new AjaxRequest(this);
+	this.requestObj.onreadystatechange = this.onreadystatechange = function(){
+		param_o.ajaxk.onReceive.call(param_o.ajaxk);//여기서 this를알수가없으니.ㅠㅠ
+	};
+
+	
+	
+	
+}
+AjaxK.prototype.onReceive = function(){
+	if(this.responsed){//한번했는데 두번 들어올수있으니.
+		return;
+	}
+
+	if (this.requestObj.readyState == AjaxK.READYSTATE_INTERACTIVE || this.requestObj.readyState == AjaxK.READYSTATE_COMPLETED) {
+        if (this.requestObj.status == AjaxK.STATE_OK) {
+        	var indata = null;
+        	if(StringUtil.upper(this.dataType)=="TEXT"){
+        		indata = this.requestObj.responseText;
+        	}else if(StringUtil.upper(this.dataType)=="JSON"){
+        		indata = eval("(" + this.requestObj.responseText + ")");
+        	}else if(StringUtil.upper(this.dataType)=="XML"){
+        		//indata = XMLUtil.getXMLObj(this.request.responseText);
+        		indata = this.requestObj.responseXML;
+        	}
+        	this.successCnt++;
+        	this.onSuccess(indata,this.requestObj.readyState,this.requestObj.status);
+        }else{
+        	this.errorCnt++;
+        	this.onError(this.requestObj.responseText,this.requestObj.readyState,this.requestObj.status);
+        }
+        this.onComplete();
+        this.responsed = true;
+        if(this.loop){
+        	this.start();
+        }
+	}
+	
+	
+	//loop!~~
+	if(this.requestObj.readyState>3){
+		this.onMonitor(this.requestObj.readyState,this.requestObj.status,this.requestObj.responseText);
+	}else{
+		this.onMonitor(this.requestObj.readyState,null,null);
+	}
+};
+
+
+AjaxK.prototype.start = function(){
+	this.responsed=false;
+	this.onBeforeProcess();
+	var serializationData = null;
+	var applyURL=null;
+	if(StringUtil.upper(this.type)=="GET" && this.data){
+		serializationData=null;
+		applyURL = this.url + "?"+ConvertingUtil.serializationToParameter(this.data);
+	}else if(StringUtil.upper(this.type)=="POST" && this.data){
+		applyURL=this.url;
+		serializationData=ConvertingUtil.serializationToParameter(this.data);
+	};
+	
+
+	//익스경우 다시 생성해줘야된다 그지같다  크롬같은경우 재사용가능한데-_-
+	if(JavaScriptUtil.isInternetExplorer() && this.requestObj.readyState > AjaxK.READYSTATE_UNINITIALIZED  ){
+		this.requestObj = AjaxUtil.getAjaxObj(); 
+		this.requestObj.onreadystatechange = this.onreadystatechange;
+	}
+	
+	
+	this.requestObj.open(this.type, applyURL, this.async);
+	this.requestObj.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+	this.requestObj.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
+	this.requestObj.setRequestHeader("Pragma", "no-cache");
+	this.requestObj.send(serializationData);
+};
+AjaxK.prototype.stop = function(){
+	this.responsed=true;
+};
+
+
+AjaxK.prototype.setName = function(name_s){
+	this.name=name_s;
+};
+AjaxK.prototype.setParam = function(param_o){
+    for (var property in param_o) {
+    	this[property] = param_o[property]; 
+    };
+    this.outparam 		= JavaScriptUtil.extend(this.outparam,param_o);
+};
+AjaxK.prototype.setData = function(data_o){
+	this.data = data_o;
+};
+
+
+
+
+
+
+
+
+
+//include Sizzle.js
+SelectorK.prototype = new Object();
+SelectorK.prototype.context=null;
+SelectorK.prototype.selector=null;
+SelectorK.prototype.list = new Array();
+function SelectorK(selector_s,context_e) {
+	if(selector_s){
+		this.engin(selector_s,context_e);
+	}
+};
+SelectorK.prototype.find = function(selector_s,context_e){
+	var findlist = new Array();
+	this.each(function(index){
+		findlist = findlist.concat(Sizzle(selector_s,this));
+	});
+	var  selectork = new SelectorK();
+	selectork.list = findlist;
+	selectork.selector = this.selector+" "+selector_s;
+	return selectork;
+};
+SelectorK.prototype.engin = function(selector_s,context_e){
+	this.selector = selector_s;
+	this.context = context_e;
+	this.list = Sizzle(this.selector,this.context);
+};
+SelectorK.prototype.each = function(function_f){
+	for ( var i = 0; i < this.list.length; i++) {
+		function_f.call(this.list[i],i);
+	}
+};
+SelectorK.prototype.get = function(index_n){
+	this.list[i];
+};
+
+
+
+
+
+
+
+
+
+
 /*
 Date.prototype.format = function(f) {
     if (!this.valueOf()) return " ";
@@ -2327,323 +2845,6 @@ khh.date.SimpleDateFormat.prototype = {
 };
 
 */
-
-function ElementUtil (){};
-ElementUtil.prototype = new Object();
-
-
-ElementUtil.getAttribute = function(element_o,attributename_s){
-	return element_o.getAttribute(attributename_s);
-};
-ElementUtil.setAttribute = function(element_o,attributename_s,attributeval_s){
-	return element_o.setAttribute(attributename_s, attributeval_s);
-};
-
-//createElement
-ElementUtil.createE = function(string_s,document_o){
-	if(!document_o){
-		document_o=document;
-	}
-	return document_o.createElement(string_s);
-};
-ElementUtil.elementToString= function(element_o){
-    if(!element_o || !element_o.tagName) return '';
-   // var txt, ax, el= document.createElement("div");
-    var txt, el= document.createElement("div");
-    el.appendChild(element_o.cloneNode(false));
-    txt= el.innerHTML;
-   /* if(deep){
-        ax= txt.indexOf('>')+1;
-        txt= txt.substring(0, ax)+element_o.innerHTML+ txt.substring(ax);
-    }*/
-    el= null;
-    return txt;
-};
-
-
-
-
-
-//var ActiveUtil = new Object();
-function ActiveUtil (){};
-ActiveUtil.prototype = new Object();
-ActiveUtil.getObjectStr=function(id_s,clsid_s,codebase_s,version_s){
-	var str ='<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0  codebase='+ codebase_s + '#version=' + version_s +'> </object>';	
-	return str;
-};
-ActiveUtil.getObject=function(id_s,clsid_s,codebase_s,version_s,document_o){
-	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
-	return ElementUtil.createE(str,document_o);
-};
-ActiveUtil.installActive=function(id_s,clsid_s,codebase_s,version_s,document_o){
-	if(!document_o){
-		document_o=document;
-	};
-	var str = this.getObjectStr(id_s, clsid_s, codebase_s, version_s);
-	document.writeln(str);
-	//document.writeln('<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0 ');
-	//document.writeln('codebase='+ codebase_s + '#version=' + version_s +'>');
-	//document.writeln('</object>');	
-	
-};
-
-function ClipBoardUtil (){};
-ClipBoardUtil.prototype = new Object();
-ClipBoardUtil.copy= function(string_s){
-	window.clipboardData.setData('Text',string_s);
-};
-
-
-function HistoryUtil (){};
-HistoryUtil.prototype = new Object();
-HistoryUtil.back =function(back_n,histroy_o){
-	if(!histroy_o){
-		histroy_o=history;
-	}
-	histroy_o.back();
-};
-
-
-function XMLUtil (){};
-XMLUtil.prototype = new Object();
-XMLUtil.getXMLObj = function(data_s){
-	var doc;
-	if (JavaScriptUtil.isInternetExplorer()){
-		doc = new ActiveXObject('Microsoft.XMLDOM');
-		doc.async = 'false';
-		doc.loadXML(data_s);
-	} else {
-	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
-	}
-	
-	return doc;
-};
-
-function AjaxUtil (){};
-AjaxUtil.prototype = new Object();
-AjaxUtil.READYSTATE_UNINITIALIZED		= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
-AjaxUtil.READYSTATE_LOADING				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
-AjaxUtil.READYSTATE_LOADED				= 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
-AjaxUtil.READYSTATE_INTERACTIVE			= 4; //데이터의 일부를 받은상태
-AjaxUtil.READYSTATE_COMPLETED			= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
-
-AjaxUtil.STATE_OK						= 200  ; //요청성공
-AjaxUtil.STATE_FORBIDDEN				= 403  ; //접근거브
-AjaxUtil.STATE_NOTFOUND					= 404  ; //페이지없어
-AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ; //서버 오류 발생
-
-
-
-AjaxUtil.getAjaxObj = function(window_o){
-	if(!window_o){
-		window_o=window;
-	}
-  if(window_o.ActiveXObject) {
-      try{
-    	  return new ActiveXObject("Msxml2.XMLHTTP"); //윈도우 익스플로러일경우
-      } catch(e){
-             try {
-                   return new ActiveXObject("Microsoft.XMLHTTP"); //윈도우 익스플로러 옛날 버전경우
-             } catch(e1) {
-                   return null;
-             }
-      }
-   } else if (window_o.XMLHttpRequest) {
-          return new XMLHttpRequest(); //윈도우 익스플로러 외 다른         익스플로러 일경우!!
-
-   } else {
-          return null;
-   }
-};
-
-AjaxUtil.getAjaxClass = function(window_o){
-	if(!window_o){
-		window_o=window;
-	}
-  if(window_o.ActiveXObject) {
-      try{
-    	  return ActiveXObject; //윈도우 익스플로러일경우
-      } catch(e){
-             try {
-                   return ActiveXObject; //윈도우 익스플로러 옛날 버전경우
-             } catch(e1) {
-                   return null;
-             }
-      }
-   } else if (window_o.XMLHttpRequest) {
-          return XMLHttpRequest; //윈도우 익스플로러 외 다른         익스플로러 일경우!!
-
-   } else {
-          return null;
-   }
-};
-
-
-AjaxUtil.ajax=function(param_o){
-	var dparam = {
-			url : '',
-			type :'POST',
-			data : null,
-			dataType:"TEXT",
-			async:true,
-			autoStart:true,
-			loop:false,
-			onBeforeProcess:function(){},
-			onSuccess:function(data,readyState,status){},
-			onError:function(data,readyState,status){},
-			onComplete:function(){},
-			onMonitor:function(data,readyState,status){}
-		};
-	var param 		= JavaScriptUtil.extend(dparam,param_o);
-	param.type 		= StringUtil.upper(param.type);
-	param.dataType 	= StringUtil.upper(param.dataType);
-	param.response	= false;
-	param.success	= 0;
-	param.error		= 0;
-	param.onReceive	= function(){
-		if(this.response ){//한번했는데 두번 들어올수있으니.
-			return;
-		}
-		if (this.request.readyState == AjaxUtil.READYSTATE_INTERACTIVE || this.request.readyState == AjaxUtil.READYSTATE_COMPLETED) {
-            if (this.request.status == AjaxUtil.STATE_OK) {
-            	var indata =null;
-            	if(this.dataType=='TEXT'){
-            		indata = this.request.responseText;
-            	}else if(this.dataType=='JSON'){
-            		indata = eval("(" + this.request.responseText + ")");
-            	}else if(this.dataType=='XML'){
-            		//indata = XMLUtil.getXMLObj(this.request.responseText);
-            		indata = this.request.responseXML;
-            		//var xdoc = request.responseXML;
-            		//var value = xdoc.getElementsByTagName("value");
-            	}
-            	this.success++;
-            	this.onSuccess(indata,this.request.readyState,this.request.status);
-            }else{
-            	this.error++;
-            	this.onError(this.request.responseText,this.request.readyState,this.request.status);
-            }
-            this.onComplete();
-            param.response=true;
-            if(this.loop){
-            	this.start();
-            }
-		}
-		//loop!~~
-		if(this.request.readyState>3){
-			this.onMonitor(this.request.responseText,this.request.readyState,this.request.status);
-		}else{
-			this.onMonitor(null,this.request.readyState,null);
-		}
-		
-	};
-	
-	if(!JavaScriptUtil.isInternetExplorer()){
-		param.request 	= AjaxUtil.getAjaxObj();
-		//this를 위해.
-		param.request.onreadystatechange = function(){
-			param.onReceive.apply(param);
-		};
-	}
-
-	param.start=function(){
-		this.response=false;
-		this.onBeforeProcess();
-		var serializationData = null;
-		var applyURL=null;
-		if(this.type=='GET' && this.data){
-			serializationData=null;
-			applyURL = this.url + '?'+ConvertingUtil.serializationToParameter(this.data);
-		}else if(this.type=='POST' && this.data){
-			applyURL=this.url;
-			serializationData=ConvertingUtil.serializationToParameter(this.data);
-			// var param = "userid="+userid+"&passwd="+passwd; //POST방식으로 넘길 파라미터 설정 (키1=값1&키2=값3&키3=값3.....key=value식으로 여러개일 겨우 '&;구분하여 설정함)
-		};
-		if(JavaScriptUtil.isInternetExplorer()){
-			this.request 	= AjaxUtil.getAjaxObj();
-			param.request.onreadystatechange = function(){
-				Receive.onRequest.apply(param);
-			};
-		}
-		this.request.open(this.type, applyURL, this.async);
-		this.request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-		this.request.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
-		this.request.setRequestHeader("Pragma", "no-cache");
-		this.request.send(serializationData);
-	};
-	param.stop=function(){
-		this.response=true;
-	};
-	if(param.autoStart){
-		param.start();
-	}
-	return param;
-};
-
-
-/*
-애플릿
-    <Applet code="CertUploaderApplet" MAYSCRIPT width="666" height="150" >
-		<PARAM NAME = ARCHIVE VALUE = "/common/popup/AdminLogin/CertUploaderApplet.jar" >
-		<PARAM NAME = "sel0_size" VALUE="35">
-		<PARAM NAME = "sel1_size" VALUE="500">
-		<PARAM NAME = "sel2_size" VALUE="105">
-		<PARAM NAME = "appSize_w" VALUE="666">
-		<PARAM NAME = "appSize_h" VALUE="150">
-
-		<PARAM NAME = "ServerName" VALUE="bptest.shinhan.com">
-		<PARAM NAME = "ServerPort" VALUE="80">
-		<PARAM NAME = "action" VALUE="/admin.pb">
-		<PARAM NAME = "a" VALUE="mng.user.CertBPUploadApp">
-		<PARAM NAME = "c" VALUE="1002">
-		<PARAM NAME = "gubun" VALUE="Real"><!-- 반영시에는 Real로 수정 -->
-	</Applet>
-
-
- */
-
-
-
-
-
-////////// 객체 prototype
-//include Sizzle.js
-SelectorK.prototype = new Object();
-SelectorK.prototype.context=null;
-SelectorK.prototype.selector=null;
-SelectorK.prototype.list = new Array();
-function SelectorK(selector_s,context_e) {
-	if(selector_s){
-		this.engin(selector_s,context_e);
-	}
-};
-SelectorK.prototype.find = function(selector_s,context_e){
-	var findlist = new Array();
-	this.each(function(index){
-		findlist = findlist.concat(Sizzle(selector_s,this));
-	});
-	var  selectork = new SelectorK();
-	selectork.list = findlist;
-	selectork.selector = this.selector+" "+selector_s;
-	return selectork;
-};
-SelectorK.prototype.engin = function(selector_s,context_e){
-	this.selector = selector_s;
-	this.context = context_e;
-	this.list = Sizzle(this.selector,this.context);
-};
-SelectorK.prototype.each = function(function_f){
-	for ( var i = 0; i < this.list.length; i++) {
-		function_f.call(this.list[i],i);
-	}
-};
-SelectorK.prototype.get = function(index_n){
-	this.list[i];
-};
-
-
-
-
 
 
 
