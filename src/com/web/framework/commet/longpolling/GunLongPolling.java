@@ -34,7 +34,7 @@ import com.web.UtilWeb;
 //<Connector connectiontimeout="20000" port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="8443" useComet="true"/>
 /*
 <Context docBase="M_Project" path="/M_Project" reloadable="true" source="org.eclipse.jst.jee.server:M_Project">
-  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/mproject" password="skfkdsk" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/cooltrack_godo_co_kr" username="root"/>
+  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/mproject" password="aaaaaaa" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/cooltrack_godo_co_kr" username="root"/>
   <!-- url="jdbc:mysql://localhost:3306/mproject"  -->
 </Context>
  */
