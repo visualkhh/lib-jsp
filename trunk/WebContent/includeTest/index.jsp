@@ -7,12 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%   request.setAttribute("h", "hvalue"); %>
 <%=request.getContextPath() %>/includeTest/in.jsp<br>
 <jsp:include page="/includeTest/in.jsp">
 	<jsp:param name="grade" value="G0,G1,G2" />
 </jsp:include>
 <a href="<%=request.getContextPath() %>/includeTest/in.jsp">good</a>
 
-<%response.sendRedirect(request.getContextPath()+"/includeTest/in.jsp"); %>
+<%--response.sendRedirect(request.getContextPath()+"/includeTest/in.jsp"); --%>
 </body>
 </html>
