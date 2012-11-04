@@ -22,18 +22,27 @@ public class GunLongPollingConfigManager {
 	private Adapter_Std<String,File> configlist=null;
 	private Adapter_Std<CometEvent,Function> pairlist=null;
 	private ArrayList<Gun> gunlist=null;
+	private Adapter_Std<String,View> viewlist=null;
 	private ArrayList<Function> functionlist=null;
 	private LogK log = LogK.getInstance();
 	
 	private ConnectionMultiPool dbpool = ConnectionMultiPool.getInstance(); 
 	
-	
+	private static GunLongPollingConfigManager instance=null;
+   synchronized static public GunLongPollingConfigManager getInstance(){
+        if(instance==null)
+            instance = new GunLongPollingConfigManager();
+        return instance;
+    }
+   
 	//private ExecutorService executor = null;
-	public GunLongPollingConfigManager(){
-		configlist				=	new Adapter_Std<String,File>();
-		gunlist				=	new ArrayList<Gun>();
-		functionlist			=  new ArrayList<Function>();
-		pairlist = new Adapter_Std<CometEvent,Function> ();
+	private GunLongPollingConfigManager(){
+		configlist				= new Adapter_Std<String,File>();
+		gunlist					= new ArrayList<Gun>();
+		viewlist				= new Adapter_Std<String,View>();
+		functionlist			= new ArrayList<Function>();
+		pairlist 				= new Adapter_Std<CometEvent,Function> ();
+		
 		//executor				=	Executors.newFixedThreadPool(10);
 	}
 	
@@ -86,7 +95,7 @@ public class GunLongPollingConfigManager {
 	private String jndisqlmapxpath="/shot/db/jndi/sqlmap";
 	private String gunxpath="/shot/gun";
 	private String functionxpath="/shot/function";
-	private String targetxpath="/shot/target";
+	private String viewpath="/shot/views/view";
 	private void setConfig() {
 		
 		//global settingConfig
@@ -151,7 +160,25 @@ public class GunLongPollingConfigManager {
 				}
 				
 				
-				//function
+				//global view
+				int viewsize = parser.getInt("count("+viewpath+")");
+				log.debug("outer VIEW size : "+viewsize);
+				for (int j = 1; j <= viewsize; j++) {
+					String contextpath	=	viewpath+"["+j+"]";
+					String id  			=	parser.getString(contextpath+"/@id");
+					String path 		=	parser.getString(contextpath+"/@path");
+					View view 			=	new View();
+					view.setNodeid(id);
+					view.setPath(path);
+					log.debug("outer view id:"+view.getNodeid()+" VIEW["+j+"]  PATH : "+view.getPath());
+					viewlist.add(id,view);
+				}
+				
+				
+				
+				
+				
+				//global function
 				int functionsize = parser.getInt("count("+functionxpath+")");
 				log.debug("FUNCTION size : "+functionsize);
 				for (int j = 1; j <= functionsize; j++) {
@@ -169,7 +196,7 @@ public class GunLongPollingConfigManager {
 					fnc.setPair(pair==null?false:pair);
 					fnc.setBroadcast(broadcast==null?false:broadcast);
 //					System.out.println("config  :  "+fnc.getNodeid()+"      "+fnc.isPair());
-					log.debug(fnc.getNodeid()+" FUNCTION   pair:"+fnc.isPair()+"  broadcast:"+fnc.isBroadcast()+"    GUNsize : "+subgunsize);
+					log.debug("function id(url):"+fnc.getNodeid()+"    pair:"+fnc.isPair()+"  broadcast:"+fnc.isBroadcast()+"    GUNsize : "+subgunsize);
 					for (int k = 1; k <= subgunsize; k++) {
 						String gun_ref  =  parser.getString(gunpath+"["+k+"]/@ref");
 						Gun gun=null;
@@ -226,76 +253,70 @@ public class GunLongPollingConfigManager {
 		
 		
 		
-		//private
-		
-		for (int i = 0; i < configlist.size(); i++) {
-			try{
-				log.debug("configlist private "+configlist.size()+"    ["+i+"]");
-				XMLparser parser = new XMLparser(configlist.get(i));
-				
-				
-				
-				//function
-				int functionsize = parser.getInt("count("+functionxpath+")");
-				log.debug("FUNCTION size : "+functionsize);
-				for (int j = 1; j <= functionsize; j++) {
-					String contextpath	=	functionxpath+"["+j+"]";
-					String gunpath		=	functionxpath+"["+j+"]/gun";
-					String id			=	parser.getString(contextpath+"/@id");
-					String classpath	=	parser.getString(contextpath+"/@class");
-					Boolean pair		=	parser.getBoolean(contextpath+"/@pair");
-					Boolean broadcast	=	parser.getBoolean(contextpath+"/@broadcast");
-					int subgunsize		=	parser.getInt("count("+gunpath+")");
-					
-					Function fnc 		=	(Function) ReflectionUtil.newClass(classpath);
-					fnc.setNodeid(id);
-					fnc.setClasspath(classpath);
-					fnc.setPair(pair==null?false:pair);
-					fnc.setBroadcast(broadcast==null?false:broadcast);
-//					System.out.println("config  :  "+fnc.getNodeid()+"      "+fnc.isPair());
-					log.debug(fnc.getNodeid()+" FUNCTION   pair:"+fnc.isPair()+"  broadcast:"+fnc.isBroadcast()+"    GUNsize : "+subgunsize);
-					for (int k = 1; k <= subgunsize; k++) {
-						String gun_ref  =  parser.getString(gunpath+"["+k+"]/@ref");
-						Gun gun=null;
-						if(gun_ref==null){
-							String gunid  =  parser.getString(gunpath+"["+k+"]/@id");
-							String gunclasspath = parser.getString(gunpath+"["+k+"]/@class");
-							int guninterval = parser.getInt(gunpath+"["+k+"]/@interval");
-							Boolean gunpair = parser.getBoolean(gunpath+"["+k+"]/@pair");
-							gun = (Gun) ReflectionUtil.newClass(gunclasspath);
-							gun.setNodeid(gunid);
-							//gun.setPair(pair==null?false:gunpair);//의심.
-							gun.setPair(gunpair==null?false:gunpair);
-							gun.setClasspath(gunclasspath);
-							gun.setInterval(guninterval);
-							log.debug(gun.getNodeid()+" GUN["+k+"]  pair : "+gun.isPair());
-							gunlist.add(gun);
-						}else{
-							for (int x = 0; x < gunlist.size(); x++) {
-								if(gunlist.get(x).getNodeid().equals(gun_ref) || gunlist.get(x).getNodeid()==gun_ref){
-									gun = gunlist.get(x);
-									break;
-								}
-							}
-						}
-//						System.out.println(gun+"    "+gunpath+"["+k+"]/@ref"+"      "+parser.getString(gunpath+"["+k+"]/@ref"));
-						if(gun!=null)
-						fnc.addGun(gun);
-					}
-					
-					functionlist.add(fnc);
-				}
-				
-				
-			}catch (Exception e) {
-				try {
-					log.error("ConfigFile Error "+configlist.get(i).getAbsolutePath(),e);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				//e.printStackTrace();
-			}
-		}
+		//private		이거왜넣은거지....
+//		for (int i = 0; i < configlist.size(); i++) {
+//			try{
+//				log.debug("configlist private "+configlist.size()+"    ["+i+"]");
+//				XMLparser parser = new XMLparser(configlist.get(i));
+//				//function
+//				int functionsize = parser.getInt("count("+functionxpath+")");
+//				log.debug("FUNCTION size : "+functionsize);
+//				for (int j = 1; j <= functionsize; j++) {
+//					String contextpath	=	functionxpath+"["+j+"]";
+//					String gunpath		=	functionxpath+"["+j+"]/gun";
+//					String id			=	parser.getString(contextpath+"/@id");
+//					String classpath	=	parser.getString(contextpath+"/@class");
+//					Boolean pair		=	parser.getBoolean(contextpath+"/@pair");
+//					Boolean broadcast	=	parser.getBoolean(contextpath+"/@broadcast");
+//					int subgunsize		=	parser.getInt("count("+gunpath+")");
+//					
+//					Function fnc 		=	(Function) ReflectionUtil.newClass(classpath);
+//					fnc.setNodeid(id);
+//					fnc.setClasspath(classpath);
+//					fnc.setPair(pair==null?false:pair);
+//					fnc.setBroadcast(broadcast==null?false:broadcast);
+////					System.out.println("config  :  "+fnc.getNodeid()+"      "+fnc.isPair());
+//					log.debug(fnc.getNodeid()+" FUNCTION   pair:"+fnc.isPair()+"  broadcast:"+fnc.isBroadcast()+"    GUNsize : "+subgunsize);
+//					for (int k = 1; k <= subgunsize; k++) {
+//						String gun_ref  =  parser.getString(gunpath+"["+k+"]/@ref");
+//						Gun gun=null;
+//						if(gun_ref==null){
+//							String gunid  =  parser.getString(gunpath+"["+k+"]/@id");
+//							String gunclasspath = parser.getString(gunpath+"["+k+"]/@class");
+//							int guninterval = parser.getInt(gunpath+"["+k+"]/@interval");
+//							Boolean gunpair = parser.getBoolean(gunpath+"["+k+"]/@pair");
+//							gun = (Gun) ReflectionUtil.newClass(gunclasspath);
+//							gun.setNodeid(gunid);
+//							//gun.setPair(pair==null?false:gunpair);//의심.
+//							gun.setPair(gunpair==null?false:gunpair);
+//							gun.setClasspath(gunclasspath);
+//							gun.setInterval(guninterval);
+//							log.debug(gun.getNodeid()+" GUN["+k+"]  pair : "+gun.isPair());
+//							gunlist.add(gun);
+//						}else{
+//							for (int x = 0; x < gunlist.size(); x++) {
+//								if(gunlist.get(x).getNodeid().equals(gun_ref) || gunlist.get(x).getNodeid()==gun_ref){
+//									gun = gunlist.get(x);
+//									break;
+//								}
+//							}
+//						}
+////						System.out.println(gun+"    "+gunpath+"["+k+"]/@ref"+"      "+parser.getString(gunpath+"["+k+"]/@ref"));
+//						if(gun!=null)
+//						fnc.addGun(gun);
+//					}
+//					
+//					functionlist.add(fnc);
+//				}
+//			}catch (Exception e) {
+//				try {
+//					log.error("ConfigFile Error "+configlist.get(i).getAbsolutePath(),e);
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//				}
+//				//e.printStackTrace();
+//			}
+//		}
 		
 		
 		
@@ -330,6 +351,11 @@ public class GunLongPollingConfigManager {
 
 	public ArrayList<Gun> getGunlist() {
 		return gunlist;
+	}
+
+
+	public Adapter_Std<String,View> getViewlist() {
+		return viewlist;
 	}
 
 
