@@ -13,9 +13,7 @@ import khh.std.adapter.Adapter_Std;
 import khh.string.util.StringUtil;
 
 public class RequestUtil {
-	public static void forword(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
-		 request.getRequestDispatcher(path).forward(request, response); 
-	}
+
 	
 public static Adapter_Std<String, Object> getParameters(HttpServletRequest request) throws Exception{
 	 Adapter_Std<String, Object> adapter = new Adapter_Std<String, Object>();
@@ -30,6 +28,31 @@ public static Adapter_Std<String, Object> getParameters(HttpServletRequest reque
 	return adapter;
 }
 	
+	/*
+	1. response.sendRedirect("/contextName/helloWorld.jsp");
+	
+	전송되는 페이지의 HTTP HEADER에 리다이렉트 정보를 담아 보낸다. 브라우저가 HEADER 정보를 분석한 후 원하는 URL로 리다이렉트 시킨다. sendRedirect 이후에 세션, 쿠키, 헤더 정보를 조작하는 로직이 있다면 Cannot create a session after the response has been committed 에러를 내뱉는다. 비지니스 로직에서 sendRedirect를 하게 된다면 과감하게 return 시키자. 경로에는 컨텍스트명을 포함한 절대 경로(/로 시작하거나 http로 시작하는 풀 주소)로 적어주어야 한다.
+	
+	2. request.getRequestDispatcher("/helloWorld.jsp").forward(request, response);
+	
+	해당 코드가 실행되는 순간 이동할 페이지를 강제로 읽어들여 리다이렉트 한다. 브라우저에게 의사 결정권이 없다.
+	이후의 코드가 무시된다. sendRedirect와 같은 기능을 하지만 sendRedirect는 request/response를 잃는 반면 getRequestDispatcher의 경우 재활용 한다. 경로에는 컨텍스트명을 제외한 경로를 적는다.
+	 */
+	//jsp 이동
+	public static void forward(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
+		 request.getRequestDispatcher(path).forward(request, response); 
+	}
+	public static void sendRedirect(HttpServletResponse response,String abjsppath) throws ServletException, IOException{
+		response.sendRedirect(abjsppath);
+	}
+
+
+	//전에 호출한 url
+	public static String getHeaderReferer(HttpServletRequest request,String header){
+		return getHeader(request,"Referer");
+	}
+
+
 	 /**
     * <p>지정된 요청 헤더값을 얻음.</p>
 	 *
@@ -37,7 +60,7 @@ public static Adapter_Std<String, Object> getParameters(HttpServletRequest reque
     * @param	값을 찾을 헤더값.
     * @return	지정한 헤더에 대한 값.
     */
-   public static String findHeader(HttpServletRequest request, String header) {
+   public static String getHeader(HttpServletRequest request, String header) {
 
        // underscore w/allCap
        String headerValue = request.getHeader(header);

@@ -4,25 +4,34 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import khh.debug.LogK;
+import khh.file.util.FileUtil;
 import khh.interfaces.StrEvent_Interface;
 import khh.std.adapter.Adapter_Std;
 
 import org.apache.catalina.CometEvent;
+
+import com.web.UtilWeb;
+import com.web.request.RequestUtil;
 
 public abstract class Function extends Thread  implements StrEvent_Interface{
 
 	private String nodeid;
 	private String classpath						= null;
 	private ArrayList<Gun> gunlist 					= new ArrayList<Gun>();
+	private ArrayList<View> viewlist 				= new ArrayList<View>();
 //	private HashMap<String,Object> rs = new HashMap<String, Object>()
 	private Adapter_Std<String, Object> resultlist	= new Adapter_Std<String, Object>();
 	private ArrayList<CometEvent> cometEventList	= new ArrayList<CometEvent>();
 	private boolean broadcast						= false;
 	private boolean standby							= false;
 	private boolean pair							= false;
+	public static GunLongPollingConfigManager lpmg = GunLongPollingConfigManager.getInstance();
 	private LogK log = LogK.getInstance();
 	// ArrayList<Event_Interface> listener = new ArrayList<Event_Interface>();
 	// public ArrayList<Gun> getGun() {
@@ -37,7 +46,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 //				if(getNodeid().equals("fnc_settwitter"))
 //				System.out.println("function "+this.getNodeid()+ "      "+cometEventList.size()+"   "+isStandby() +"      "+gunlist.size()+"     "+resultlist.size()+"    "+ isPair());
 				if (cometEventList.size() > 0 && isStandby() && gunlist.size() > 0 && resultlist.size() > 0 && gunlist.size() == resultlist.size()) {
-					String makeResult = makeResult(resultlist);
+					Adapter_Std<String, Object>  makeResult = makeResult(resultlist);
 					sendMessage(makeResult);
 					resultlist.clear();
 					setStandby(false);
@@ -58,7 +67,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	}
 
 	
-	private void removeGarbageCometEvent() {
+	final private void removeGarbageCometEvent() {
 		ArrayList<CometEvent> eventlist  = getCometEventList();
 		for (int i = 0; i < eventlist.size(); i++) {
 			CometEvent event = eventlist.get(i);
@@ -80,12 +89,19 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 			    	  removeCometEvent(event);
 			    	  eventlist.remove(event);
 			    	  event.close();
+			    	  event=null;
 				} catch (IOException e) {
 					log.debug("function event close Exception",e);
+					try {
+						event.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					event=null;
 					//e.printStackTrace();
 				} // 요청 처리 완료. 
 		    } else if (CometEvent.EventType.READ == event.getEventType()) { 	// 읽을께있을때.
+		    	String a="a";
 		    } 
 		}
 		
@@ -112,13 +128,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	}
 
 
-	public void sendMessage(String msg) throws IOException{
-		//System.out.println("sendMsg" +msg+"     "+getNodeid());
-//		if(isPair()){
-//			directSendMessage(msg);
-//		}else{
-//			GunLongPolling.getSenderManager(getId()).send(msg);
-//		}
+	public void sendMessage(Adapter_Std<String, Object>  result) throws IOException{
 		ArrayList<CometEvent> eventlist = getCometEventList();
 		if(eventlist ==null){
 			return;
@@ -137,36 +147,59 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 //				      event.close(); // 요청 처리 완료. 
 //			    } else if (CometEvent.EventType.READ == event.getEventType()) { 
 //			    } 
-				PrintWriter out = null;
 				try {
-					HttpServletResponse response =event.getHttpServletResponse();
-					response.setContentType("text/html"); 
-					out = response.getWriter();
-					out.println(msg);
-					out.flush();
-					response.flushBuffer();
+//					HttpServletResponse response =event.getHttpServletResponse();
+//					UtilWeb.write(response, FileUtil.MIME_TEXT_TEXT, result);
+//					response.flushBuffer();
+					finish(event,result);
 				} catch (Exception naive) {
 					naive.printStackTrace();
 				} finally {
-					try {
-						out.close();
-					} catch (Exception ignore) {
-					}
-					try {
-						event.close();
-					} catch (Exception ignore) {
-					}
+					event.close();
+					event = null;
 				}
 		
 		}
 		
 	}
 	
-//	private void directSendMessage(String msg) throws IOException {
-//	}
+	
+	
+	public abstract Adapter_Std<String, Object>  makeResult(Adapter_Std<String, Object> set) throws Exception;
+	public abstract void  finish(CometEvent event,Adapter_Std<String, Object> result) throws Exception;
+	
+	public void forward(CometEvent event,String viewIdorPath) throws ServletException, IOException{
+		HttpServletRequest request 		= event.getHttpServletRequest();
+		HttpServletResponse response 	= event.getHttpServletResponse();
+		// RequestDispatcher dispatcher =  request.getRequestDispatcher("/WEB-INF/jsp/ok.jsp");
+		// dispatcher.forward(request, response);
+		View view = null;
+		try {
+			view = lpmg.getViewlist().get(viewIdorPath);
+		} catch (Exception e) {
+		}
+		//RequestUtil.forward(request, response, view==null?viewIdorPath:view.getPath());
+		//response.flushBuffer();
+		//response.sendRedirect(view==null?viewIdorPath:view.getPath());
+		//UtilWeb.write(response, FileUtil.MIME_TEXT_HTML, "show me the money");
+		//response.flushBuffer();
+//		view==null?viewIdorPath:view.getPath()
+		 RequestDispatcher dispatcher =  request.getRequestDispatcher("/WEB-INF/jsp/ok.jsp");
+		 dispatcher.forward(request, response);
+		 removeCometEvent(event);
+		event.close();
+		event = null;
+		
+	}
+	public void write(CometEvent event,String html) throws ServletException, IOException{
+		HttpServletResponse response =event.getHttpServletResponse();
+		UtilWeb.write(response, FileUtil.MIME_TEXT_HTML, html);
+		response.flushBuffer();
+		event.close();
+		event = null;
+	}
+	
 
-
-	public abstract String makeResult(Adapter_Std<String, Object> set) throws Exception;
 
 	public void addGun(Gun gun) {
 		this.gunlist.add(gun);
@@ -241,20 +274,17 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	
 	
 	
-	public boolean removeCometEvent(CometEvent  cometevent){
+	public boolean removeCometEvent(CometEvent  event){
 		boolean sw=false;
 		for (int i = 0; i < getGunlist().size(); i++) {
-			sw = getGunlist().get(i).removeCometEvent(cometevent);
+			sw = getGunlist().get(i).removeCometEvent(event);
 		}
-		
-		sw =  cometEventList.remove(cometevent);
-
+		sw =  cometEventList.remove(event);
 		try{
-			cometevent.close();
+			event.close();
+			event=null;
 		}catch (Exception e) {
-			cometevent=null;
 		}
-		
 		return sw;
 	}
 	

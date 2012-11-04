@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.web.UtilWeb;
 import com.web.jsp.session.LoginManager;
+import com.web.request.RequestUtil;
 
 /**
  * Servlet implementation class testservlet
@@ -30,16 +32,20 @@ public class testservlet extends HttpServlet {
 	 */
     int a=1;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LoginManager loginManager = LoginManager.getInstance();
-		HttpSession session = request.getSession();
-		loginManager.setSession(session,session.getId());
-		PrintWriter writer  =  response.getWriter();
-		writer.println(request.toString()+"  <br>  "+response.toString()+"          "+a);
-		writer.println(request.getRequestURI());
-		writer.println(request.getRequestURL());
-		writer.flush();
-		writer.close();
+//		LoginManager loginManager = LoginManager.getInstance();
+//		HttpSession session = request.getSession();
+//		loginManager.setSession(session,session.getId());
+//		PrintWriter writer  =  response.getWriter();
+//		writer.println(request.toString()+"  <br>  "+response.toString()+"          "+a);
+//		writer.println(request.getRequestURI());
+//		writer.println(request.getRequestURL());
+//		writer.flush();
+//		writer.close();
+		//request.getRequestDispatcher("/WEB-INF/jsp/chat.jsp").forward(request, response); 
+		request.setAttribute("hhk", "aaaaaa");
+		RequestUtil.forward(request, response, "/WEB-INF/jsp/ok.jsp");
 		a++;
+		response.getWriter().close();
 //		while(true){
 //			try {
 //				Thread.sleep(1000);

@@ -10,7 +10,7 @@ import org.apache.catalina.CometEvent;
 public abstract class Gun extends Thread {
 	private ArrayList<StrEvent_Interface> listenerlist 	= new ArrayList<StrEvent_Interface>();
 	private ArrayList<CometEvent> cometEventList 		= new ArrayList<CometEvent>();
-	private int interval 								= 1000;
+	private int interval 								= 100;
 	private String nodeid								= null;
 	private String classpath							= null;
 	private boolean standby								= false;
@@ -25,6 +25,7 @@ public abstract class Gun extends Thread {
 //				System.out.println("gun  "+this.getNodeid()+"     "+listenerlist.size()+ "      "+cometEventList.size()+"   "+isStandby() +"         "+ isPair());
 				if (listenerlist.size() > 0 && cometEventList.size() > 0 && isStandby()) {
 					Object o = trigger();
+					Thread.sleep(getInterval());
 					for (int i = 0; i < listenerlist.size(); i++) {
 						listenerlist.get(i).event(nodeid, o);
 					}
