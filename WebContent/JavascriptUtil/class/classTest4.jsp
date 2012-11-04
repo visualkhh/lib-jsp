@@ -47,6 +47,7 @@ SUPER.prototype.state="super_state";
 SUPER.prototype.sub = null;
 function SUPER(){
 	this.sub = new SUB();
+	this.sub.state=this.state+"    --r";
 	this.sub.gogo = function(){
 		alert("SUPER "+this.state);
 	};

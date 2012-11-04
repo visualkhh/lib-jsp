@@ -1,7 +1,7 @@
 <%@page import="khh.property.util.PropertyUtil"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-»§²Ù¶Ë²Ù
+»§²Ù¶Ë²Ù<%=request.getAttribute("h") %>
 <%
 if(request.getParameter("grade")!=null){
 String [] grade = request.getParameter("grade").split("\\,");

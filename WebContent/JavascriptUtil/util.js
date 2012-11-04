@@ -2547,7 +2547,9 @@ function AjaxK(param_o,name_s){
 		param_o.ajaxk.onReceive.call(param_o.ajaxk);//여기서 this를알수가없으니.ㅠㅠ
 	};
 
-	
+	if(this.autoStart){
+		this.start();
+	}
 	
 	
 }
@@ -2594,13 +2596,11 @@ AjaxK.prototype.start = function(){
 	this.responsed=false;
 	this.onBeforeProcess();
 	var serializationData = null;
-	var applyURL=null;
+	var applyURL=this.url;
 	if(StringUtil.upper(this.type)=="GET" && this.data){
-		serializationData=null;
-		applyURL = this.url + "?"+ConvertingUtil.serializationToParameter(this.data);
+		applyURL +=  "?"+ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	}else if(StringUtil.upper(this.type)=="POST" && this.data){
-		applyURL=this.url;
-		serializationData=ConvertingUtil.serializationToParameter(this.data);
+		serializationData=ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	};
 	
 
