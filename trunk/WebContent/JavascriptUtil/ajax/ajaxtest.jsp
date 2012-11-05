@@ -25,7 +25,7 @@ function onstart(){
 			autoStart:false,
 			loop:true,
 			onBeforeProcess:function(){
-				Debug.debug("onBeforeProcess:function() AAA")
+				Debug.debug("onBeforeProcess:function() AAA");
 			},
 			onSuccess:function(data,readyState,status){
 				Debug.debug("onSuccess:function() AAA "+data+" "+readyState+" "+status);
@@ -57,7 +57,7 @@ function onstart(){
 			autoStart:false,
 			loop:true,
 			onBeforeProcess:function(){
-				Debug.debug("onBeforeProcess:function() BBB")
+				Debug.debug("onBeforeProcess:function() BBB");
 			},
 			onSuccess:function(data,readyState,status){
 				Debug.debug("onSuccess:function() BBB"+data+" "+readyState+" "+status);
