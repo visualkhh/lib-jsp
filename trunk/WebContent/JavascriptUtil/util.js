@@ -1,8 +1,7 @@
 
 /**
-  * Object Object()
-  * @constructor visualkhh@gmail.com    ,   twitter : @visualkhh  ,  facebook : http://www.facebook.com/visualkhh
- */
+*	@constructor visualkhh@gmail.com, twitter : @visualkhh, facebook : http://www.facebook.com/visualkhh
+*/
 
 
 
@@ -48,7 +47,7 @@ var msg = "NUMBERS TEST (1/2)\n";
    msg += "Output.... " + output
 alert(msg);
  */
-//핑거
+//finger
 StringUtil.format1= (function() {
 	function get_type(variable) {
 		return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase();
@@ -410,18 +409,18 @@ StringUtil.isOnlyAlphabetUpper=function (input_s) {
     return (pattern.test(input_s)) ? true : false;
 };
 
-StringUtil.isInAlphabetLower=function(input_s) {
+StringUtil.isInAlphabetLower = function(input_s) {
 	var pattern = /[a-z]/g;
 	return (pattern.test(input_s)) ? true : false;
 };
-StringUtil.isOnlyAlphabetLower=function(input_s) {
+StringUtil.isOnlyAlphabetLower = function(input_s) {
     var pattern = /^[a-z]+$/;
     return (pattern.test(input_s)) ? true : false;
 };
 
 
-//자바스크립트 한글 깨지는 게있어서 한글로 정규식은 못만듬
-StringUtil.isInHangeul=function(input_s) {
+//자바스크립트 한글 깨지는 게있어서 한글로 정규식은 못만듬  그래서 유니코드로 
+StringUtil.isInHangeul = function(input_s) {
 	//var pattern= /[ㄱ-ㅎ|ㅏ-ㅣ|가-힝]/;
 	var pattern = /[\u3131-\u314e|\u314f-\u3163|\uac00-\ud7a3]/g;
 	return (pattern.test(input_s)) ? true : false;
@@ -516,7 +515,7 @@ DateUtil.getFullSecond=function(){
 DateUtil.getMilliSecond=function(){
 	return new Date().getMilliseconds();
 };
-//핑거
+//finger
 //yyyy yy ,    MM ,dd  ,e , HH hh , mm, ss ,a/p
 DateUtil.getDate  = function(format_s,date_o){
 	if(!date_o){
@@ -1916,9 +1915,7 @@ FormatUtil.format_mask=function(obj, mask){
 
 
 
-// 핑거
-
-
+// finger
 function Selector(){};
 Selector.prototype = new Object();
 Selector.ei = function (eid_s,document_o){
@@ -1987,17 +1984,17 @@ Debug.prototype = new Object();
 
 //이거바꾸면aler로도 가능함니다.
 //console.log;
-Debug.loger=null;
-Debug.LEVEL_OFF="OFF";
-Debug.LEVEL_ALL="ALL";
-Debug.LEVEL_DEBUG="DEBUG";
-Debug.LEVEL_INFO="INFO";
-Debug.LEVEL_WARN="WARN";
-Debug.LEVEL_ERROR="ERROR";
-Debug.LEVEL=Debug.LEVEL_ALL;
+Debug.loger			= null;
+Debug.LEVEL_OFF		= "OFF";
+Debug.LEVEL_ALL		= "ALL";
+Debug.LEVEL_DEBUG	= "DEBUG";
+Debug.LEVEL_INFO	= "INFO";
+Debug.LEVEL_WARN	= "WARN";
+Debug.LEVEL_ERROR	= "ERROR";
+Debug.LEVEL			= Debug.LEVEL_ALL;
 
-Debug.dateformat="yyyy-MM-dd HH:mm:ss,SSS";
-Debug.format="%d [%l]   >>  %m";
+Debug.dateformat	= "yyyy-MM-dd HH:mm:ss,SSS";
+Debug.format		= "%d [%l]   >>  %m";
 //<logformat>%d [%l] %c(%f)(line %n)  >>  %m   %e  </logformat>
 /*
 %d : date
@@ -2011,7 +2008,7 @@ Debug.format="%d [%l]   >>  %m";
  */
 
 try{
-	Debug.loger  =function(msg){
+	Debug.loger = function(msg){
 		console.log(msg);
 	};
 /*	if(!this.console){//Console global variable fix for IE
@@ -2395,8 +2392,8 @@ AjaxUtil.ajax=function(param_o){
 		};
 	}
 
-	param.start=function(){
-		this.response=false;
+	param.start = function(){
+		this.response = false;
 		this.onBeforeProcess();
 		var serializationData = null;
 		var applyURL=null;
@@ -2477,24 +2474,24 @@ AjaxK.STATE_INTERNALSERVERERROR			= 500; //서버 오류 발생
 
 
 
-AjaxK.prototype.context=null;
-AjaxK.prototype.name=null;
-AjaxK.prototype.requestObj=null;
+AjaxK.prototype.context					= null;
+AjaxK.prototype.name					= null;
+AjaxK.prototype.requestObj				= null;
 
 //param-----start
-AjaxK.prototype.url				= "";
-AjaxK.prototype.type			= "POST";
-AjaxK.prototype.data			= null,
-AjaxK.prototype.dataType		= "TEXT";
-AjaxK.prototype.async			= true;
-AjaxK.prototype.autoStart		= true;
-AjaxK.prototype.loop			= false;
-AjaxK.prototype.onBeforeProcess	= function(){};
-AjaxK.prototype.onSuccess		= function(data,readyState,status){};
-AjaxK.prototype.onError			= function(data,readyState,status){};
-AjaxK.prototype.onComplete		= function(){};
-AjaxK.prototype.onMonitor		= function(readyState,status,data){};
-AjaxK.prototype.outparam		= {
+AjaxK.prototype.url						= "";
+AjaxK.prototype.type					= "POST";
+AjaxK.prototype.data					= null,
+AjaxK.prototype.dataType				= "TEXT";
+AjaxK.prototype.async					= true;
+AjaxK.prototype.autoStart				= true;
+AjaxK.prototype.loop					= false;
+AjaxK.prototype.onBeforeProcess			= function(){};
+AjaxK.prototype.onSuccess				= function(data,readyState,status){};
+AjaxK.prototype.onError					= function(data,readyState,status){};
+AjaxK.prototype.onComplete				= function(){};
+AjaxK.prototype.onMonitor				= function(readyState,status,data){};
+AjaxK.prototype.outparam				= {
 		url : '',
 		type :'POST',
 		data : null,
@@ -2509,11 +2506,10 @@ AjaxK.prototype.outparam		= {
 		onMonitor:function(data,readyState,status){}
 };
 //param------end
+
 AjaxK.prototype.successCnt 	= 0;
 AjaxK.prototype.errorCnt 	= 0;
-
-
-AjaxK.prototype.responsed = false;
+AjaxK.prototype.responsed 	= false;
 
 /* 익스경우 이렇게 상속자체를 못한다 -_-8에서 아오ㅉ댜ㅓㅁ자ㅣㅇㅁㅇ
 AjaxRequest.prototype=AjaxUtil.getAjaxObj();
@@ -2561,11 +2557,11 @@ AjaxK.prototype.onReceive = function(){
 	if (this.requestObj.readyState == AjaxK.READYSTATE_INTERACTIVE || this.requestObj.readyState == AjaxK.READYSTATE_COMPLETED) {
         if (this.requestObj.status == AjaxK.STATE_OK) {
         	var indata = null;
-        	if(StringUtil.upper(this.dataType)=="TEXT"){
+        	if(StringUtil.upper(this.dataType) == "TEXT"){
         		indata = this.requestObj.responseText;
-        	}else if(StringUtil.upper(this.dataType)=="JSON"){
+        	}else if(StringUtil.upper(this.dataType) == "JSON"){
         		indata = eval("(" + this.requestObj.responseText + ")");
-        	}else if(StringUtil.upper(this.dataType)=="XML"){
+        	}else if(StringUtil.upper(this.dataType) == "XML"){
         		//indata = XMLUtil.getXMLObj(this.request.responseText);
         		indata = this.requestObj.responseXML;
         	}
@@ -2584,7 +2580,7 @@ AjaxK.prototype.onReceive = function(){
 	
 	
 	//loop!~~
-	if(this.requestObj.readyState>3){
+	if(this.requestObj.readyState > 3){
 		this.onMonitor(this.requestObj.readyState,this.requestObj.status,this.requestObj.responseText);
 	}else{
 		this.onMonitor(this.requestObj.readyState,null,null);
@@ -2593,12 +2589,12 @@ AjaxK.prototype.onReceive = function(){
 
 
 AjaxK.prototype.start = function(){
-	this.responsed=false;
+	this.responsed = false;
 	this.onBeforeProcess();
 	var serializationData = null;
-	var applyURL=this.url;
+	var applyURL = this.url;
 	if(StringUtil.upper(this.type)=="GET" && this.data){
-		applyURL +=  "?"+ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
+		applyURL += "?"+ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	}else if(StringUtil.upper(this.type)=="POST" && this.data){
 		serializationData=ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	};
@@ -2618,18 +2614,18 @@ AjaxK.prototype.start = function(){
 	this.requestObj.send(serializationData);
 };
 AjaxK.prototype.stop = function(){
-	this.responsed=true;
+	this.responsed = true;
 };
 
 
 AjaxK.prototype.setName = function(name_s){
-	this.name=name_s;
+	this.name = name_s;
 };
 AjaxK.prototype.setParam = function(param_o){
     for (var property in param_o) {
     	this[property] = param_o[property]; 
     };
-    this.outparam 		= JavaScriptUtil.extend(this.outparam,param_o);
+    this.outparam = JavaScriptUtil.extend(this.outparam,param_o);
 };
 AjaxK.prototype.setData = function(data_o){
 	this.data = data_o;
@@ -2645,8 +2641,8 @@ AjaxK.prototype.setData = function(data_o){
 
 //include Sizzle.js
 SelectorK.prototype = new Object();
-SelectorK.prototype.context=null;
-SelectorK.prototype.selector=null;
+SelectorK.prototype.context = null;
+SelectorK.prototype.selector = null;
 SelectorK.prototype.list = new Array();
 function SelectorK(selector_s,context_e) {
 	if(selector_s){
