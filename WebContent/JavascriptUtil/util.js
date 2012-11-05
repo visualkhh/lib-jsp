@@ -2497,7 +2497,7 @@ function AjaxRequest(ajaxk_o){
 	this.ajaxk=ajaxk_o;
 };
 */
-AjaxK.prototype.onreadystatechange 	= function(){};
+AjaxK.prototype.onreadystatechange = function(){};
 function AjaxK(param_o,name_s){
 	
 	if(param_o){
@@ -2616,7 +2616,7 @@ SelectorK.prototype = new Object();
 SelectorK.prototype.context = null;
 SelectorK.prototype.selector = null;
 SelectorK.prototype.list = new Array();
-function SelectorK(selector_s,context_e) {
+function SelectorK(selector_s,context_e){
 	if(selector_s){
 		this.engin(selector_s,context_e);
 	}
@@ -2637,7 +2637,7 @@ SelectorK.prototype.engin = function(selector_s,context_e){
 	this.list = Sizzle(this.selector,this.context);
 };
 SelectorK.prototype.each = function(function_f){
-	for ( var i = 0; i < this.list.length; i++) {
+	for ( var i = 0; i < this.list.length; i++){
 		function_f.call(this.list[i],i);
 	}
 };
