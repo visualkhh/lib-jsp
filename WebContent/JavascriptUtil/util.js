@@ -810,13 +810,13 @@ ConvertingUtil.toLowerCase=function(inputStr_s){
 	return  String(inputStr_s).toLowerCase();
 };
 */
-ConvertingUtil.serializationToAttribute=function(object_o){
-	return ConvertingUtil.serializationToString(object_o,"="," ","'");
+ConvertingUtil.concatenateToAttribute=function(object_o){
+	return ConvertingUtil.concatenateToString(object_o,"="," ","'");
 };
-ConvertingUtil.serializationToParameter=function(object_o){
-	return ConvertingUtil.serializationToString(object_o,"=",'&');
+ConvertingUtil.concatenateToParameter=function(object_o){
+	return ConvertingUtil.concatenateToString(object_o,"=","&","");
 };
-ConvertingUtil.serializationToString=function(object_o,unionString_s,spilString_s,pairString_s){
+ConvertingUtil.concatenateToString=function(object_o,unionString_s,spilString_s,pairString_s){
 	if(!unionString_s){
 		unionString_s="=";
 	}
@@ -2369,14 +2369,14 @@ AjaxUtil.ajax=function(param_o){
 	param.start = function(){
 		this.response = false;
 		this.onBeforeProcess();
-		var serializationData = null;
+		var concatenateData = null;
 		var applyURL=null;
 		if(this.type=='GET' && this.data){
-			serializationData=null;
-			applyURL = this.url + '?'+ConvertingUtil.serializationToParameter(this.data);
+			concatenateData=null;
+			applyURL = this.url + '?'+ConvertingUtil.concatenateToParameter(this.data);
 		}else if(this.type=='POST' && this.data){
 			applyURL=this.url;
-			serializationData=ConvertingUtil.serializationToParameter(this.data);
+			concatenateData=ConvertingUtil.concatenateToParameter(this.data);
 			// var param = "userid="+userid+"&passwd="+passwd; //POST방식으로 넘길 파라미터 설정 (키1=값1&키2=값3&키3=값3.....key=value식으로 여러개일 겨우 '&;구분하여 설정함)
 		};
 		if(JavaScriptUtil.isInternetExplorer()){
@@ -2389,7 +2389,7 @@ AjaxUtil.ajax=function(param_o){
 		this.request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
 		this.request.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
 		this.request.setRequestHeader("Pragma", "no-cache");
-		this.request.send(serializationData);
+		this.request.send(concatenateData);
 	};
 	param.stop=function(){
 		this.response=true;
@@ -2565,12 +2565,12 @@ AjaxK.prototype.onReceive = function(){
 AjaxK.prototype.start = function(){
 	this.responsed = false;
 	this.onBeforeProcess();
-	var serializationData = null;
+	var concatenateData = null;
 	var applyURL = this.url;
 	if(StringUtil.upper(this.type)=="GET" && this.data){
-		applyURL += "?"+ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
+		applyURL += "?"+ConvertingUtil.concatenateToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	}else if(StringUtil.upper(this.type)=="POST" && this.data){
-		serializationData=ConvertingUtil.serializationToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
+		concatenateData=ConvertingUtil.concatenateToParameter( JavaScriptUtil.isFunction(this.data)?this.data(): this.data );
 	};
 	
 
@@ -2585,7 +2585,7 @@ AjaxK.prototype.start = function(){
 	this.requestObj.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
 	this.requestObj.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
 	this.requestObj.setRequestHeader("Pragma", "no-cache");
-	this.requestObj.send(serializationData);
+	this.requestObj.send(concatenateData);
 };
 AjaxK.prototype.stop = function(){
 	this.responsed = true;
