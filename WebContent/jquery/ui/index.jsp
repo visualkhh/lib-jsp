@@ -4,8 +4,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>jQuery UI Example Page</title>
 <jsp:include page="/common/include.jsp" flush="false">
-	<jsp:param name="css" 	value="<%=com.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERYUI %>" />
-	<jsp:param name="javascript" 	value="<%=com.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERYUI %>" />
+	<jsp:param name="css" 	value="<%=khh.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERYUI%>" />
+	<jsp:param name="javascript" 	value="<%=khh.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERYUI%>" />
 </jsp:include>
 		<script type="text/javascript">
 			$(function(){

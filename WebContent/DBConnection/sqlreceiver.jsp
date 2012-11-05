@@ -1,6 +1,6 @@
 <%@page import="khh.db.util.DBUtil"%>
 <%@page import="khh.db.util.ConnectionUtil"%>
-<%@page import="com.web.UtilWeb"%>
+<%@page import="khh.web.UtilWeb"%>
 <%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>

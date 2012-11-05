@@ -1,6 +1,6 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="com.web.jsp.util.db.connection.ConnectionWebUtil"%>
+<%@page import="khh.web.jsp.db.util.ConnectionWebUtil"%>
 <%@page import="com.kdn.util.db.statement.LogPreparedStatement"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
