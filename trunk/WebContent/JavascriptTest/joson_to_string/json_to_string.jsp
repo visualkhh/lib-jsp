@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <jsp:include page="/common/include.jsp" flush="false">
-<jsp:param name="javascript" value="<%=com.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERY %>" />
+<jsp:param name="javascript" value="<%=khh.web.UtilWeb.INCLUDE_PARAMVALUE_JQUERY%>" />
 </jsp:include>
 
 <body>
