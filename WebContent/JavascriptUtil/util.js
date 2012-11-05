@@ -1807,7 +1807,6 @@ JavaScriptUtil.extendClass =function(superClass,subClass){
 		
 JavaScriptUtil.extendClone = function(superreobject_o,childobject_o){
 	var return_obj = JavaScriptUtil.copyObject(childobject_o);
-	
     for (var property in superreobject_o) {
     	return_obj[property] = JavaScriptUtil.isEmptyObject(return_obj[property])?superreobject_o[property]:return_obj[property]; 
     }
@@ -1815,7 +1814,6 @@ JavaScriptUtil.extendClone = function(superreobject_o,childobject_o){
 };
 JavaScriptUtil.extend = function(superreobject_o,childobject_o){
 	var return_obj = childobject_o;
-	
     for (var property in superreobject_o) {
     	return_obj[property] = JavaScriptUtil.isEmptyObject(return_obj[property])?superreobject_o[property]:return_obj[property]; 
     }
@@ -1840,22 +1838,15 @@ JavaScriptUtil.getTypeOf=function(object_o){
 
 
 
-
-
-
-
-
 /*format util*/
 function MathUtil(){};
 MathUtil.prototype = new Object();
-MathUtil.round=function(numValue_n,precision_n)
-{
+MathUtil.round=function(numValue_n,precision_n){
 	var wholeNum = Math.floor(numValue_n);
 	var tempNum =numValue_n-wholeNum;
 	var multiplier=Math.pow(10,precision_n);
 	var precNum = Math.round(tempNum*multiplier);
 	precNum= precNum/multiplier;
-	
 	return wholeNum+precNum;	
 };
 
@@ -1871,7 +1862,6 @@ FormatUtil.format= function(format_s,data_s,matchPattern_s){
 	}	
 	var return_val="";
 	var position=0;
-	
 	for ( var i = 0; i < format_s.length; i++) {
 		if(format_s.charAt(i)==matchPattern_s){
 			return_val+=data_s.charAt(position++);
@@ -1879,11 +1869,9 @@ FormatUtil.format= function(format_s,data_s,matchPattern_s){
 			return_val+=format_s.charAt(i);
 		}
 	}
-	
 	//if(data_s.length>format_s.length){
 		return_val+=data_s.substring(position, data_s.length);
 	//}
-	
 	return return_val;
 };
 
@@ -1960,8 +1948,6 @@ FocusUtil.lengthChk= function(object_o_s,length_n,focusObject_o,selecte_b){
 	if(!selecte_b){
 		selecte_b=false;
 	}
-	
-	
 	var input_data_s ="";
 	if(JavaScriptUtil.isObject(object_o_s)){
 		input_data_s = object_o_s.value;
@@ -1986,7 +1972,6 @@ function Debug(){};
 Debug.prototype = new Object();
 //var Debug = new Object();
 //Debug.prototype=Object.prototype;
- 
 
 //이거바꾸면aler로도 가능함니다.
 //console.log;
@@ -2023,20 +2008,20 @@ try{
 		};
 	};*/
 }catch(e){
-	/*Debug.LEVEL=Debug.LEVEL_OFF;
-	Debug.loger = function(){};*/
+/*	Debug.LEVEL=Debug.LEVEL_OFF;
+	Debug.loger = function(){};
+*/
 };
 
 
 /*
 	Debug.loger=function(msg_s){
 	Debug.output(msg_s);
-};
+	};
 
-
-Debug.setOutPutObject = function(obj_o){
-	Debug.output = obj_o;
-};
+	Debug.setOutPutObject = function(obj_o){
+		Debug.output = obj_o;
+	};
 */
 
 
@@ -2095,7 +2080,9 @@ Debug.log = function (level_s,msg_s) {
 					try{
 						//(function(){this.loger("a")})();
 						//(eval(function(){Debug.loger.call(logmsg_s)}))();
-						eval(this.loger(logmsg_s));
+						if(Debug.loger){
+							eval(Debug.loger(logmsg_s));
+						}
 					}catch (e) {
 					}
 			}
@@ -2119,7 +2106,6 @@ Debug.hetName = function (name) {
 //var CallStackUtil = new Object();
 function CallStackUtil (){};
 CallStackUtil.prototype = new Object();
-
 CallStackUtil.getFunctionName = function(caller_o){
 		var f = arguments.callee.caller; 
 		if(caller_o) f = f.caller; 
@@ -2148,7 +2134,6 @@ CallStackUtil.getCallFunctionStack = function(caller_o){
 	
 };
 CallStackUtil.getCallFunctionNameStack = function(caller_o){
-	
 	var arr = CallStackUtil.getCallFunctionStack(caller_o);
 	var arr_n = new Array();
 	
@@ -2160,7 +2145,6 @@ CallStackUtil.getCallFunctionNameStack = function(caller_o){
 		}
 	}
 	return arr_n;
-	
 };
 
 
@@ -2177,20 +2161,14 @@ ReflectionUtil.execute=function(str_s){
 };
 
 
-
-
-
 function ElementUtil (){};
 ElementUtil.prototype = new Object();
-
-
 ElementUtil.getAttribute = function(element_o,attributename_s){
 	return element_o.getAttribute(attributename_s);
 };
 ElementUtil.setAttribute = function(element_o,attributename_s,attributeval_s){
 	return element_o.setAttribute(attributename_s, attributeval_s);
 };
-
 //createElement
 ElementUtil.createE = function(string_s,document_o){
 	if(!document_o){
@@ -2212,10 +2190,6 @@ ElementUtil.elementToString= function(element_o){
     return txt;
 };
 
-
-
-
-
 //var ActiveUtil = new Object();
 function ActiveUtil (){};
 ActiveUtil.prototype = new Object();
@@ -2236,7 +2210,6 @@ ActiveUtil.installActive=function(id_s,clsid_s,codebase_s,version_s,document_o){
 	//document.writeln('<object ID="'+id_s+'" classid="clsid:' + clsid_s + '" width=0 height=0 ');
 	//document.writeln('codebase='+ codebase_s + '#version=' + version_s +'>');
 	//document.writeln('</object>');	
-	
 };
 
 function ClipBoardUtil (){};
@@ -2244,7 +2217,6 @@ ClipBoardUtil.prototype = new Object();
 ClipBoardUtil.copy= function(string_s){
 	window.clipboardData.setData('Text',string_s);
 };
-
 
 function HistoryUtil (){};
 HistoryUtil.prototype = new Object();
@@ -2254,7 +2226,6 @@ HistoryUtil.back =function(back_n,histroy_o){
 	}
 	histroy_o.back();
 };
-
 
 function XMLUtil (){};
 XMLUtil.prototype = new Object();
@@ -2278,13 +2249,10 @@ AjaxUtil.READYSTATE_LOADING				= 1; //open 메서드가 호출되고 아직 send
 AjaxUtil.READYSTATE_LOADED				= 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
 AjaxUtil.READYSTATE_INTERACTIVE			= 4; //데이터의 일부를 받은상태
 AjaxUtil.READYSTATE_COMPLETED			= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
-
 AjaxUtil.STATE_OK						= 200  ; //요청성공
 AjaxUtil.STATE_FORBIDDEN				= 403  ; //접근거브
 AjaxUtil.STATE_NOTFOUND					= 404  ; //페이지없어
 AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ; //서버 오류 발생
-
-
 
 AjaxUtil.getAjaxObj = function(window_o){
 	if(!window_o){
@@ -2622,8 +2590,6 @@ AjaxK.prototype.start = function(){
 AjaxK.prototype.stop = function(){
 	this.responsed = true;
 };
-
-
 AjaxK.prototype.setName = function(name_s){
 	this.name = name_s;
 };
