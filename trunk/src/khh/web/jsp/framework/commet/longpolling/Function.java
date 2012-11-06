@@ -13,6 +13,7 @@ import khh.debug.LogK;
 import khh.file.util.FileUtil;
 import khh.interfaces.StrEvent_Interface;
 import khh.std.adapter.Adapter_Std;
+import khh.string.util.StringUtil;
 import khh.web.UtilWeb;
 import khh.web.jsp.request.RequestUtil;
 
@@ -155,7 +156,10 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 				} catch (Exception naive) {
 					naive.printStackTrace();
 				} finally {
+					try{
 					event.close();
+					}catch (Exception e) {
+					}
 					event = null;
 				}
 		
@@ -189,8 +193,38 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 		 removeCometEvent(event);
 		event.close();
 		event = null;
+	}
+	
+	public void include(CometEvent event,String viewIdorPath) throws ServletException, IOException{
+		HttpServletRequest request 		= event.getHttpServletRequest();
+		HttpServletResponse response 	= event.getHttpServletResponse();
+		// RequestDispatcher dispatcher =  request.getRequestDispatcher("/WEB-INF/jsp/ok.jsp");
+		// dispatcher.forward(request, response);
+		View view = null;
+		try {
+			view = lpmg.getViewlist().get(viewIdorPath);
+		} catch (Exception e) {
+		}
+		//RequestUtil.forward(request, response, view==null?viewIdorPath:view.getPath());
+		//response.flushBuffer();
+		//response.sendRedirect(view==null?viewIdorPath:view.getPath());
+		//UtilWeb.write(response, FileUtil.MIME_TEXT_HTML, "show me the money");
+		//response.flushBuffer();
+//		view==null?viewIdorPath:view.getPath()
+		response.setHeader("Content-Type", FileUtil.MIME_TEXT_HTML+"; charset="+StringUtil.SET_UTF_8);
+		RequestUtil.include(request, response, view.getPath());
+		
+		//RequestDispatcher dispatcher =  request.getRequestDispatcher(view.getPath());
+		 //dispatcher.include(request, response);
+		 removeCometEvent(event);
+		 try{
+			 event.close();
+		 }catch (Exception e) {
+		 }
+		event = null;
 		
 	}
+	
 	public void write(CometEvent event,String html) throws ServletException, IOException{
 		HttpServletResponse response =event.getHttpServletResponse();
 		UtilWeb.write(response, FileUtil.MIME_TEXT_HTML, html);
