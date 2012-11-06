@@ -1,6 +1,7 @@
 package khh.web.jsp.request;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -47,9 +48,12 @@ dispatcher.forward(request,response);
 	public static void forward(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
 		 request.getRequestDispatcher(path).forward(request, response); 
 	}
-	public static void sendRedirect(HttpServletResponse response,String abjsppath) throws ServletException, IOException{
-		response.sendRedirect(abjsppath);
+	public static void include(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
+//		out.flush();
+		response.getWriter().flush();
+		request.getRequestDispatcher(path).include(request, response);
 	}
+
 	///test/Fluid/includeTest.jsp
 	public static String getURI(HttpServletRequest request) throws ServletException, IOException{
 		return request.getRequestURI();
