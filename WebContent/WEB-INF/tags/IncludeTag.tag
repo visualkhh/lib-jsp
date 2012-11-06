@@ -10,7 +10,6 @@ tld에 정의한 바와 같이 required는 필수 여부, rtexprvalue는 표현�
 <%@ attribute name="id" required="true" rtexprvalue="true" %>
  
  <%
- FluidConfigManager.getInstance();
  
  %>
 <jsp:include page="${id}" flush="false">
