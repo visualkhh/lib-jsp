@@ -50,7 +50,10 @@ dispatcher.forward(request,response);
 	}
 	public static void include(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
 //		out.flush();
+		try{
 		response.getWriter().flush();
+		}catch (Exception e) {
+		}
 		request.getRequestDispatcher(path).include(request, response);
 	}
 
@@ -75,7 +78,7 @@ dispatcher.forward(request,response);
 	 *
     * @param	요청 객체.
     * @param	값을 찾을 헤더값.
-    * @return	지정한 헤더에 대한 값.
+    * @return	지정한 헤더에 대한 값.response.setHeader
     */
    public static String getHeader(HttpServletRequest request, String header) {
 

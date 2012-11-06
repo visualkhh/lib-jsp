@@ -1,12 +1,16 @@
 package khh.web.jsp.framework.commet.longpolling;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import khh.web.jsp.request.RequestUtil;
+import khh.web.jsp.response.ResponseUtil;
 
 import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometProcessor;
@@ -64,6 +68,54 @@ public class CommetTest extends HttpServlet  implements CometProcessor{
 	moni m = null;
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	public class write extends Thread{
+		public CometEvent list  = null;;
+		public write(CometEvent c) {
+			this.list=(c);
+		}
+		@Override
+		public void run() {
+			while(true){
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				if (list!=null) {
+					try {
+						HttpServletResponse response = list.getHttpServletResponse();
+						HttpServletRequest request= list.getHttpServletRequest();
+//						//ResponseUtil.write(list.getHttpServletResponse(), "빵꾸똥꾸");
+//						PrintWriter writer  = ResponseUtil.getWriter(response);
+//						writer.write("빵꾸");
+//						writer.flush();
+//						writer.close();
+						//ResponseUtil.write(list.getHttpServletResponse(), "빵꾸똥꾸");
+//						RequestUtil.forward(request, response, "/WEB-INF/jsp/ok.jsp");
+						//RequestUtil.include(request, response, "/WEB-INF/jsp/ok.jsp");
+//						RequestUtil.forward(request, response, "/WEB-INF/jsp/ok.jsp");
+						// request.getRequestDispatcher("/WEB-INF/jsp/ok.jsp").forward(request, response); 
+						//request.getRequestDispatcher("/WEB-INF/jsp/ok.jsp").include(request, response);
+						list.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				list=null;;
+			}
+		}
+		public void addCometEvent(CometEvent c){
+			this.list=(c);
+		}
+	};
+	
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
@@ -74,7 +126,41 @@ public class CommetTest extends HttpServlet  implements CometProcessor{
 	@Override
 	public void event(CometEvent event) throws IOException, ServletException {
 		//m.addCometEvent(event);
-		m.forward(event);
+		//m.forward(event);
+		
+		HttpServletResponse response = event.getHttpServletResponse();
+		HttpServletRequest request= event.getHttpServletRequest();
+		//PrintWriter writer = ResponseUtil.getWriter(response);
+		
+		String type="";
+		
+   	 if (CometEvent.EventType.BEGIN == event.getEventType()) {  		// 요청을 최초로 처리할 때 호출됨.
+   	// 요청을 최초로 처리할 때 호출됨. 
+		 type="begin";
+		new write(event).start();
+		 //RequestUtil.forward(request, response, "/WEB-INF/jsp/ok.jsp");
+			//RequestUtil.include(request, response, "/WEB-INF/jsp/ok.jsp");
+
+    } else if (CometEvent.EventType.ERROR == event.getEventType()) { 	// IO 에러가 발생했을 때.
+    	// IO 에러가 발생했을 때. 
+    	type="error";
+    	event.close();
+    } else if (CometEvent.EventType.END == event.getEventType()) { 		// 요청 처리가 완료되었을 때
+    	// 요청 처리가 완료되었을 때 
+    	type="end";
+//    	writer.flush();
+//    	writer.close();
+//    	RequestUtil.forward(request, response, "/WEB-INF/jsp/ok.jsp");
+    	event.close();
+    } else if (CometEvent.EventType.READ == event.getEventType()) { 	// 읽을께있을때.
+    	//읽을께있을때..
+    	type="red";
+    }
+   	 
+   	 System.out.println(type);
+   	 
+   	 
+   	 
 	}
 
 	/*

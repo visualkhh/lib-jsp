@@ -13,4 +13,14 @@ public class ResponseUtil {
 	public static void sendRedirect(HttpServletResponse response,String abjsppath) throws ServletException, IOException{
 		response.sendRedirect(abjsppath);
 	}
+	public static void write(HttpServletResponse response,String writestr) throws IOException{
+//		HttpSession session = request.getSession();
+		PrintWriter writer  =  response.getWriter();
+		writer.println(writestr);
+		writer.flush();
+		writer.close();
+	}
+	public static void setHeader(HttpServletResponse response,String headName,String info){
+		response.setHeader(headName, info);
+	}
 }
