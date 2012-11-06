@@ -37,7 +37,7 @@ public class SimpleCustom2 extends SimpleTagSupport {
             getJspContext().setAttribute("movie", movies[i]);
             getJspBody().invoke(null);
         }
-		 
+                
         
         //throw new SkipPageException();
         //어떤 태그를 호출 했을 경우, 오류가 떨어지더라도 지금까지 출력 된 내용은 화면에 나와야 한다면 SkipPageException을 사용할 수 있다.
