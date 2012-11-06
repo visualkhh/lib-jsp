@@ -38,12 +38,25 @@ public static Adapter_Std<String, Object> getParameters(HttpServletRequest reque
 	해당 코드가 실행되는 순간 이동할 페이지를 강제로 읽어들여 리다이렉트 한다. 브라우저에게 의사 결정권이 없다.
 	이후의 코드가 무시된다. sendRedirect와 같은 기능을 하지만 sendRedirect는 request/response를 잃는 반면 getRequestDispatcher의 경우 재활용 한다. 경로에는 컨텍스트명을 제외한 경로를 적는다.
 	 */
+/*
+String nextJSP = "/searchResults.jsp";
+RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+dispatcher.forward(request,response);
+	*/
 	//jsp 이동
 	public static void forward(HttpServletRequest request, HttpServletResponse response,String path) throws ServletException, IOException{
 		 request.getRequestDispatcher(path).forward(request, response); 
 	}
 	public static void sendRedirect(HttpServletResponse response,String abjsppath) throws ServletException, IOException{
 		response.sendRedirect(abjsppath);
+	}
+	///test/Fluid/includeTest.jsp
+	public static String getURI(HttpServletRequest request) throws ServletException, IOException{
+		return request.getRequestURI();
+	}
+	//http://localhost:8080/test/Fluid/includeTest.jsp
+	public static String getURL(HttpServletRequest request) throws ServletException, IOException{
+		return request.getRequestURL().toString();
 	}
 
 
