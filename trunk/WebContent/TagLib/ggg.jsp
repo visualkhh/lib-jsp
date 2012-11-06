@@ -43,7 +43,20 @@ Welcome to our site.
 </tr>
 </ss:SimpleCustom2>
 </table>
+<%--
 <jsp:include page="../index.jsp"></jsp:include>
+ --%>
+</p>
+</p>
+시작합니다
+</p>
+<%
+out.flush();
+request.getRequestDispatcher("/index.jsp").include(request, response);
+//request.getRequestDispatcher("/index.jsp").forward(request, response);
+%>
+</p>
+끝났습니다.
 
 </body>
 </html>
