@@ -43,18 +43,16 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	public final static String CONFIGNAME_LOGK="logkConfigLocation";
 	public final static String CONFIGNAME_CONTEXT="contextConfigLocation";
 	public final static String CONFIGNAME_CONTEXT_PATTERN="contextConfigLocationPattern";
-	
-	
 	private LogK log = LogK.getInstance();
+	public static GunLongPollingConfigManager lpmg = GunLongPollingConfigManager.getInstance();    
+	public static GunJS gunjs = new GunJS();
 	private static final long serialVersionUID = 1L;
-    public GunLongPolling() {
+  
+	
+	public GunLongPolling() {
         super();
     }
     
-    
-    
-    public static GunLongPollingConfigManager lpmg = GunLongPollingConfigManager.getInstance();    
-    public static GunJS gunjs = new GunJS();
     @Override
     public void init(ServletConfig config) throws ServletException  {
     	super.init(config);
@@ -82,19 +80,27 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     	
     	
     	
-    	//longpolling GunConfig PATTERNPath
-    	String configname_context_pattern=config.getInitParameter(CONFIGNAME_CONTEXT_PATTERN);
     	
     	log.debug("Init Param context : "+contextConfigLocation);
     	log.debug("Init Param log4j : "+log4jconfigpath);
     	log.debug("Init Param logkConfig : "+logkconfigpath);
-    	final File pattern = new File(configname_context_pattern);
-    	log.debug("Init Param contextConfigLocationPattern : "+configname_context_pattern+"   parent:"+pattern.getParent()+"     name:"+pattern.getName());
-        FilenameFilter filenamefilter = new FilenameFilter() {
-            public boolean accept(File arg0, String filename) {
-                return StringUtil.isFind(pattern.getName(), filename);
-            }
-        };
+
+    	//longpolling GunConfig PATTERNPath
+    	String configname_context_pattern=config.getInitParameter(CONFIGNAME_CONTEXT_PATTERN);
+    	if(configname_context_pattern!=null){
+	    	final File pattern = new File(configname_context_pattern);
+	    	log.debug("Init Param contextConfigLocationPattern : "+configname_context_pattern+"   parent:"+pattern.getParent()+"     name:"+pattern.getName());
+	        FilenameFilter filenamefilter = new FilenameFilter() {
+	            public boolean accept(File arg0, String filename) {
+	                return StringUtil.isFind(pattern.getName(), filename);
+	            }
+	        };
+	        File[] files = FileUtil.getFileList(new File(config.getServletContext().getRealPath(pattern.getParent())), filenamefilter);
+	        for (int j = 0; j < files.length; j++) {
+	        	log.debug("Init contextConfig Pattern["+j+"]:  " +files[j].getAbsolutePath() );
+	        	lpmg.addConfigFile(files[j].getAbsolutePath());
+	        }
+    	}
 
 
     	
@@ -105,11 +111,6 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     		lpmg.setServletConfig(config);
     		//lpmg.setServletContextRealPath(config.getServletContext().getRealPath("/"));
     		lpmg.addConfigFile(realpath);
-        	File[] files = FileUtil.getFileList(new File(config.getServletContext().getRealPath(pattern.getParent())), filenamefilter);
-        	for (int j = 0; j < files.length; j++) {
-        		log.debug("Init contextConfig Pattern["+j+"]:  " +files[j].getAbsolutePath() );
-        		lpmg.addConfigFile(files[j].getAbsolutePath());
-			}
     		
     		
     		lpmg.setting();
