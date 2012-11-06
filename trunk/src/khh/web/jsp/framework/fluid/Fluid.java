@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import khh.callstack.util.StackTraceUtil;
 import khh.debug.LogK;
 import khh.file.util.FileUtil;
 import khh.string.util.StringUtil;
@@ -21,6 +22,7 @@ public class Fluid extends HttpServlet{
 	public final static String CONFIGNAME_LOGK="logkConfigLocation";
 	public final static String CONFIGNAME_CONTEXT="contextConfigLocation";
 	public final static String CONFIGNAME_CONTEXT_PATTERN="contextConfigLocationPattern";
+	public final static String PARAM_NAME_TEMPLATE="fluid_template_dskfj4gkerjk";
 	private FluidConfigManager fmg = new FluidConfigManager(); 
 //	private FluidConfigManager fmg = FluidConfigManager.getInstance(); 
 	private LogK log = LogK.getInstance();
@@ -112,18 +114,21 @@ public class Fluid extends HttpServlet{
 		
 		try{
 			Template template = fmg.getTemplate(id);
-			log.debug("Fluid forward Real :  "+template.getValue());
-			request.setAttribute("fluid_template", template);
-			RequestUtil.forward(request, response, template.getValue());
-		}catch (Exception e) {
-			log.error("Fluid Not Found Template id : "+id,e); 
+			if(template==null){
 				PrintWriter writer  =  response.getWriter();
 				writer.println("Not Found Template id : "+id);
 				writer.println("Fluid Request "+request.getRequestURI()+"  template id : "+id);
 				writer.flush();
 				writer.close();
-			
+				return;
+			}
+			log.debug("Fluid forward Real :  "+template.getValue());
+			request.setAttribute(PARAM_NAME_TEMPLATE, template);
+			RequestUtil.forward(request, response, template.getValue());
+		}catch (Exception e) {
+			e.printStackTrace(); 
 		}
+		//writer.println(StackTraceUtil.getStackTrace(e));
 		
 //		log.debug("=====start========="+request.getRequestURI().replaceFirst(request.getContextPath(), ""));
 	//	RequestUtil.forward(request, response, request.getRequestURI().replaceFirst(request.getContextPath(), ""));
