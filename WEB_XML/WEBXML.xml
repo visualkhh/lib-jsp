@@ -30,7 +30,7 @@ org.apache.catalina.servlets.InvokerServlet
     <display-name>vav</display-name>
     <servlet-name>invoker</servlet-name>
     <servlet-class>org.apache.catalina.servlets.InvokerServlet</servlet-class>
-                 <init-param>
+             <init-param>
                  <param-name>file</param-name> 
                  <param-value>count2.dat</param-value>
              </init-param>
