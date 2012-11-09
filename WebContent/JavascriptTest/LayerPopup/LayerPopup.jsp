@@ -75,11 +75,26 @@ function showDetail(){
 $E.addOnloadEventListener(start);
 
 </script>
+<style>
+
+	.overlay {
+		position:absolute;
+		left:0px;
+		top:0px;
+		z-index:100;
+		-ms-filter:alpha(opacity=80);
+		filter:alpha(opacity=80);
+		opacity:0.8;
+		-moz-opacity:0.8;
+		background-color:#000000;
+	}
+
+</style> 
 </head>
 <body> 
 °¡<br> 
 ³ª<br>
-<div id="popup" style="background-color: blue;  ">wowowo</div>
+<div id="popup" class='overlay' style="background-color: blue;  ">wowowo</div>
 LayerPopup.jsp
 <input type="button" id="show_btn" value="show_btn"/>
 <input type="button" id="close_btn" value="close_btn"/>
