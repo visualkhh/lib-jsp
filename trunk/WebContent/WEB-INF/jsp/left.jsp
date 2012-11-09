@@ -9,5 +9,7 @@
 <body>
 left<p><%= request.getParameter("a") %>
 <p><%= request.getAttribute("v") %>
+<p><%= request.getRequestURI() %>
+<p><%= request.getRequestURL() %>
 </body>
 </html>
