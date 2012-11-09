@@ -1,8 +1,5 @@
 package khh.web.jsp.framework.fluid;
 
-import java.util.ArrayList;
-
-import khh.debug.LogK;
 import khh.std.adapter.Adapter_Std;
 
 

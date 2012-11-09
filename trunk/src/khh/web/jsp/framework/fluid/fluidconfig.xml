@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <fluid xmlns="http://www.visualkhh@gmail.com">
-
 	<template id="default" 	value="/WEB-INF/jsp/default_template.jsp">
 		<view id="title" value="welcom" />
 		<view id="main" value="/WEB-INF/jsp/main.jsp" />
 		<view id="left" value="/WEB-INF/jsp/left.jsp" />
 		<view id="right" value="/WEB-INF/jsp/right.jsp" />
 	</template>
-	
-	
-	
 	<template id="/openpage.f" value="/WEB-INF/jsp/openpage_template.jsp" extendcategory="default">
 		<view id="title" value="openpage" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>
-
 </fluid>
