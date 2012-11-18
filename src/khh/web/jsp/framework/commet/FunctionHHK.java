@@ -1,9 +1,9 @@
 package khh.web.jsp.framework.commet;
 
-import org.apache.catalina.CometEvent;
-
 import khh.std.adapter.Adapter_Std;
 import khh.web.jsp.framework.commet.longpolling.Function;
+
+import org.apache.catalina.CometEvent;
 
 
 public class FunctionHHK extends Function{
