@@ -61,6 +61,9 @@ public class FluidConfigManager {
                     template.setValue(parser.getString(templatepath+"["+j+"]/@value"));
                     template.setExtendcategory(parser.getString(templatepath+"["+j+"]/@extendcategory"));
                     
+                    log.debug("Fluid: Template Id : "+template.getNodeid()+"  extends : "+template.getExtendcategory());
+                    
+                    
                     String viewpath=templatepath+"["+j+"]/view";
                     Integer viewcnt = parser.getInt("count("+viewpath+")");
                     viewcnt = viewcnt==null?0:viewcnt;
@@ -93,10 +96,19 @@ public class FluidConfigManager {
 				Template template = templatelist.get(i);
 				if(template.getExtendcategory() != null){
 					Template supertemplate = templatelist.get(template.getExtendcategory());
+					if(supertemplate==null){
+						continue;
+					}
+					
+					if(template.getValue()==null){
+						template.setValue(supertemplate.getValue());
+					}
+					
 					Adapter_Std<String, View> superviewlist = supertemplate.getViewlist();
 					Adapter_Std<String, View> childviewlist = template.getViewlist();
 					childviewlist = ConversionUtil.merge(superviewlist, childviewlist);
 					template.setViewlist(childviewlist);
+					
 				}
 				
 			} catch (Exception e) {
