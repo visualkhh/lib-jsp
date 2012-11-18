@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.jsp.JspException;
 
+import khh.callstack.util.StackTraceUtil;
 import khh.web.jsp.framework.fluid.Fluid;
 import khh.web.jsp.framework.fluid.Template;
 import khh.web.jsp.tag.custom.TagSupportSimple;
@@ -35,7 +36,11 @@ public class FluidInsertView extends TagSupportSimple {
 				dis.include(getRequest(), getResponse());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				getJspWriter().write(StackTraceUtil.getStackTrace(e));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		return SKIP_BODY;
