@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Matching">
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  	
+	<typeAlias alias="MatchingDTO" type="openmatching.model.MatchingDTO"/>
+	<typeAlias alias="ApplierDTO" type="openmatching.model.ApplierDTO"/>
+ 
+	<insert id="insert_matching" parameterClass="MatchingDTO">
+		insert into matching (matching_number, matching_type, matching_title, matching_writer, matching_regdate, matching_complete,
+					matching_info, matching_filename1, matching_filename2, matching_writerid, matching_total)
+		values(matching_seq.nextval, #matching_type#, #matching_title#, #matching_writer#, sysdate, #matching_complete#,
+		#matching_info#, #matching_filename1#, #matching_filename2#, #matching_writerid#, #matching_total#)
+	</insert>
+	
+	<insert id="insert_matching_position" parameterClass="MatchingDTO">
+		insert into job (job_number, job_position, job_count, matching_number, job_value) values(
+						job_seq.nextval, #job_position#, #job_count#, #matching_number#, #job_value#)
+	</insert>
+	
+	<insert id="insert_applier" parameterClass="ApplierDTO">
+		insert into applier (applier_number, applier_id, applier_contents, applier_regdate, applier_carreer,
+					 applier_type, matching_number, applier_phone) values(applier_seq.nextval,
+						#applier_id#, #applier_contents#, sysdate, #applier_carreer#, #applier_type#,
+						#matching_number#, #applier_phone#)
+	</insert>
+	
+	<delete id="cancel_applier" parameterClass="ApplierDTO">
+		delete from applier where matching_number = #matching_number# and applier_id = #applier_id#
+	</delete>
+	
+	<select id="get_matching_number" resultClass="int">
+		select max(matching_number) from matching
+	</select>
+	
+	<select id="get_matching_info" parameterClass="int" resultClass="MatchingDTO">
+		select m.matching_title, m.matching_writer, m.matching_regdate, m.matching_info, m.matching_filename1,
+			m.matching_filename2, m.matching_writerid, j.job_position, j.job_count, j.job_value from 
+			matching m join job j using(matching_number) where matching_number = #matching_number#
+	</select>	
+	
+	<select id="get_applier_type" parameterClass="ApplierDTO" resultClass="String">
+		select applier_type from applier where matching_number = #matching_number# and applier_id = #applier_id#
+	</select>
+	
+	<select id="get_job_value" parameterClass="int" resultClass="String">
+		select job_value from job where matching_number = #matching_number#
+	</select>
+	
+	<select id="get_job_position" parameterClass="int" resultClass="String">
+		select job_position from job where matching_number = #matching_number#
+	</select>
+	
+	<select id="get_name" parameterClass="String" resultClass="String">
+		select user_name from userlist where user_id = #user_id#
+	</select>
+	
+	<update id="update_applier_cnt" parameterClass="MatchingDTO">
+		update job set job_value=#job_value# where matching_number=#matching_number#
+	</update>
+	
+	<update id="update_complete" parameterClass="int">
+		update matching set matching_complete = '완료'
+	</update>
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
+
+

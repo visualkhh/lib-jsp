@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shot>
+	<db>
+		<jndi id="mproject" name="jdbc/mproject" maxsize="100">
+		  	<sqlmap resource="/WEB-INF/config/dbt/sqlmapa.xml"/>
+		</jndi>
+		<jdbc id="asd" loginid="" loginpwd="" maxsize="100">
+		</jdbc>
+	</db>
+
+</shot>

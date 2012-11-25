@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shot>
+
+	<function id="/GunLongPolling/fnc_twitter"  class="com.web.FunctionString"  >
+		<gun id="gun_string"   class="com.web.GunTwitter"  interval="1000" ></gun>
+	</function>
+<!--  
+	<function id="/GunLongPolling/fnc_h"  class="com.web.FunctionString"  broadcast="tue" >
+		<gun id="gun_string"   class="com.web.BoardCastH"  interval="5000" ></gun>
+	</function>
+-->
+	<function id="/GunLongPolling/visualhhk"  class="com.web.FunctionHHK"  >
+		<gun id="gun_string"   class="com.web.BoardCastH"  interval="5000" ></gun>
+	</function>
+
+
+
+
+<!-- 
+<viewk>
+	<viewgroup name="base_layout" template="/board/template.jsp">
+		<view name="title" value="메인 페이지"/>
+		<view name="header" value="/board/header.jsp"/>
+		<view name="footer" value="/board/footer.jsp"/>
+		<view name="left" value="/board/left.jsp"/>
+		<view name="body" value="/board/main.jsp"/>
+	</viewgroup>
+	
+	
+	<viewgroup name="list_page" ref="base_layout">
+		<view name="body" value="/board/list_page.jsp"/>	
+	</viewgroup>
+</viewk>
+-->
+	<views>
+		<view id="ok" path="/gogo.jsp"></view>
+		<view id="error" path="/WEB-INF/jsp/error.jsp"></view>
+	</views>
+
+
+
+
+
+</shot>

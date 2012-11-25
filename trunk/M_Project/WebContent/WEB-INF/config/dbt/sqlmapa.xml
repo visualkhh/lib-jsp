@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlmap>
+	<select id="get_matching_numberA" >
+		select max(matching_number) from matching
+	</select>
+	<select id="cool" >
+		select * from gd_bd_notice where hit=#hit#
+		and name=#name# and hit=#hit#;
+	</select>
+	
+	
+	<insert id="insert_matchingA" >
+		insert into matching (matching_number, matching_type, matching_title, matching_writer, matching_regdate, matching_complete,
+					matching_info, matching_filename1, matching_filename2, matching_writerid, matching_total)
+		values(matching_seq.nextval, #matching_type#, #matching_title#, #matching_writer#, sysdate, #matching_complete#,
+		#matching_info#, #matching_filename1#, #matching_filename2#, #matching_writerid#, #matching_total#)
+	</insert>
+	
+	<update id="update_completeA" >
+		update matching set matching_complete = '완료'
+	</update>
+	
+	<delete id="cancel_applierA" >
+		delete from applier where matching_number = #matching_number# and applier_id = #applier_id#
+	</delete>
+</sqlmap>
+
+
+
+
+
+
+
+
+
+
+
+
+
