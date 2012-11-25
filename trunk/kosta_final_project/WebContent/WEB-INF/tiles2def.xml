@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  tiles-definitions PUBLIC
+	"-//Aapche Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="base_layout" template="/board/template.jsp">
+		<put-attribute name="title" value="메인 페이지"/>
+		<put-attribute name="header" value="/board/header.jsp"/>
+		<put-attribute name="footer" value="/board/footer.jsp"/>
+		<put-attribute name="left" value="/board/left.jsp"/>
+		<put-attribute name="body" value="/board/main.jsp"/>
+	</definition>
+	
+	
+	<definition name="list_page" extends="base_layout">
+		<put-attribute name="body" value="/board/list_page.jsp"/>	
+	</definition>
+	
+	<definition name="insert_page" extends="base_layout">
+		<put-attribute name="body" value="/board/insert_page.jsp"/>	
+	</definition>
+		
+	<definition name="detail" extends="base_layout">	
+		<put-attribute name="body" value="/board/detail_page.jsp"/>
+	</definition>
+	
+	<definition name="edit_page" extends="base_layout">	
+		<put-attribute name="body" value="/board/edit_page.jsp"/>
+	</definition>
+	 
+	
+	
+</tiles-definitions>
+
+
+
+
+
+
+
+
+

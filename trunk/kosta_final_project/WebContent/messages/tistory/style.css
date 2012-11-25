@@ -1,0 +1,867 @@
+@charset "utf-8";
+/* 반드시 들어가야 하는 스타일 시작 */
+
+
+/* 1. 본문 전체  */
+	body, table, td, input, textarea {
+		font:12px 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+		color:#555; 
+		margin:0px;
+		line-height:150%;
+		/*@background-image=background-image:;*/ background-image: none; /*@*/
+		/*@background-image-position=background-position:;*/ background-position: ; /*@*/
+		/*@background-image-repeat=background-repeat:;*/ background-repeat: no-repeat; /*@*/
+		/*@background-color=background-color:;*/ background-color: ; /*@*/
+	}
+/* 2. 기본 링크 */
+	a:link, a:visited { color : #5588aa; text-decoration: none; }
+	a:hover { color : #369;	text-decoration: underline;	}
+
+/* 3. 이미지 */
+	img { border-width:0px;}
+	
+/* 4. 이미지 버튼 */
+	.ib { cursor: pointer; }
+
+/* 5. 입력 텍스트 */
+	.text { border:1px solid #999; }
+
+/* 6. 트리 테이블 */
+	.branch2 {	}
+	
+/* 7. 트리 셀 */
+	.branch3 { cursor: pointer;	height: 10px; }
+
+/* 8. 달력 월 표시 */
+	.cal_month { font-size : 11px; height: 18px; }
+
+/* 9. 달력 요일 표시 */
+	.cal_week1 { font-size : 11px; height:18px; }
+
+/* 10. 달력 일요일 표시 */
+	.cal_week2 { color: #f30; font-size:12px; text-align: center; }
+
+/* 11. 달력 지난 달 날짜 표시 */
+	.cal_day1 {	color: #000; font-size:12px; text-align:center; }
+
+/* 12. 달력 다음 달 날짜 표시 */
+	.cal_day2 {	color: #000; font-size : 11px; text-align: center; }
+
+/* 13. 달력 이번 달 날짜 표시 */
+	.cal_day3 {	font-size : 11px; text-align: center; }
+
+/* 14. 달력 오늘 날짜 표시 */
+	.cal_day4 {
+	text-align: center;
+	font-size: 11px;
+	border-bottom:1px solid #777;
+	font-weight:bold;
+	color: #0066CC;
+}
+
+/* 15. 달력 글쓴 날 링크 스타일 */
+	a.cal_click:link, a.cal_click:visited {	color : #777; font-weight: bold; }
+	a.cal_click:hover {	color : #369; font-weight: bold; }
+
+/* 16. 이미지 아래 캡션 스타일 */
+	.cap1 {
+	color: #666666;
+	text-align: center;
+	font: 11px "돋움", "돋움체";
+}
+
+/* 17. 키워드 스타일 */
+	.key1 {	cursor: pointer; border-bottom: 1px dashed #ccc; }
+
+/* 18. 카테고리 옆 개수 스타일 */
+	.c_cnt { font:9px Tahoma; color : #666; }
+
+/* 19. 최신글 옆 개수 스타일 */
+	.ps_cnt { font:10px Tahoma;	color : #B4B4B4; }
+
+
+/* 반드시 들어가야하는 스타일 끝 - 이 아래는 자유롭게 추가, 삭제 가능 */
+
+/* body 설정 */
+body {
+	margin:0 20px 20px 20px;
+	}
+
+/* container 설정 */
+#container {
+	width:/*@post-width:264=*/ 784px /*@*/;
+	margin:40px auto 0px;
+	text-align: left;
+	padding-bottom: 10px;
+    }
+
+/* header 설정 */
+#header-wrapper {
+  width:/*@post-width:264=*/ 784px /*@*/;
+  margin:0 auto 10px;
+  border:1px solid #CCCCCC;
+  }
+  
+#header{
+	/*@title-background-color=background-color:;*/ background-color: transparent; /*@*/
+	/*@title-background-image=background-image:;*/ background-image: none; /*@*/
+	/*@title-background-image-position=background-position:;*/ background-position: center center; /*@*/
+	/*@title-background-image-repeat=background-repeat:;*/ background-repeat: no-repeat; /*@*/
+	padding:/*@title-height:-50=padding-top:*/ 30px /*@*/;
+	/*padding-bottom:6px*/
+	/*padding-left:30px*/
+	margin: 5px;
+    border: 1px solid #CCCCCC;
+    text-align: center;
+	}
+
+#header a{
+	/*@title-color=color:;*/ color: ; /*@*/
+	}
+.header_title {}
+.header_title a{
+    font: bold /*@title-font-size=20px*/ 26px /*@*/ /*@title-font-family=Tahoma*/ Trebuchet MS /*@*/, Trebuchet, Arial, Verdana, Sans-serif;
+	color: #000000;
+	text-decoration:none;
+} 
+.header_title a:hover {
+	font: bold /*@title-font-size=20px*/ 26px /*@*/ /*@title-font-family=Tahoma*/ Trebuchet MS /*@*/, Trebuchet, Arial, Verdana, Sans-serif;
+	color: #cc0000;
+	text-decoration:none;
+}
+ #header .blog_info {
+	font-family: Trebuchet MS, Arial, Verdana, Sans-serif;
+	font-size:14px;
+	color:#999;
+	text-align:center;
+	padding-top: 10px;
+	}
+
+
+/* Side 설정 */
+
+ #side {
+	float:right;
+	width:190px;
+	overflow:hidden;
+	margin-left: 10px;
+	}
+
+/* 사이드 리스트 박스 설정 */
+.side_list_box { 
+	padding-left:6px;
+	}
+
+/* 사이드 리스트 설정 */
+.side_list { 
+	font:12px Dotum;
+	color:#777;
+	word-break:break-all;
+	padding-left:6px;
+	padding-bottom:8px;
+	background:url("./images/bul.gif") no-repeat 0px 4px;
+	}
+	#side A:link, #side A:visited { color:#666666; text-decoration:none;}
+	#side A:hover { text-decoration:underline;}
+
+
+/* 사이드 태그 설정 */
+.side_tagbox { text-align: justify; word-break:break-all; line-height:20px; }
+.side_tagbox a { letter-spacing:-1px; }	
+/* 태그 클라우드 스타일 */
+.cloud1 {
+	font-family:Tahoma;
+	font-weight: bold;
+	font-size :12px;
+	color :#CC3300!important ;
+	}
+	
+.cloud2 {
+	font-family:돋움;
+	font-weight: bold;
+	font-size :11px;
+	color :#FF6600!important ;
+	}
+
+.cloud3 {
+	font-family:돋움;
+	font-size :11px;
+	color :#0099CC!important ;
+	}
+
+.cloud4 {
+	font-family:돋움;
+	font-size :11px;
+	color :#009966!important ;
+	}
+	
+.cloud5 {
+	font-family:돋움;
+	font-size :11px;
+	color :#999 !important ;
+	}
+.side_tagbox a:hover{
+	background-color:#5B4F4A;
+	color:#5588aa;
+	}
+.side_tagbox a:visited {color:#777}
+
+
+/* 검색폼 설정 */
+
+.search {
+	width: 180px;
+	margin:0px;
+	text-align: center;
+	}
+
+.search_input {
+	width:100px;
+	height:18px;
+	color:#999;
+	font-size: 11px;
+	padding-left: 4px;
+	background: #F0F0F0;
+	border-top: 1px solid #999999;
+	border-right: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	border-left: 1px solid #999999;
+
+	}
+.submit {
+	border:1px solid #999999;
+	font:bold 7pt Verdana;
+	color:#FFFFFF;
+	width:60px;
+	height:20px;
+	background: #999999;
+	cursor: pointer;
+	text-transform: uppercase;
+	}
+
+
+/* 카운트 설정 */
+.side_counter {
+	font:11px/16px tahoma;
+	padding: 8px;
+	border: 1px dashed #CCCCCC;
+	margin-top: 20px;
+	background: #f5f5f5;
+	color: #666666;
+	margin-bottom: 20px;
+	text-align: center;
+	}
+
+/* bgm player */
+#uibgmplayer { margin:3px 0 8px 5px; width:181px;}
+
+/* main 설정 */
+ #contents {
+	width:/*@post-width:60=*/ 580px /*@*/;
+	float:left;
+ }
+ 
+ #main {
+	overflow:hidden;
+	border: 0px solid #CCCCCC;
+	position: relative;
+	z-index: auto;
+	}
+#mainShadow {
+	background: #FFFFFF;
+	}
+.mainInsideBox {
+	padding: 16px;
+	border: 1px solid #FFFFFF;
+	border:0 !important;
+}
+
+/* 메인 영역 공통 설정 */
+
+/* 컨텐츠 내용 설정*/
+.article {
+	line-height:180%;
+	padding:20px 10px;
+	word-break:break-all;
+	text-align: justify;
+	clear: both;
+	margin-top: 4px;
+	overflow: hidden;
+	width:/*@post-width=*/ 520px /*@*/;
+	/*@post-body-font-size=font-size:;*/ font-size: 12px; /*@*/ /*@post-body-font-family=font-family:;*/ font-family: Tahoma, ; /*@*/ /*@post-body-color=color:;*/ color: #3E3E3E; /*@*/
+	}
+.article img{
+        border:1px solid #CCCCCC; 
+        padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+ }
+.article blockquote {
+		border-left: 7px double #ccc;
+		margin: 10px 10px 10px 20px;
+		padding-left: 10px;
+		word-break:break-all;	
+		}	
+
+.article a:link, .article a:visited {
+	color:#0066CC;
+	border-bottom: 1px dashed;
+}	
+.article a:hover{ 
+	color:#FF0000;
+	text-decoration:none; }	
+.imageblock a {	border-bottom-width: 0px; }
+
+
+/* 날짜 설정*/
+.date, .notice_date {
+	font:10px Verdana;
+	letter-spacing:-1px;
+	padding-right:10px;
+	color: #FFFFFF;
+	margin-top: -21px;
+	text-align: right;
+	}
+.list_box .date, .rplist_box .date, .list_box .notice_date, .rplist_box .notice_date {
+	color: #999;
+	}
+
+.cnt { 
+	font:10px Tahoma; 
+	 }
+
+/* 이름 설정*/
+.name {
+	font:bold 12px Tahoma;
+	color:#444;
+	}
+	.name a:link, .name a:visited { color:#444; text-decoration:none;}
+	.name a:hover { color:#4990CC; text-decoration:none;}
+
+/* 댓글 등 글내용 설정*/
+.desc {
+	padding-left:5px;
+	word-break:break-all;
+	}
+
+.opt { 
+	font:10px Verdana;
+	color:#777;
+	letter-spacing:-1px;
+	}
+	.opt a:link, .opt a:visited { color:#777; text-decoration:none;}
+	.opt a:hover{ color:#D93343; text-decoration:none;}
+
+/* 댓글 등 기본 박스 설정*/
+.box {
+	padding:10px;
+	border-bottom:1px solid #e9e9e9;
+	}
+
+.reply_box {
+	margin-top:10px;
+	margin-left:40px;
+	padding:10px;
+	background-color:#f7f7f7;
+	border:1px dashed #ddd;
+	}	
+
+/* 입력폼 설정 */
+.form_input {
+	margin-top:4px;
+	padding:1px;
+	height:18px;
+	border:1px solid #ddd;
+	font-size: 11px;
+	}
+
+.form_textarea {
+	font-weight:normal;
+	margin-top:4px;
+	height:100px;
+	width:99%;
+	border:1px solid #ddd;
+	overflow:visible;
+	clear: both;
+	}
+
+.form_submit {
+	font:11px tahoma;
+	color:#444;
+	margin-top:4px;
+	border:1px solid #ddd;
+	background-color:#f1f1f1;
+	height:25px;
+	width:99%;
+	cursor: pointer;
+	}
+
+
+/* 태그 설정*/
+.tag_cloud {
+	font:13px Dotum;
+	line-height:24px;
+	word-break:break-all;
+	margin: 20px;
+	}	
+
+.tag_cloud .cloud1 {
+	background-color:#eee;
+	font-weight:bold;
+  	font-size : 20px;
+	color : #657700;
+    }
+.tag_cloud .cloud2 {
+	background-color:#eee;
+	font-weight:bold;	
+	font-size : 18px;
+  	color : #5E7E7D;
+    }
+.tag_cloud .cloud3 {
+	background-color:#eee;
+	font-weight:bold;	
+  	font-size : 16px;
+  	color : #6B5E7E;
+    }
+.tag_cloud .cloud4 {
+	background-color:#eee;
+  	font-size : 14px;
+  	color : #84604E;
+    }
+.tag_cloud .cloud5 {
+	font-size : 12px;
+  	color : #777;
+    }	
+.tag_cloud a:hover{
+	background-color:#f5f5f5;
+	color:#555;
+    }	
+.tag_cloud a:visited {color:#777}
+
+
+/* title, info 설정, 관리자 */
+
+.head_title {
+	color:/*@post-title-color=#FFFFFF*/ #FFFFFF /*@*/;
+	word-spacing:4px;
+	background:#A52A2A;
+	padding: 4px 100px 3px 8px;
+	margin-bottom: 4px;
+	font:/*@post-title-font-size=14px*/ 16px /*@*/ /*@post-title-font-family=돋움체*/ Trebuchet, Arial, Verdana, Sans-serif; /*@*/;
+
+	}
+
+	.head_title a:link, .head_title a:visited {color:/*@post-title-color=#FFFFFF*/ #FFFFFF /*@*/; font-weight:bold; text-decoration:none;}
+	.head_title a:hover{color:#FFFFFF; text-decoration:none; font-weight:bold; }
+	
+	.protected { padding-right:4px;}
+
+	/* 페이지별 head 배경칼라 설정 */
+	.articleHead {
+	background:#A52A2A;
+	}
+	.tagHead {
+	background:#329632;
+	}
+	.noticeHead {
+	background:#FF6600;
+	}
+	.localHead {
+	background:#FFC81E;
+	}
+	.guestHead {
+	background:#0064FF;
+	}
+	
+	
+.info, .owner {
+	font:11px/120% "돋움";
+	color:#777;
+	margin-left: 8px;
+	padding-top: 6px;
+	margin-top: 5px;
+	}
+	.info a:link, .info a:visited, .owner a:link, .owner a:visited {color:#777; text-decoration:none;}
+	.info a:hover, .owner a:hover{color:#D93343; text-decoration:none;}
+
+.owner {
+	letter-spacing: -1px;
+	margin-right: 8px;
+	position: relative;
+	z-index: 1;
+	top: -24px;
+	text-align: right;
+}
+/* 리스트 & 검색 결과 설정*/
+.list_box {
+	margin: 10px;
+	}
+
+.rplist_box {
+	border-bottom:1px solid #eee;
+	margin: 10px;
+	}
+
+.list {
+	color:#777;
+	word-break:break-all;
+	padding-left:10px;
+	padding-bottom:4px;
+	background:url(images/bul.gif) no-repeat 0px 6px;
+	}
+	.list a:link, .list a:visited { color:#777; text-decoration:none;}
+	.list a:hover{ color:#D93343; text-decoration:none;}
+	
+.rplist {
+	color:#777;
+	padding-top:8px;
+	padding-left:10px;
+	word-break:break-all;
+	}
+	.rplist a:link, .rplist a:visited { color:#777; text-decoration:none;}
+	.rplist a:hover{ color:#D93343; text-decoration:none;}
+
+
+/* 위치로그 설정 */
+#location {
+	margin: 10px;
+}
+.location_spot {
+	color:#777;
+	margin-top: 4px;
+}	
+.location_info { color:#369; }	
+.location_info a:link, .location_info a:visited { color:#369; text-decoration:none;}
+.location_info a:hover{ color:#D93343; text-decoration:none;}
+
+
+/* 방명록 설정*/
+.guestbook_form_box {
+	font:11px tahoma;
+	color:#555;
+	border-bottom:1px solid #eee;
+	padding: 10px;
+		}
+
+
+/* 엔트리 설정*/
+.tag_box {
+	font :8pt Dotum;
+	color:#369;
+	background:url('images/entry_tag.gif') no-repeat left;
+	float: left;
+	padding-left: 32px;
+	padding-top: 2px;
+	}
+	.tag_box a:link, .tag_box a:visited { color:#369; text-decoration:none;}
+	.tag_box a:hover{ color:#D93343; text-decoration:none;}
+
+/* 트랙백, 코멘트 버튼 설정*/
+.tb_cmt_btn {
+	font:11px tahoma;
+	color:#369;
+	text-align:right;
+	float: right;
+	}
+	.tb_cmt_btn a:link, .tb_cmt_btn a:visited { color:#777; text-decoration:none;}
+	.tb_cmt_btn a:hover{ color:#D93343; text-decoration:none;}
+
+/* 트랙백 설정*/
+.tb_box {
+	padding-left:6px;
+	padding-right:6px;
+	background-color:#FAFAFA;
+	border-top:1px solid #eee;
+	border-bottom:1px solid #eee;
+	}
+
+.tb_address {
+	font: 11px tahoma;
+	color:#666;
+	text-align:center;
+	padding:12px;
+	clear: both;
+	background: #FAFAFA;
+	border-top: 1px solid #EEEEEE;
+	border-bottom: 1px solid #EEEEEE;
+	margin-bottom: 8px;
+	}
+
+.tb_list_box {
+	padding:10px;
+	border-top:1px dashed #ccc;
+	background-color:#FAFAFA;
+	}
+
+.tb_name {
+	font:11px Tahoma;
+	letter-spacing:0px;
+	padding-left:10px;
+	}
+
+.tb_title {
+	color:#444;
+	font-weight:bold;
+	}
+	.tb_title a:link, .tb_title a:visited { color:#444; text-decoration:none;}
+	.tb_title a:hover { color:#369; text-decoration:none;}
+
+.cmt_form_box { 
+		font:11px tahoma;
+		color:#555;
+		padding:10px;
+		background-color:#FAFAFA;
+		margin-bottom:20px;
+        border-bottom:1px solid #eee;
+		}
+.cmt_box {
+        border-top:1px solid #eee;
+        padding:10px;
+		background-color:#FAFAFA;
+		}
+
+/* 페이징 */
+.paging {	
+	text-align:center;
+	font:bold 12px Tahoma;	
+	height: 60px;
+	width: 100%;	
+	}
+	
+.paging a {
+	font:bold 1em Tahoma;
+	color:#323232;
+	text-decoration:none;
+	border:1px solid #FFFFFF;
+	padding: 9px 5px 9px 5px;
+	margin:6px 0 6px 0;
+	}
+	
+.paging .selected {
+	font:bold 1em Tahoma;
+	color:#B93C3C;
+	text-decoration:none;
+	}
+
+.paging a:hover {	
+	padding: 9px 5px 9px 5px;	
+	margin:6px 0 6px 0;			
+	border:1px solid #e0e1db;	
+	background:#FFEB46;
+	text-decoration:none;
+	}
+	
+.paging a:visited {
+	color:#282828;
+	}
+
+
+/* Daisy 추가 */
+.sidebar_title {
+	font: 12px Trebuchet MS, "돋움";
+	color: #828282;
+	cursor: pointer;
+	margin-top: 8px;
+	margin-bottom: 4px;
+	text-transform: uppercase;
+	padding: 2px;
+	text-align: left;
+	font-stretch: extra-expanded;
+	border-top: 1px dotted #828282;
+	padding-top: 15px;
+	margin-bottom: 5px;		
+}
+.sidebar_title1{
+	font: 12px Trebuchet MS, "돋움";
+	color: #828282;
+	margin-top: 8px;
+	margin-bottom: 4px;
+	text-transform: uppercase;
+	text-align: left;
+	font-stretch: extra-expanded;
+}
+  
+#side .blog_img {
+        border:1px solid #CCCCCC; 
+        padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+        width: 67px;
+	overflow: hidden;
+}
+.top_menu {
+	text-align: center;
+	font-size:10px;
+	color: #CCCCCC;	
+	text-transform: uppercase;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+.top_menu a:link, .top_menu a:visited {
+	color: #828282;
+	font: bold 11px Trebuchet, Arial, Verdana, Sans-serif;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+.f11 {
+	font-family:돋움,dotum;
+	font-size:11px;
+	letter-spacing:-1px;
+	}
+.gray3 {
+	color: #B4B4B4;
+	}
+.q_menu {
+	width: 17px;
+	float: left;
+	margin-top: 40px;
+}
+#footer {
+	font-size: 10px;
+	margin-top: 10px;
+	color: #999999;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.s_search {
+	margin-top: 8px;
+	margin-bottom: 8px;
+	text-align: center;
+}
+.article_bottom {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	height: 16px;
+	margin-bottom: 8px;
+}
+.td_info {
+        font: 12px 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+	padding-left: 4px;
+	padding-bottom: 20px;
+        color: #5588aa;
+}
+.notice {
+	padding-left: 4px;
+}
+#recentComments, #recentTrackbacks {
+	line-height: 130%;
+}
+.secret {
+	margin-top: -19px;
+	position: absolute;
+	margin-left: 540px;
+}
+#footer a {
+	color: #999999;
+	font-weight: bold;
+}
+#side .google {
+	font:11px/16px tahoma;
+	text-align: center;
+	padding: 4px;
+	word-spacing: -2px;
+	background: #f5f5f5;
+	margin-top: -4px;
+}
+#side .google a {
+	color: #00CC00;
+}
+#main .google {
+	text-align: center;
+	margin-bottom: 20px;
+	background: #FAFAFA;
+	padding: 2px;
+	margin-top: 20px;
+}
+#main .google a {
+	color: #336699;
+}
+.google form {
+	margin: 4px 0px 0px;
+}
+.google input {
+	background: #CCCCCC;
+	border-top: 1px solid #333333;
+	border-right: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	border-left: 1px solid #333333;
+}
+.google .submit {
+	border-color: #666666;
+	background: #555555;
+}
+.anniday {
+	font-size: 10px;
+	text-align: center;
+	color: #666666;
+}
+.mail {
+	text-align: center;
+	margin-top: 4px;
+}
+.side_button {
+	text-align: center;
+}
+
+/* Profile
+----------------------------------------------- */
+.profile-img {
+float: left;
+margin-top: 0;
+margin-right: 5px;
+margin-bottom: 5px;
+margin-left: 0;
+padding: 4px;
+border: 1px solid #cccccc;
+}
+.profile-data {
+margin:0;
+text-transform:uppercase;
+letter-spacing:.1em;
+font: normal normal 90% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+color: #46649B;
+font-weight: bold;
+line-height: 1.6em;
+}
+.profile-datablock {
+margin:.5em 0 .5em;
+}
+.profile-textblock {
+margin: 0.5em 0;
+line-height: 1.6em;
+}
+.profile-link {
+font: normal normal 80% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+text-transform: uppercase;
+letter-spacing: .1em;
+}
+
+/* More/Less 스타일 수정 */
+.moreless_fold { /* 보이기(More..)에 대한 스타일 */
+background:url(images/moreless_show.png) top left no-repeat;
+padding-left:20px;
+font:12px 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+color:#027;                                  /* 글자 색상 */
+text-decoration:underline;             /* 밑줄 */
+}
+.moreless_top { /* 감추기(Less..) 상단에 대한 스타일 */
+background:url(images/moreless_close.png) top left no-repeat;
+padding-left:20px;
+font:12px 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+color:#027;                                  /* 글자 색상 */
+text-decoration:underline;             /* 밑줄 */
+}
+.moreless_bottom { /* 감추기(Less..) 하단에 대한 스타일 */
+background:url(images/moreless_close.png) top left no-repeat;
+padding-left:20px;
+font:12px 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+color:#027;                                  /* 글자 색상 */
+text-decoration:underline;             /* 밑줄 */
+}
+
+

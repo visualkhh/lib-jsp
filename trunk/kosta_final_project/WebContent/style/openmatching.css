@@ -1,0 +1,104 @@
+@CHARSET "EUC-KR";
+/* 반드시 들어가야 하는 스타일 시작 */
+
+/***********      openmatching.jsp             *************/
+
+/* opensearch 전체 container */
+#openmatching-container {
+	width: 100%;
+	height: 100%;
+	margin: 0px auto 15px;
+	padding: 0px;
+	border: 0px dashed #bebebe;		/* 개발용 경계선 = 삭제할것 */
+}
+
+#searchoption-box {
+	width: 100%;
+	height: 100px;
+	margin: 0px;
+	padding: 0px;
+	border: 0px dashed #bebebe;	/* 개발용 경계선 = 삭제할것 */
+}
+
+#searchoption {
+}
+
+#result-container{
+	width: 100%;
+	min-height: 580px;		/* 수정할 것 */
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #bebebe;	/* 개발용 경계선 = 삭제할것 */
+}
+
+#starred-container {
+	width: 100%;
+	height: 120px;	
+	margin: 0px;
+	padding: 0px;
+	border-left: 1px solid #bebebe;	
+	border-right: 1px solid #bebebe;	
+	border-bottom: 1px solid #bebebe;	
+}
+
+
+#scroll-box {
+	width: 100%;
+	height: 40px;
+	margin: 0px;
+	padding: 0px;
+	border-top: 1px solid #bebebe;
+	border-left: 1px solid #bebebe;	
+	border-right: 1px solid #bebebe;
+	background-color: #D9E8F9;
+}
+
+#left-button {
+	float: left;
+	width: 29px;
+	height: 40px;
+	margin: 0px;
+	padding: 0px;
+	background-image: url("http://localhost:8081/final_project/images/openmatchings/pagel.png");
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+	z-index: 2;
+}
+
+#right-button {
+	float: right;
+	width: 29px;
+	height: 40px;
+	margin: 0px;
+	padding: 0px;
+	background-image: url("http://localhost:8081/final_project/images/openmatchings/pager.png");
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+	z-index: 2;
+}
+
+.title {
+	float: none;
+	position: absolute;
+	width: 150px;
+	height: 40px;
+	margin: 0px 1px 0px;
+	padding: 0px;
+	border-left: 1px dashed red;
+	border-right: 1px dashed red;
+	background-color: white;
+	z-index: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

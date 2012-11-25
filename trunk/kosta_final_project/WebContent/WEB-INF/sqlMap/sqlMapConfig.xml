@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+  <sqlMap resource="common/ibatis/Common.xml"/>
+  <sqlMap resource="layout/ibatis/Layout.xml"/>
+  <sqlMap resource="message/ibatis/Message.xml"/>
+  <sqlMap resource="openmatching/ibatis/Openmatching.xml"/>
+  <sqlMap resource="openpage/ibatis/Openpage.xml"/>
+  <sqlMap resource="opensearch/ibatis/Opensearch.xml"/>
+  <sqlMap resource="member/ibatis/Member.xml"/>
+</sqlMapConfig>

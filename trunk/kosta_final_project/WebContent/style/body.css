@@ -1,0 +1,195 @@
+@CHARSET "EUC-KR";
+/* 반드시 들어가야 하는 스타일 시작 */
+
+/***********      body.jsp             *************/
+
+/* body 전체 container */
+#body-container {
+	width: 960px;
+	margin: 15px auto 0px;
+	padding: 0px;
+	border: 0px dashed #bebebe;		/* 개발용 경계선 = 삭제할것 */
+	position: relative;
+}
+
+/* body의 좌측 container */
+#body-left {
+	float: left;
+	width: 220px;
+	border: 0px dashed #bebebe;		/* 개발용 경계선 = 삭제할것 */
+	z-index: 1;
+}
+
+/* body의 가운데 container */
+#body-center {
+	float: left;
+	width: 730px;
+	border: 0px dotted #bebebe;		/* 개발용 경계선 = 삭제할것 */
+}
+
+/***********      left-container        *************/
+
+/* 사진을 보여주는 photobox container */
+.photobox {
+	float: right;
+	width: 210px;
+	min-height: 40px;
+	margin: 0px;
+	padding: 0px 0px 15px;
+}
+
+/* 사진 img */
+.photobox img {
+	max-height: 400px;
+	max-width: 160px;
+	margin: 0px;
+	padding: 5px;
+	border: 1px dashed #bebebe;
+}
+
+/* 내용물을 담는 사이드 박스. 위, 우측에만 경계선이 있다.*/
+.sidebox {
+	float: right;
+	width: 210px;
+	min-height: 20px;
+	margin: 0px;
+	padding: 0px 0px 20px;
+	border-top: 1px solid #3F5F92;
+	border-right: 1px solid #bebebe;
+}
+
+.sidebox-end {
+	float: right;
+	width: 210px;
+	height: 1px;
+	margin: 0px;
+	padding: 0px 0px 20px;
+	border-top: 1px solid #3F5F92;
+}
+
+/* 사이드박스 안, 상단에 위치하는 제목을 담는 박스*/
+.sidebox-title {
+	width: 100%;
+	height: 25px;
+	margin: 0px;
+	padding: 0px;
+	background-color: #D6DAD9;
+	font-weight: bold;
+}
+
+/* sidebox-title 의 p태그*/
+.sidebox-title p {
+	margin: 0px;
+	padding: 5px 0px 0px 15px;
+	text-align: left;
+	 
+}
+
+/* 사이드바 안의 내용을 위한 subject, content*/
+.subject, .content {
+	width: 100%;
+	min-height: 5px;
+	margin: 0px;
+	padding: 0px;
+}
+
+/* subject 의 p 태그*/
+.subject p {
+	margin: 0px;
+	padding: 5px 0px 0px 15px;
+	text-align: left;
+	color: #787878;
+}
+
+/* content 의 p 태그*/
+.content p {
+	margin: 0px;
+	padding: 5px 0px 0px 30px;
+	text-align: left;
+}
+
+
+/***********      body-container        *************/
+.body-title {
+	float: left;
+	width: 100%;
+	height: 24px;			/* 메뉴탭 상자의 하단부 라인, 배경 라인과 안맞을 경우 수정할 것*/
+	margin: 0px;
+	padding: 0px;
+	text-align: left;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.body-title p{
+	margin: 0px;
+	padding: 0px 0px 0px 25px;
+}
+
+.body-menu {
+	clear: both;
+	width: 100%;
+	height: 30px;
+	margin: 0px 0px 50px;
+	padding: 0px 0px 0px 30px;
+	border: 0px solid red;		/* 개발용 경계선 = 삭제할것 */
+}
+
+.body-menu-box, .body-selected-menu-box {
+	float: left;
+	width: 90px;
+	height: 25px;	
+	margin: 5px 0px 10px 5px;
+	padding: 0px;	
+	text-align: center;
+	font-size: 12px;
+	cursor: pointer;	/* mouseover finger shape */
+	border: 1px solid #bebebe;
+	border-bottom: 0px;
+	font-weight: bold;
+}
+
+.body-selected-menu-box {
+	background-color: #FFF;
+	border-bottom: 1px solid #FFF; 
+}
+
+.body-menu-box:HOVER {
+	background-color: #FFB400;
+}
+
+.body-menu-box p, .body-selected-menu-box p {
+	margin: 0px;
+	padding: 5px;
+}
+
+#body-content-profile, #body-content-openpages, #body-content-openresume,
+#body-content-openproject, #body-content-messages {
+	float: left;
+	width: 600px;
+	height: 500px;
+	margin: 0px 0px 30px 15px;
+	padding: 0px;
+	 border: 0px dashed red;		/*개발용 경계선 = 삭제할것 */
+	display: none;
+}
+
+#body-content-profile {
+	display: block;
+}
+#body-content-openpages {
+}
+#body-content-openresume {
+}
+#body-content-openproject {
+}
+#body-content-messages {
+}
+
+
+
+
+
+
+
+
