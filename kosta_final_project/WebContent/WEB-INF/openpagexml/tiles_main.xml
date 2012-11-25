@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  tiles-definitions PUBLIC
+	"-//Aapche Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	
+	<!--  common 꺼상속받아서 사용한것  -->
+	<definition name="openpage_index" extends="commons_layout">
+		<put-attribute name="body" value="/openpages/testmain.jsp" />
+	</definition>
+	
+	<definition name="openpage_create" extends="commons_layout">
+		<put-attribute name="body" value="/openpages/openpage_administration/openpage_create.jsp" />
+	</definition>
+	
+	<definition name="openpage_list" extends="commons_layout">
+		<put-attribute name="body" value="/openpages/openpage_administration/openpage_list.jsp" />
+	</definition>
+	<!--  common 꺼상속받아서 사용한것  끝-->
+	
+	
+	
+	<!--  view 단가는 타일즈 -->
+	<definition name="openpage_view_index" extends="commons_layout">
+		<put-attribute name="body" value="/openpages/openpage_view/openpage_view.jsp" />
+	</definition>
+	<!--  view 단가는 타일즈끝  -->
+	
+	
+	
+	
+	
+	<!--  edit 단가는 타일즈  -->
+	<definition name="openpage_edit_template" template="/openpages/openpage_edit/openpage_edit_template.jsp">
+		<put-attribute name="header" value="/commons/header.jsp"/>
+		<put-attribute name="footer" value="/commons/footer.jsp"/>
+		<put-attribute name="left" value="/openpages/openpage_edit/openpage_edit_leftmenu.jsp"/>
+		<put-attribute name="body" value="/openpages/openpage_edit/openpage_edit_layout.jsp"/>
+	</definition>
+	
+	<definition name="openpage_edit_layout" extends="openpage_edit_template">
+		<put-attribute name="body" value="/openpages/openpage_edit/openpage_edit_layout.jsp"/>
+	</definition>
+	
+	
+	<definition name="openpage_edit_pages" extends="openpage_edit_template">
+		<put-attribute name="body" value="/openpages/openpage_edit/openpage_edit_pages.jsp"/>
+	</definition>
+	
+	<definition name="openpage_edit_general" extends="openpage_edit_template">
+		<put-attribute name="body" value="/openpages/openpage_edit/openpage_edit_general.jsp"/>
+	</definition>
+
+	
+	<definition name="openpage_edit_color" extends="openpage_edit_template">
+		<put-attribute name="body" value="/openpages/openpage_edit/openpage_edit_color.jsp"/>
+	</definition>
+	
+
+	
+	
+<!--  edit 단가는 타일즈 끝 -->
+
+
+
+
+	<!-- 	
+		<definition name="list_page" extends="commons_layout">
+		<put-attribute name="body" value="/commons/test.jsp"/>	
+		</definition>
+		
+		<definition name="insert_page" extends="commons_layout">
+		<put-attribute name="body" value="/commons/test.jsp"/>	
+		</definition>
+		
+		<definition name="detail" extends="commons_layout">	
+		<put-attribute name="body" value="/commons/test.jsp"/>
+		</definition>
+		
+		<definition name="edit_page" extends="commons_layout">	
+		<put-attribute name="body" value="/commons/test.jsp"/>
+		</definition>
+	-->
+
+
+</tiles-definitions>
+
+
+
+
+
+
+
+
+

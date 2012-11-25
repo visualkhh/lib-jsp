@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="OpenPageListDTO">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	
+	<typeAlias alias="OpenPageListDTO" type="openpage.model.OpenPageListDTO" />
+ <typeAlias alias="OpenPageSettingDTO" type="openpage.model.OpenPageSettingDTO" /> 	
+ <typeAlias alias="OpenPage_PageListDTO" type="openpage.model.OpenPage_PageListDTO" /> 	
+<typeAlias alias="OpenPage_PortFolioDTO" type="openpage.model.OpenPage_PortFolioDTO" />   	
+<typeAlias alias="OpenPage_BoardDTO" type="openpage.model.OpenPage_BoardDTO" />   	
+ <typeAlias alias="ResumeDTO" type="member.model.ResumeDTO" /> 	
+
+
+	<select id="openpage_selectopenpagelist" parameterClass="int" resultClass="OpenPageListDTO">
+		 select * from openpagelist where user_number =#user_number#
+	</select>
+
+	<select id="resume_load" parameterClass="int" resultClass="ResumeDTO">
+		 select * from resume where user_number =#user_number#
+	</select>
+
+	<select id="openpage_portfolioload" parameterClass="OpenPage_PageListDTO" resultClass="OpenPage_PortFolioDTO">
+		 select * from portfolio where openpage_url=#openpage_url# and page_name=#page_name#
+	</select>
+	<select id="openpage_boardload" parameterClass="OpenPage_PageListDTO" resultClass="OpenPage_BoardDTO">
+		 select * from board where openpage_url=#openpage_url# and page_name=#page_name#
+	</select>
+
+
+
+	<insert id="openpage_insert" parameterClass="OpenPageListDTO" >
+		 insert into openpagelist 
+	      (openpage_number,user_number,openpage_url,openpage_type,openpage_description,openpage_name)
+	values(openpage_seq.nextval,#user_number#,#openpage_url#,#openpage_type#,#openpage_description#,#openpage_name#)
+	</insert>
+	<insert id="openpage_insert_before_setting" parameterClass="OpenPageListDTO" >
+		 insert into setting 
+		 (setting_bgtop,setting_bgcontent,setting_bgmenu,setting_padding,setting_title,setting_mode,setting_menu,setting_main,openpage_url)
+		values(#setting_theme#,#setting_theme#,#setting_theme#,100,'title','A','menu','index',#openpage_url#)
+	</insert>
+	 <insert id="openpage_insert_before_pagelist" parameterClass="OpenPageListDTO" >
+		 insert into pagelist
+		 (openpage_url,page_name,page_type,page_info,page_check)
+		values(#openpage_url#,'index','P','welcome','true')
+	</insert>
+	
+	 <insert id="openpage_pagessave" parameterClass="OpenPage_PageListDTO" >
+		 insert into pagelist(openpage_url,page_name,page_type,page_info,page_check)
+		values(#openpage_url#,#page_name#,#page_type#,#page_name#,#page_check#)
+	</insert>
+	 <insert id="openpage_portfoliosave" parameterClass="OpenPage_PageListDTO" >
+		 insert into portfolio(PORTFOLIO_PERIOD_START, PORTFOLIO_PERIOD_END,openpage_url,page_name)
+		values(sysdate,sysdate,#openpage_url#,#page_name#)
+	</insert>
+	
+	 <insert id="openpage_boardsave" parameterClass="OpenPage_BoardDTO" >
+		 insert into board(openpage_url,page_name,board_writer,board_info,board_regdate)
+		values(#openpage_url#,#page_name#,#board_writer#,#board_info#,sysdate) 
+	</insert>
+	
+	
+	<delete id="openpage_delete_before_reference" parameterClass="String">
+	delete from reference where openpage_url =#openpage_url#
+	</delete>
+	<delete id="openpage_delete_before_portfolio" parameterClass="String">
+	delete from portfolio where openpage_url =#openpage_url#
+	</delete>
+	<delete id="openpage_delete_before_pagelist" parameterClass="String">
+	delete from pagelist where openpage_url =#openpage_url#
+	</delete>
+	<delete id="openpage_delete_before_board" parameterClass="String">
+	delete from board where openpage_url =#openpage_url#
+	</delete>
+	<delete id="openpage_delete_before_setting" parameterClass="String">
+	delete from setting where openpage_url =#openpage_url#
+	</delete>
+	<delete id="openpage_delete" parameterClass="String">
+		delete from openpagelist where openpage_url =#openpage_url#
+	</delete>
+	
+	<delete id="openpage_pagesdelete" parameterClass="OpenPage_PageListDTO">
+	delete from pagelist where page_name=#page_name# and openpage_url=#openpage_url#
+	</delete>
+	<delete id="openpage_portfoliodelete" parameterClass="OpenPage_PageListDTO">
+	delete from portfolio where page_name=#page_name# and openpage_url=#openpage_url#
+	</delete>
+	
+	
+	<select id="openpage_layoutload" parameterClass="String" resultClass="OpenPageSettingDTO">
+		 select * from setting where openpage_url=#openpage_url#
+	</select>
+	<select id="openpage_generalload" parameterClass="String" resultClass="OpenPageSettingDTO">
+		 select * from openpagelist, setting where openpagelist.openpage_url=#openpage_url#
+			and setting.openpage_url=#openpage_url#
+	</select>
+	
+	
+	
+	<select id="openpage_pagesload" parameterClass="String" resultClass="OpenPage_PageListDTO">
+	select * from pagelist where openpage_url=#openpage_url#
+	</select>
+	<select id="openpage_pageload"  parameterClass="OpenPage_PageListDTO" resultClass="OpenPage_PageListDTO">
+	select * from pagelist where openpage_url=#openpage_url# and page_name=#page_name#
+	</select>
+	
+
+
+	
+	
+	
+	<update id="openpage_layoutsave" parameterClass="OpenPageSettingDTO">
+		 update setting set  setting_padding=#setting_padding# ,setting_mode=#setting_mode# where openpage_url=#openpage_url#
+	</update> 
+	<update id="openpage_bgsave" parameterClass="OpenPageSettingDTO">
+		 update setting set  setting_bgtop=#setting_bgtop# ,setting_bgmenu=#setting_bgmenu# , setting_bgcontent=#setting_bgcontent# where openpage_url=#openpage_url#
+	</update> 
+	 
+	<update id="openpage_generalsave" parameterClass="OpenPageSettingDTO">
+		 update   openpagelist set  openpage_description=#openpage_description# ,openpage_name=#openpage_name# where openpage_url=#openpage_url#
+	</update> 
+	
+	<update id="openpage_pagesupdate" parameterClass="OpenPage_PageListDTO">
+		 update  pagelist set page_name=#page_name# ,page_check=#page_check# where openpage_url=#openpage_url# and page_name=#page_nameold#
+	</update> 
+	<update id="openpage_pagesinfoupdate" parameterClass="OpenPage_PageListDTO">
+		 update  pagelist set page_name=#page_name#, page_info=#page_info# where openpage_url=#openpage_url# and page_name=#page_name#
+	</update> 
+	
+	<update id="openpage_titleinfoupdate" parameterClass="OpenPageSettingDTO">
+		 update  setting set setting_title=#setting_title# where openpage_url=#openpage_url#
+	</update> 
+	<update id="openpage_menuinfoupdate" parameterClass="OpenPageSettingDTO">
+		 update  setting set setting_menu=#setting_menu# where openpage_url=#openpage_url# 
+	</update> 
+
+	 <update id="openpage_portfolioinfoupdate" parameterClass="OpenPage_PortFolioDTO">
+		 update  portfolio set portfolio_title=#portfolio_title#, portfolio_position=#portfolio_position#,portfolio_period_start=#portfolio_period_start#,portfolio_period_end=#portfolio_period_end#,portfolio_info=#portfolio_info# where openpage_url=#openpage_url# and page_name=#page_name# 
+	</update>
+
+
+	 
+<!-- 
+	<insert id="insertBoard" parameterClass="BoardVO">
+		insert into board2
+		(seq,title,content,writer,regdate,password,hitcount)
+		values
+		(board_seq.nextval, #title# , #content#
+		,#writer#,SYSDATE,#password#,0)
+	</insert>
+
+	<select id="searchBoard" parameterClass="BoardVO" resultClass="BoardVO">
+		select * from board2
+		<dynamic prepend=" where ">
+			<iterate property="areas" conjunction="or" open="(" close=")">
+				$areas[]$ like '%$searchkey$%' -->
+                      <!-- #searchkey#으로해서 사용가능하나. %양옆에% 해줘야되기에   위처럼썼다.
+                      하지만 원데이터 입력시. %내용% 이렇게 저장하면  #searchkey#로사용가능하다  -->
+                  <!-- </iterate>
+              </dynamic>
+  </select>
+
+	<delete id="deleteBoard" parameterClass="int">
+    delete from Board2 where seq=#seq#
+  </delete>
+
+	<select id="boardDetail" parameterClass="int" resultClass="BoardVO">
+		select * from board2 where seq = #seq# 
+	</select>
+	
+	<update id="updateBoard" parameterClass="BoardVO" >
+	update board2 set title=#title#,content=#content# where seq=#seq#
+	</update> -->   
+
+</sqlMap>
+<!-- 
+<sqlMap namespace="OpenpageSettingDTO">
+	
+	
+</sqlMap>
+ -->
+
+
+
+
+
+
+
+

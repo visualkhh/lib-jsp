@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  tiles-definitions PUBLIC
+	"-//Aapche Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="login_layout" template="/members/template.jsp">		
+		<put-attribute name="body" value="/members/login.jsp"/>
+	</definition>
+
+	<definition name="move_select_type" extends="login_layout">
+		<put-attribute name="body" value="/members/select_member_type.jsp" />
+	</definition>
+	<!--
+	<definition name="move_login_page" extends="commons_layout">
+		<put-attribute name="body" value="/members/login_page.jsp" />
+	</definition>
+	-->	
+	
+	<definition name="resume_write_page" extends="commons_layout">
+		<put-attribute name="body" value="/members/resume_write_page.jsp" />
+	</definition>
+	
+	<definition name="resume_read_page" extends="commons_layout">
+		<put-attribute name="body" value="/members/resume_read_page.jsp" />
+	</definition>
+	
+	
+	
+
+</tiles-definitions>
+
+
+
+
+
+
+
+
+

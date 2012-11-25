@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  tiles-definitions PUBLIC
+	"-//Aapche Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="openmatching_list" extends="commons_layout">
+		<put-attribute name="header" value="/commons/openmatching_header.jsp"/>
+		<put-attribute name="body" value="/openmatchings/openmatching_list.jsp" />
+	</definition>
+	
+	<definition name="openmatching_write" extends="commons_layout">
+		<put-attribute name="header" value="/commons/openmatching_header.jsp"/>
+		<put-attribute name="body" value="/openmatchings/openmatching_write.jsp" />
+	</definition>
+	
+	<definition name="openmatching_read" extends="commons_layout">
+		<put-attribute name="header" value="/commons/openmatching_header.jsp"/>
+		<put-attribute name="body" value="/openmatchings/openmatching_read.jsp" />
+	</definition>
+	
+	<definition name="openmatching_result" extends="commons_layout">
+		<put-attribute name="header" value="/commons/openmatching_header.jsp"/>
+		<put-attribute name="body" value="/openmatchings/openmatching_result.jsp" />
+	</definition>
+
+</tiles-definitions>
+
+
+
+
+
+
+
+
+

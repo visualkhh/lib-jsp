@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MemberDTO">
+	<typeAlias alias="MemberDTO" type="member.model.MemberDTO"/>
+	<typeAlias alias="ResumeDTO" type="member.model.ResumeDTO"/>
+	<typeAlias alias="OpenPageListDTO" type="openpage.model.OpenPageListDTO"/>
+	
+	<insert id="insert_user" parameterClass="MemberDTO">
+		insert into userlist(user_name, user_jumin1, user_jumin2, user_id, 
+		user_pass, user_phone, user_email, user_number) values(
+		#user_name#, #user_jumin1#, #user_jumin2#, #user_id#, #user_pass#, 
+		#user_phone#, #user_email#, user_seq.nextval)		
+	</insert>
+	
+	<insert id="insert_company" parameterClass="MemberDTO">
+		insert into company(company_name, company_phone, company_fax, company_email,
+		company_licensenumber, company_id, company_pass, company_info, company_history,
+		user_number) values(#company_name#, #company_phone#, #company_fax#, #company_email#,
+		#company_licensenumber#, #company_id#, #company_pass#,
+		#company_info#, #company_history#, user_seq.nextval)		
+	</insert>
+	
+	<insert id="insert_resume" parameterClass="ResumeDTO">
+		insert into resume(user_number, resume_number, resume_regdate
+		, resume_name_kor, resume_name_eng, resume_name_chc, resume_salary
+		, resume_position, resume_address, resume_phone, resume_email, resume_school1
+		, resume_previous1, resume_specialty1, resume_location1, resume_credit1, resume_school2
+		, resume_previous2, resume_specialty2, resume_location2, resume_credit2, resume_school3
+		, resume_previous3, resume_specialty3, resume_location3, resume_credit3, resume_mili_trench
+		, resume_mili_pre, resume_certificate1, resume_acquisition1, resume_publish1, resume_certificate2
+		, resume_acquisition2, resume_publish2, resume_certificate3, resume_acquisition3, resume_publish3	
+		, resume_edu1, resume_edu_pre1, resume_edu_ins1, resume_edu_note1, resume_edu2, resume_edu_pre2
+		, resume_edu_ins2, resume_edu_note2, resume_edu3, resume_edu_pre3, resume_edu_ins3, resume_edu_note3
+		, resume_care_name1, resume_care_pre1, resume_care_busi1, resume_care_name2, resume_care_pre2
+		, resume_care_busi2, resume_care_name3, resume_care_pre3, resume_care_busi3, resume_sight
+		, resume_blood, resume_religion, resume_check, resume_photo, resume_jumin, resume_mili_class
+		, resume_mili_type, resume_foreign1, resume_foreign2, resume_foreign3, resume_ability1, resume_ability2
+		, resume_ability3, resume_care_retirement1, resume_care_retirement2, resume_care_retirement3
+		, resume_family, resume_call, resume_foreigntest1, resume_foreigresult1, resume_foreigntest2
+		, resume_foreigresult2, resume_foreigntest3, resume_foreigresult3, resume_age, resume_nationality
+		, resume_programingname1, resume_programingability1, resume_programingname2, resume_programingability2
+		, resume_programingname3, resume_programingability3, radio)
+		
+		values(#user_number#, resume_seq.nextval, sysdate
+		, #resume_name_kor#, #resume_name_eng#, #resume_name_chc#, #resume_salary#
+		, #resume_position#, #resume_address#, #resume_phone#, #resume_email#, #resume_school1#
+		, #resume_previous1#, #resume_specialty1#, #resume_location1#, #resume_credit1#, #resume_school2#
+		, #resume_previous2#, #resume_specialty2#, #resume_location2#, #resume_credit2#, #resume_school3#
+		, #resume_previous3#, #resume_specialty3#, #resume_location3#, #resume_credit3#, #resume_mili_trench#
+		, #resume_mili_pre#, #resume_certificate1#, #resume_acquisition1#, #resume_publish1#, #resume_certificate2#
+		, #resume_acquisition2#, #resume_publish2#, #resume_certificate3#, #resume_acquisition3#, #resume_publish3#	
+		, #resume_edu1#, #resume_edu_pre1#, #resume_edu_ins1#, #resume_edu_note1#, #resume_edu2#, #resume_edu_pre2#
+		, #resume_edu_ins2#, #resume_edu_note2#, #resume_edu3#, #resume_edu_pre3#, #resume_edu_ins3#, #resume_edu_note3#
+		, #resume_care_name1#, #resume_care_pre1#, #resume_care_busi1#, #resume_care_name2#, #resume_care_pre2#
+		, #resume_care_busi2#, #resume_care_name3#, #resume_care_pre3#, #resume_care_busi3#, #resume_sight#
+		, #resume_blood#, #resume_religion#, #resume_check#, #resume_photo#, #resume_jumin#, #resume_mili_class#
+		, #resume_mili_type#, #resume_foreign1#, #resume_foreign2#, #resume_foreign3#, #resume_ability1#, #resume_ability2#
+		, #resume_ability3#, #resume_care_retirement1#, #resume_care_retirement2#, #resume_care_retirement3#
+		, #resume_family#, #resume_call#, #resume_foreigntest1#, #resume_foreigresult1#, #resume_foreigntest2#
+		, #resume_foreigresult2#, #resume_foreigntest3#, #resume_foreigresult3#, #resume_age#, #resume_nationality#
+		, #resume_programingname1#, #resume_programingability1#, #resume_programingname2#, #resume_programingability2#
+		, #resume_programingname3#, #resume_programingability3#, #radio#		
+		)	
+	</insert>
+	
+	<select id="read_resume" parameterClass="int" resultClass="ResumeDTO">
+		select * from resume where user_number = #user_number#
+	</select>
+	
+	<select id="get_usernumber" parameterClass="String" resultClass="MemberDTO">
+		select user_number from userlist where user_jumin2 = #user_jumin2#
+	</select>
+	 	
+	<select id="get_companynumber" parameterClass="String" resultClass="MemberDTO">
+		select user_number from company where company_licensenumber = #company_licensenumber#
+	</select>
+	
+	<select id="get_usernumber_id" parameterClass="String" resultClass="MemberDTO">
+		select user_number, user_name from userlist where user_id = #user_id#
+	</select>
+	 	
+	<select id="get_companynumber_id" parameterClass="String" resultClass="MemberDTO">
+		select user_number, company_name from company where company_id = #company_id#
+	</select>
+	
+	<select id="check_jumin" parameterClass="String" resultClass="int">
+		select count(*) from userlist where user_jumin2 = #jumin#
+	</select>
+	
+	<select id="check_license" parameterClass="String" resultClass="int">
+		select count(*) from company where company_licensenumber = #licensenumber#
+	</select>
+	
+	<select id="check_login_user" parameterClass="MemberDTO" resultClass="int">
+		select count(*) from userlist where user_id = #user_id# and user_pass = #user_pass#
+	</select>
+	
+	<select id="check_login_company" parameterClass="MemberDTO" resultClass="int">
+		select count(*) from company where company_id = #company_id# and company_pass = #company_pass#
+	</select>
+	
+	<select id="openpage_info" parameterClass="int" resultClass="OpenPageListDTO">
+		select openpage_number, openpage_url from openpagelist where user_number = #user_number#
+	</select>
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
+
+

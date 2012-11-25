@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flow="http://www.springframework.org/schema/webflow-config"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+  http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-1.0.xsd
+  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+		
+	<bean id="GeneralDAO" class="general.model.GeneralDAO">
+		<property name="myJdbcTemplate" ref="ibatisJdbcTemplate"/>
+		<property name="imsi_myJdbcTemplate" ref="springJdbcTemplate"/>
+	</bean>
+	
+		
+	<!-- 어노테이션 컨트롤러 -->
+	<bean id="generalAnnotationController" class="general.controller.GeneralAnnotationController">
+		<property name="generalDao" ref="GeneralDAO"/>
+	</bean>	
+			
+
+	<!--  Fileupload  multipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+		
+
+	<!--  다운로드 하기 위한 Resolver view
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+	-->
+
+	<!--  일반 jsp를 위한 Resolver  view
+	<bean id="download" class="springapp.board.DownloadView"/>
+	<bean id="downloadController" class="springapp.board.DownloadController"/>
+ 	-->	
+</beans>

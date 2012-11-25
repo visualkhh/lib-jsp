@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd" >
+
+ 
+ 	<!-- about Tiles -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+	</bean>	
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles2def.xml</value>
+				<value>/WEB-INF/commonxml/tiles_main.xml</value>
+				<value>/WEB-INF/openpagexml/tiles_main.xml</value>
+				<value>/WEB-INF/opensearchxml/tiles_main.xml</value>
+				<value>/WEB-INF/memberxml/tiles_main.xml</value>
+				<value>/WEB-INF/openmatchingxml/tiles_main.xml</value>
+				<value>/WEB-INF/messagexml/tiles_main.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	
+	
+	
+	<!-- Validator about	
+	<bean id="boardCommandValidator" class="spring.controller.BoardCommandValidator"/>
+	-->
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>common.messages.validation</value>
+				<value>layout.messages.validation</value>
+				<value>message.messages.validation</value>
+				<value>openmatching.messages.validation</value>
+				<value>openpage.messages.validation</value>
+				<value>opensearch.messages.validation</value>				
+			</list>
+		</property>
+	</bean>
+	
+	 
+   
+  <!-- access to DB -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jdbc/oracle"/>
+		<property name="resourceRef" value="true"/>
+	</bean>
+	
+	<bean id="springJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>	
+	
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="/WEB-INF/sqlMap/sqlMapConfig.xml"/>
+	</bean>
+	
+	<bean id="ibatisJdbcTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+
+</beans>
+  
