@@ -1,0 +1,15 @@
+@CHARSET "EUC-KR";
+.title{
+	font-size: 40px;
+	font-style: italic;
+	color:black;
+}
+
+
+.content{
+	border-color: black;
+	border-style: solid;
+	margin: 20px;
+	float: left;
+	padding: 20px
+}
