@@ -12,3 +12,78 @@
           <!--  NIO 프로토컬, COMET 쓰는방법 -->
           <connector connectiontimeout="20000" port="8000" protocol="org.apache.coyote.http11.Http11NioProtocol" useComet="true" redirectPort="8443"/>
  
+ 
+ 
+ <Context docBase="3.24" path="/3.24"  
+ 에 path가 context path임.
+ 
+ 
+ 
+ 
+ 
+ 
+  <Context path="" docBase="C:/WEBROOT/bizpartner" debug="0" reloadable="true"  crossContext="true">
+			<!-- ==================================================
+               - MySql JNDI
+                 ==================================================
+            -->            
+            <Resource name="mysqlDB" auth="Container" type="javax.sql.DataSource"/>
+            <ResourceParams name="mysqlDB">             
+                <parameter>
+                    <name>url</name>
+                    <value>jdbc:mysql://mysql_ip:3306/company_domain</value>                    
+                </parameter>                
+                <parameter>
+                    <name>driverClassName</name>
+                    <value>org.gjt.mm.mysql.Driver</value>
+                </parameter>
+                <parameter>
+                    <name>username</name>
+                    <value>bpdev</value>
+                </parameter>
+                <parameter>
+                    <name>password</name>
+                    <value>javadev</value>
+                </parameter>
+                <parameter>
+					 <name>factory</name>
+					  <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
+				</parameter>
+					
+				<!-- Maximum number of dB connections in pool. Make sure you
+					  configure your mysqld max_connections large enough to handle
+					 all of your db connections. Set to 0 for no limit.
+				-->
+				<parameter>
+					 <name>maxActive</name>
+					 <value>100</value>
+				</parameter>
+					
+				<!-- Maximum number of idle dB connections to retain in pool.
+					  Set to -1 for no limit.  See also the DBCP documentation on this
+					  and the minEvictableIdleTimeMillis configuration parameter.
+				-->
+				<parameter>
+					 <name>maxIdle</name>
+				     <value>30</value>
+				</parameter>
+					
+				<!-- Maximum time to wait for a dB connection to become available
+					 in ms, in this example 10 seconds. An Exception is thrown if
+					 this timeout is exceeded.  Set to -1 to wait indefinitely.
+				-->
+				<parameter>
+					 <name>maxWait</name>
+					 <value>10000</value>
+				</parameter>
+			</ResourceParams>
+        </Context>
+		<Context path="/manager" docBase="${catalina.home}/server/webapps/manager"
+        debug="0" privileged="true">
+		  <!-- Link to the user database we will get roles from -->
+		  <ResourceLink name="users" global="UserDatabase"
+						type="org.apache.catalina.UserDatabase"/>
+		</Context>
+        <Logger className="org.apache.catalina.logger.FileLogger"
+                 directory="logs"  prefix="company_domain.shinhan.com_log." suffix=".txt"
+            timestamp="true"/>
