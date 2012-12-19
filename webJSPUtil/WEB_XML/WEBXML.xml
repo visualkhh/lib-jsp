@@ -67,7 +67,7 @@ org.apache.catalina.servlets.InvokerServlet
   
   
   <!-- 리스너 -->
-    <listener>
+  <listener>
     <listener-class>com.web.listener.testlistener</listener-class>
   </listener>
   
