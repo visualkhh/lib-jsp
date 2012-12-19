@@ -2,14 +2,15 @@ package khh.web.jsp.framework.commet;
 
 import org.apache.catalina.CometEvent;
 
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
+import khh.std.adapter.AdapterMap;
 import khh.web.jsp.framework.commet.longpolling.Function;
 
 
 public class FunctionHHKHH extends Function{
 
 	@Override
-	public String makeResult(Adapter_Std<String, Object> set) {
+	public AdapterMap<String, Object> makeResult(AdapterMap<String, Object> set) {
 		String str=null;
 		try {
 			str = "gunhhk : "+(String) set.get("gun_hhk");
@@ -22,7 +23,7 @@ public class FunctionHHKHH extends Function{
 	}
 
 	@Override
-	public void finish(CometEvent event, Adapter_Std<String, Object> result)
+	public void finish(CometEvent event, AdapterMap<String, Object> result)
 			throws Exception {
 		// TODO Auto-generated method stub
 		

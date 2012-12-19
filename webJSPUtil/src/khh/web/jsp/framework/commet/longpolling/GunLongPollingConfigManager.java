@@ -12,17 +12,17 @@ import khh.db.connection.pool.ConnectionMultiPool;
 import khh.db.terminal.DBTerminal;
 import khh.debug.LogK;
 import khh.reflection.ReflectionUtil;
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 import khh.web.jsp.db.util.ConnectionWebUtil;
 import khh.xml.XMLparser;
 
 import org.apache.catalina.CometEvent;
 
 public class GunLongPollingConfigManager {
-	private Adapter_Std<String,File> configlist=null;
-	private Adapter_Std<CometEvent,Function> pairlist=null;
+	private AdapterMap<String,File> configlist=null;
+	private AdapterMap<CometEvent,Function> pairlist=null;
 	private ArrayList<Gun> gunlist=null;
-	private Adapter_Std<String,View> viewlist=null;
+	private AdapterMap<String,View> viewlist=null;
 	private ArrayList<Function> functionlist=null;
 	private LogK log = LogK.getInstance();
 	
@@ -37,11 +37,11 @@ public class GunLongPollingConfigManager {
    
 	//private ExecutorService executor = null;
 	private GunLongPollingConfigManager(){
-		configlist				= new Adapter_Std<String,File>();
+		configlist				= new AdapterMap<String,File>();
 		gunlist					= new ArrayList<Gun>();
-		viewlist				= new Adapter_Std<String,View>();
+		viewlist				= new AdapterMap<String,View>();
 		functionlist			= new ArrayList<Function>();
-		pairlist 				= new Adapter_Std<CometEvent,Function> ();
+		pairlist 				= new AdapterMap<CometEvent,Function> ();
 		
 		//executor				=	Executors.newFixedThreadPool(10);
 	}
@@ -84,7 +84,7 @@ public class GunLongPollingConfigManager {
 	public Function getPairFunction(CometEvent cometEvent) throws Exception{
 			return pairlist.get(cometEvent);
 	}
-	public Adapter_Std<CometEvent,Function> getPairFunctionList() throws Exception{
+	public AdapterMap<CometEvent,Function> getPairFunctionList() throws Exception{
 		return pairlist;
 	}
 	
@@ -205,6 +205,7 @@ public class GunLongPollingConfigManager {
 							String gunclasspath = parser.getString(gunpath+"["+k+"]/@class");
 							int guninterval = parser.getInt(gunpath+"["+k+"]/@interval");
 							Boolean gunpair = parser.getBoolean(gunpath+"["+k+"]/@pair");
+							log.debug("gunclasspath:"+gunclasspath);
 							gun = (Gun) ReflectionUtil.newClass(gunclasspath);
 							gun.setNodeid(gunid);
 							//gun.setPair(pair==null?false:gunpair);//의심.
@@ -354,7 +355,7 @@ public class GunLongPollingConfigManager {
 	}
 
 
-	public Adapter_Std<String,View> getViewlist() {
+	public AdapterMap<String,View> getViewlist() {
 		return viewlist;
 	}
 

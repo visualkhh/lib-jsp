@@ -1,6 +1,6 @@
 package khh.web.jsp.framework.fluid;
 
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 
 
 public class Template {
@@ -8,7 +8,7 @@ public class Template {
 	private String nodeid;
 	private String value							= null;
 	private String extendcategory					= null;
-	private Adapter_Std<String,View> viewlist		= new Adapter_Std<String,View>();
+	private AdapterMap<String,View> viewlist		= new AdapterMap<String,View>();
 //	private LogK log = LogK.getInstance();
 	public String getNodeid() {
 		return nodeid;
@@ -34,10 +34,10 @@ public class Template {
 	public View getView(String id) throws Exception{
 		return viewlist.get(id);
 	}
-	public Adapter_Std<String, View> getViewlist() {
+	public AdapterMap<String, View> getViewlist() {
 		return viewlist;
 	}
-	public void setViewlist(Adapter_Std<String, View> viewlist) {
+	public void setViewlist(AdapterMap<String, View> viewlist) {
 		this.viewlist = viewlist;
 	}
 	public String getViewValue(String id) throws Exception{

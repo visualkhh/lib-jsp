@@ -9,9 +9,7 @@ package khh.web.jsp.framework.commet.longpolling;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,6 +49,7 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	
 	public GunLongPolling() {
         super();
+        System.out.println("뭐야씨발");
     }
     
     @Override

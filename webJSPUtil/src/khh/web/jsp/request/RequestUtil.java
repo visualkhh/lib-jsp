@@ -1,7 +1,6 @@
 package khh.web.jsp.request;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -10,14 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 import khh.string.util.StringUtil;
 
 public class RequestUtil {
 
 	
-public static Adapter_Std<String, Object> getParameters(HttpServletRequest request) throws Exception{
-	 Adapter_Std<String, Object> adapter = new Adapter_Std<String, Object>();
+public static AdapterMap<String, Object> getParameters(HttpServletRequest request) throws Exception{
+	AdapterMap<String, Object> adapter = new AdapterMap<String, Object>();
 	 	Map map  = request.getParameterMap();
 	 	Set keyset = map.keySet();
 	 	Iterator i = keyset.iterator();

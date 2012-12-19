@@ -6,12 +6,12 @@ import javax.servlet.ServletConfig;
 
 import khh.conversion.util.ConversionUtil;
 import khh.debug.LogK;
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 import khh.xml.XMLparser;
 
 public class FluidConfigManager {
-	private Adapter_Std<String,File> configfile			= null;
-	private Adapter_Std<String,Template> templatelist	= null;
+	private AdapterMap<String,File> configfile			= null;
+	private AdapterMap<String,Template> templatelist	= null;
 	private LogK log = LogK.getInstance();
 	private ServletConfig servletConfig 				= null;
 	
@@ -23,8 +23,8 @@ public class FluidConfigManager {
 //	}
 
 	public FluidConfigManager() {
-		configfile = new Adapter_Std<String, File>();
-		templatelist = new Adapter_Std<String, Template>();
+		configfile = new AdapterMap<String, File>();
+		templatelist = new AdapterMap<String, Template>();
 	}
 
 	public void setting() {
@@ -104,8 +104,8 @@ public class FluidConfigManager {
 						template.setValue(supertemplate.getValue());
 					}
 					
-					Adapter_Std<String, View> superviewlist = supertemplate.getViewlist();
-					Adapter_Std<String, View> childviewlist = template.getViewlist();
+					AdapterMap<String, View> superviewlist = supertemplate.getViewlist();
+					AdapterMap<String, View> childviewlist = template.getViewlist();
 					childviewlist = ConversionUtil.merge(superviewlist, childviewlist);
 					template.setViewlist(childviewlist);
 					
