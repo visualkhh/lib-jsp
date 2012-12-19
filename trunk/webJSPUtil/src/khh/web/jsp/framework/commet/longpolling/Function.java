@@ -1,7 +1,6 @@
 package khh.web.jsp.framework.commet.longpolling;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import khh.debug.LogK;
 import khh.file.util.FileUtil;
 import khh.interfaces.StrEvent_Interface;
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 import khh.string.util.StringUtil;
 import khh.web.UtilWeb;
 import khh.web.jsp.request.RequestUtil;
@@ -27,7 +26,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	private ArrayList<Gun> gunlist 					= new ArrayList<Gun>();
 	private ArrayList<View> viewlist 				= new ArrayList<View>();
 //	private HashMap<String,Object> rs = new HashMap<String, Object>()
-	private Adapter_Std<String, Object> resultlist	= new Adapter_Std<String, Object>();
+	private AdapterMap<String, Object> resultlist	= new AdapterMap<String, Object>();
 	private ArrayList<CometEvent> cometEventList	= new ArrayList<CometEvent>();
 	private boolean broadcast						= false;
 	private boolean standby							= false;
@@ -47,7 +46,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 //				if(getNodeid().equals("fnc_settwitter"))
 //				System.out.println("function "+this.getNodeid()+ "      "+cometEventList.size()+"   "+isStandby() +"      "+gunlist.size()+"     "+resultlist.size()+"    "+ isPair());
 				if (cometEventList.size() > 0 && isStandby() && gunlist.size() > 0 && resultlist.size() > 0 && gunlist.size() == resultlist.size()) {
-					Adapter_Std<String, Object>  makeResult = makeResult(resultlist);
+					AdapterMap<String, Object>  makeResult = makeResult(resultlist);
 					sendMessage(makeResult);
 					resultlist.clear();
 					setStandby(false);
@@ -129,7 +128,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	}
 
 
-	public void sendMessage(Adapter_Std<String, Object>  result) throws IOException{
+	public void sendMessage(AdapterMap<String, Object>  result) throws IOException{
 		ArrayList<CometEvent> eventlist = getCometEventList();
 		if(eventlist ==null){
 			return;
@@ -169,8 +168,8 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	
 	
 	
-	public abstract Adapter_Std<String, Object>  makeResult(Adapter_Std<String, Object> set) throws Exception;
-	public abstract void  finish(CometEvent event,Adapter_Std<String, Object> result) throws Exception;
+	public abstract AdapterMap<String, Object>  makeResult(AdapterMap<String, Object> set) throws Exception;
+	public abstract void  finish(CometEvent event,AdapterMap<String, Object> result) throws Exception;
 	
 	public void forward(CometEvent event,String viewIdorPath) throws ServletException, IOException{
 		HttpServletRequest request 		= event.getHttpServletRequest();
