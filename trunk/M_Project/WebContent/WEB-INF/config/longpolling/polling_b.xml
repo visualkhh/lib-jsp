@@ -9,8 +9,8 @@
 		<gun id="gun_string"   class="com.web.BoardCastH"  interval="5000" ></gun>
 	</function>
 -->
-	<function id="/GunLongPolling/visualhhk"  class="com.web.FunctionHHK"  >
-		<gun id="gun_string"   class="com.web.BoardCastH"  interval="5000" ></gun>
+	<function id="/GunLongPolling/visualhhk"  class="com.web.FunctionString" broadcast = "true"  >
+		<gun id="gun_string"   class="com.web.GunBoardCast"  interval="100" ></gun>
 	</function>
 
 

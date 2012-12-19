@@ -1,7 +1,7 @@
 
+<%@page import="khh.web.jsp.db.util.ConnectionWebUtil"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="com.web.jsp.util.db.connection.ConnectionWebUtil"%>
 <%@page import="java.sql.Connection"%><%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/xml; charset=utf-8"
