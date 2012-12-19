@@ -10,10 +10,12 @@
 </head>
 <script type="text/javascript">
 
-<%
+<%!
 String bilTxt ="a";
+
+String resultStr=  (bilTxt.length()>0?"true":"false");
 %>
-<%=(bilTxt.length>0?"true":"false") %>
+<%= resultStr%>
 function onStart() {
 	var a = ElementUtil.createE("<b>aaa</b><a href='aa'>aa</a>");
 	var b = $("<b>aaa</b><a href='aa'>aa</a>");
