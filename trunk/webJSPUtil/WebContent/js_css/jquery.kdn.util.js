@@ -5,7 +5,7 @@ jQuery.extend({
 		if (browserName == 'Microsoft Internet Explorer')
 		{
 		doc = new ActiveXObject('Microsoft.XMLDOM');
-		doc.async = 'false'
+		doc.async = 'false';
 		doc.loadXML(d);
 		} else {
 		doc = (new DOMParser()).parseFromString(string, 'text/xml');
@@ -19,7 +19,6 @@ jQuery.extend({
 
 	,ajaxloop:function(d){
 		if (typeof d == "string") {
-				//alert('빵꾸똥꾸'+d);
 				return this;
 		}
 		var param = {
@@ -34,16 +33,16 @@ jQuery.extend({
 				success:function(data,textStatus){},
 				error:function(xhr,textStatus,errorThrown){	},
 				callback: function(){}
-			}
+			};
 		
 		
 		this.setParam = function(d){
 				param = $.extend({}, param, d);
-		}
+		};
 		this.setParam(d);
 		this.setLoop = function(d){
 			param.loop=d;
-		}
+		};
 		
 
 		
@@ -63,7 +62,7 @@ jQuery.extend({
 				dataType:param.dataType,
 				async:param.async,
 				success:function(data,textStatus){
-					param.success(data,textStatus);   //여기안쪽에서 this.make를 불러줘야한다 리턴값은 엘리먼트
+					param.success(data,textStatus);   //
 					param.callback(data,textStatus);
 					if (param.loop) {
 						$.ajaxloop(param);
@@ -99,13 +98,13 @@ jQuery.extend({
 
 
 ///////////////////////////////fn
-
+/*
 jQuery.fn.extend({
 	uiflow: function(d) {
 		var context = this;
 		
 		if (typeof d != "object") {
-			alert("no parameter")
+			alert("no parameter");
 			return this;
 		}
 		
@@ -132,7 +131,7 @@ jQuery.fn.extend({
 					//alert("d  dispose");
 				},
 				autoStart : false
-		}
+		};
 		var param = $.extend({}, defaultParam, d);
 		context.onBeforeProcess	=	param.onBeforeProcess;
 		context.onViewSetting		=	param.onViewSetting;
@@ -142,7 +141,6 @@ jQuery.fn.extend({
 		context.onAfterProcess		=	param.onAfterProcess;
 		context.dispose				=	param.dispose;
 		context.autoStart			=	param.autoStart;
-		
 		
 		$(window).unload( function () {
 			context.dispose();
@@ -154,23 +152,69 @@ jQuery.fn.extend({
 			this.onDataSetting();
 			this.onAddListener();
 			this.onAfterProcess();
-		}
-		
-		
+		};
 		if(this.autoStart){
 			this.flow();
 		}
-		
-		
         return this;
     }
 });
+*/
 
 
 
 
-
-
+jQuery.fn.extend({
+	uiflow: function(d) {
+		var context = this;
+		
+		if (typeof d != "object") {
+			alert("no parameter");
+			return this;
+		}
+		
+		var defaultParam = {
+				onBeforeProcess : function(){
+					//alert("d  onBeforeProcess");
+				},
+				onViewSetting : function(){
+					//alert("d  onViewSetting");
+				},
+				onDataSetting : function(){
+					//alert("d  onDataSetting");
+				},
+				onAddListener : function(){
+					//alert("d  onAddListener");
+				},
+				onAction : function(gb){
+					//alert("d  onAction");
+				},
+				onAfterProcess : function(){
+					//alert("d  onAfterProcess");
+				},
+				dispose : function(){
+					//alert("d  dispose");
+				},
+				autoStart : false
+		};
+		context = $.extend({}, defaultParam, d);
+		$(window).unload( function () {
+			context.dispose();
+		});
+		
+		context.flow=function(){
+			context.onBeforeProcess();
+			context.onViewSetting();
+			context.onDataSetting();
+			context.onAddListener();
+			context.onAfterProcess();
+		};
+		if(context.autoStart){
+			context.flow();
+		}
+        return context;
+    }
+});
 
 
 

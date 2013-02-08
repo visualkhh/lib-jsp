@@ -7,7 +7,7 @@ jQuery.fn.extend({
 		var context = this;
 		
 		if (typeof d != "object") {
-			alert("no parameter")
+			alert("no parameter");
 			return this;
 		}
 		
@@ -80,7 +80,7 @@ jQuery.fn.extend({
 
 	a.fn.uiflow = function(d) {
 				if (typeof d == "string") {
-				//alert('빵꾸똥꾸'+d);
+				//
 				return this;
 		}
 	};

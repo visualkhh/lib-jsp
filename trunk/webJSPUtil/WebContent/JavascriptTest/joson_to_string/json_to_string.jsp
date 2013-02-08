@@ -14,14 +14,20 @@
 <script type="text/javascript">
 var g = {
 	aa:"aa",
-	bb:"bb"
+	bb:"bb",
+	g:undefined,
+	setting: function(){
+		alert(this.aa);
+		alert(document.title);
+		alert(document.ga);
+	}
 }
 $(function() {
 //	var obj = JSONtoString($(g)[0]);
 	var obj = JSONtoString(g);
 	alert(obj+"          "+typeof obj); // string
 	
-	
+	g.setting();
 });
 
 
