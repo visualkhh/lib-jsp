@@ -14,6 +14,7 @@ alert(LocationUtil.getHost());
 alert(document.domain);
 </script>
 <body>
+
 scheme <%=request.getScheme() %> <br>
 getServerName <%=request.getServerName() %>        <br>
 getServerPort <%=request.getServerPort()%>        <br>
@@ -28,5 +29,11 @@ getServletPath <%=request.getServletPath()%>        <br>
 getRemoteAddr <%=request.getRemoteAddr()%>        <br>
 getRequestURI <%=request.getRequestURI()%>        <br>
 getRequestURL <%=request.getRequestURL()%>        <br>
+getRemoteHost <%=request.getRemoteHost()%>        <br>
+getRemoteAddr <%=request.getRemoteAddr()%>        <br>
+getRemotePort <%=request.getRemotePort()%>        <br>
+getRemoteUser <%=request.getRemoteUser()%>        <br>
+request.getAttribute( "javax.servlet.forward.request_uri" );<%=request.getAttribute( "javax.servlet.forward.request_uri" )%> <br>
+request.getAttribute( "javax.servlet.include.request_uri" ); <%=request.getAttribute( "javax.servlet.include.request_uri" )%><br>
 </body>
 </html>

@@ -2438,13 +2438,13 @@ AjaxK.prototype = new Object();
 
 AjaxK.READYSTATE_UNINITIALIZED 			= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
 AjaxK.READYSTATE_LOADING 				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
-AjaxK.READYSTATE_LOADED 				= 3; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxK.READYSTATE_LOADED 					= 3; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
 AjaxK.READYSTATE_INTERACTIVE 			= 4; //데이터의 일부를 받은상태
 AjaxK.READYSTATE_COMPLETED				= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
-AjaxK.STATE_OK							= 200; //요청성공
-AjaxK.STATE_FORBIDDEN					= 403; //접근거브
-AjaxK.STATE_NOTFOUND					= 404; //페이지없어
-AjaxK.STATE_INTERNALSERVERERROR			= 500; //서버 오류 발생
+AjaxK.STATE_OK									= 200; //요청성공
+AjaxK.STATE_FORBIDDEN						= 403; //접근거브
+AjaxK.STATE_NOTFOUND						= 404; //페이지없어
+AjaxK.STATE_INTERNALSERVERERROR		= 500; //서버 오류 발생
 
 
 

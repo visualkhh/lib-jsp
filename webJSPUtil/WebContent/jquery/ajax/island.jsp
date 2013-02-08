@@ -13,6 +13,7 @@
 </jsp:include>
 <script type="text/javascript">
 
+undefined
 var all=true;
 var selected_detp_cd='2106';
 var island=null;
