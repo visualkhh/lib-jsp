@@ -43,6 +43,17 @@
 	
 	
 	
+		<servlet>
+		<description></description>
+		<display-name>ktest</display-name>
+		<servlet-name>ktest</servlet-name>
+		<servlet-class>s.test</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ktest</servlet-name>
+		<url-pattern>*.k</url-pattern>
+	</servlet-mapping>
 
   
   

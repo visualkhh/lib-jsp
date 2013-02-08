@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<vector tot_page_cnt="1" afterServletCall="1356337991747"
+	curr_page="1" data_size="999999999" tot_cnt="4" sta_page="1"
+	beforeEJBCall="1356337991553" end_page="1" afterEJBCall="1356337991746"
+	page_size="1" beforeServletCall="1356337991551" result="4">
+	<data vectorkey="0" type="Document">
+		<list>
+			<idx value="4" />
+			<seq value="313" />
+			<r_ref_seq value="313" />
+			<p_ref_seq value="313" />
+			<ans_seq value="0" />
+			<contract_id value="" />
+			<user_id value="32" />
+			<title value="인사이드뱅크 카툰-4화" />
+			<content
+				value="&lt;IMG src=&quot;http://211.233.68.10/InsideBank/cartoon/cartoon4.jpg&quot;&gt;" />
+			<hitcnt value="6" />
+			<email value="" />
+			<reg_dt value="20121224143513" />
+			<indent value="N" />
+			<type_title value="카툰" />
+			<type_gb_title value="" />
+			<app_file value="http://211.233.68.10/InsideBank/cartoon/h4.jpg" />
+			<app_file_ext value="jpg" />
+			<app_file_real value="" />
+			<type value="07" />
+			<type_gb value="1" />
+			<is_show value="Y" />
+			<show_dt_sta value="" />
+			<show_dt_end value="" />
+			<is_popup value="" />
+			<status value="1" />
+			<reserve value="L" />
+			<cms_gbn value="1" />
+			<event_dt_sta value="" />
+			<event_dt_end value="" />
+			<event_result_page value="" />
+		</list>
+	</data>
+	<data vectorkey="1" type="Document">
+		<list>
+			<idx value="3" />
+			<seq value="312" />
+			<r_ref_seq value="312" />
+			<p_ref_seq value="312" />
+			<ans_seq value="0" />
+			<contract_id value="" />
+			<user_id value="32" />
+			<title value="인사이드뱅크 카툰-3화" />
+			<content
+				value="&lt;IMG src=&quot;http://211.233.68.10/InsideBank/cartoon/cartoon3.jpg&quot;&gt;" />
+			<hitcnt value="3" />
+			<email value="" />
+			<reg_dt value="20121224143440" />
+			<indent value="N" />
+			<type_title value="카툰" />
+			<type_gb_title value="" />
+			<app_file value="http://211.233.68.10/InsideBank/cartoon/h3.jpg" />
+			<app_file_ext value="jpg" />
+			<app_file_real value="" />
+			<type value="07" />
+			<type_gb value="1" />
+			<is_show value="Y" />
+			<show_dt_sta value="" />
+			<show_dt_end value="" />
+			<is_popup value="" />
+			<status value="1" />
+			<reserve value="L" />
+			<cms_gbn value="1" />
+			<event_dt_sta value="" />
+			<event_dt_end value="" />
+			<event_result_page value="" />
+		</list>
+	</data>
+	<data vectorkey="2" type="Document">
+		<list>
+			<idx value="2" />
+			<seq value="311" />
+			<r_ref_seq value="311" />
+			<p_ref_seq value="311" />
+			<ans_seq value="0" />
+			<contract_id value="" />
+			<user_id value="32" />
+			<title value="인사이드뱅크 카툰-2화" />
+			<content
+				value="&lt;IMG src=&quot;http://211.233.68.10/InsideBank/cartoon/cartoon2.jpg&quot;&gt;" />
+			<hitcnt value="3" />
+			<email value="" />
+			<reg_dt value="20121224143406" />
+			<indent value="N" />
+			<type_title value="카툰" />
+			<type_gb_title value="" />
+			<app_file value="http://211.233.68.10/InsideBank/cartoon/h2.jpg" />
+			<app_file_ext value="jpg" />
+			<app_file_real value="" />
+			<type value="07" />
+			<type_gb value="1" />
+			<is_show value="Y" />
+			<show_dt_sta value="" />
+			<show_dt_end value="" />
+			<is_popup value="" />
+			<status value="1" />
+			<reserve value="L" />
+			<cms_gbn value="1" />
+			<event_dt_sta value="" />
+			<event_dt_end value="" />
+			<event_result_page value="" />
+		</list>
+	</data>
+	<data vectorkey="3" type="Document">
+		<list>
+			<idx value="1" />
+			<seq value="309" />
+			<r_ref_seq value="309" />
+			<p_ref_seq value="309" />
+			<ans_seq value="0" />
+			<contract_id value="" />
+			<user_id value="32" />
+			<title value="인사이드뱅크 카툰-1화" />
+			<content
+				value="&lt;IMG src=&quot;http://211.233.68.10/InsideBank/cartoon/cartoon1.jpg&quot;&gt;" />
+			<hitcnt value="3" />
+			<email value="" />
+			<reg_dt value="20121224143231" />
+			<indent value="N" />
+			<type_title value="카툰" />
+			<type_gb_title value="" />
+			<app_file value="http://211.233.68.10/InsideBank/cartoon/h1.jpg" />
+			<app_file_ext value="jpg" />
+			<app_file_real value="" />
+			<type value="07" />
+			<type_gb value="1" />
+			<is_show value="Y" />
+			<show_dt_sta value="" />
+			<show_dt_end value="" />
+			<is_popup value="" />
+			<status value="1" />
+			<reserve value="L" />
+			<cms_gbn value="1" />
+			<event_dt_sta value="" />
+			<event_dt_end value="" />
+			<event_result_page value="" />
+		</list>
+	</data>
+</vector>
