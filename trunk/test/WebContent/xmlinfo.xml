@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+	<state>
+		<resultcode>00000000</resultcode>
+		<msg></msg>
+	</state>
+	<infos count="48">
+		<info id="COM_PKTLEN">1099</info>
+		<info id="COM_UPMU_GBN">C</info>
+		<info id="COM_SVC_CODE">152006</info>
+		<info id="COM_JSTAR_VALUE">SHB01          109        2315</info>
+		<info id="COM_SYS_GBN">T</info>
+		<info id="COM_TRAN_DATE">20130205</info>
+		<info id="COM_TRAN_TIME">220903</info>
+		<info id="COM_WEB_DOMAIN">cibwa1t1</info>
+		<info id="COM_IP_ADDR">59.7.254.139</info>
+		<info id="COM_LANGUAGE">1</info>
+		<info id="COM_CHANNEL_GBN">E0</info>
+		<info id="COM_CIF_NO">786847611</info>
+		<info id="COM_SAUPJA_NO">0001248728474</info>
+		<info id="COM_CONTRACT_ID">991940</info>
+		<info id="COM_USER_ID">C1105197</info>
+		<info id="COM_UPMU_TYPE"></info>
+		<info id="COM_MOKROK_STATE"></info>
+		<info id="COM_SUBMIT_GBN">09</info>
+		<info id="COM_SINGLE_MULTI">1</info>
+		<info id="COM_WORKFLOW_ID">0</info>
+		<info id="COM_RESULT_CD">0</info>
+		<info id="COM_END_MARK">ZZ</info>
+		<info id="COM_EF_SERIALNO">14000891</info>
+		<info id="COM_FX_JUM"></info>
+		<info id="COM_MOKROK_NO">0</info>
+		<info id="COM_ERROR_CODE"></info>
+		<info id="COM_BIZPARTNER_NO"></info>
+		<info id="COM_MEDIA_GBN"></info>
+		<info id="COM_OTP_CHK_NO">0</info>
+		<info id="COM_SUCHWI_LIMIT"></info>
+		<info id="COM_MASTER_ID">0</info>
+		<info id="COM_LCL_CORP_C">0</info>
+		<info id="COM_NAT_C"></info>
+		<info id="COM_LANG_C">KO</info>
+		<info id="COM_CORP_NO">0</info>
+		<info id="COM_USE_CHAN_GBN"></info>
+		<info id="COM_PW_EXPIRED_DATE"></info>
+		<info id="COM_PW_POPUP_GBN">0</info>
+		<info id="COM_PW_POPUP_MSG_GBN">0</info>
+		<info id="COM_ILGWAL_RESULT"></info>
+		<info id="COM_OTP_POPUP_GBN">0</info>
+		<info id="COM_FILLER">0</info>
+		<info id="납부자명">박성숙</info>
+		<info id="총건수">31</info>
+		<info id="지정번호">001</info>
+		<info id="데이터건수">09</info>
+		<info id="데이터건수_01">9</info>
+		<info id="LIST">R_CIB152006_1</info>
+	</infos>
+	<recodes id="RECODES" count="9">
+		<recode ID="RECODE0" index="0">
+			<column id="RECODE0_납부일자" name="납부일자">2013.01.23</column>
+			<column id="RECODE0_전자납부번호" name="전자납부번호">0127007311160014886</column>
+			<column id="RECODE0_납부순번" name="납부순번">001</column>
+			<column id="RECODE0_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE0_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE0_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE0_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE1" index="1">
+			<column id="RECODE1_납부일자" name="납부일자">2013.01.23</column>
+			<column id="RECODE1_전자납부번호" name="전자납부번호">0127007311160014893</column>
+			<column id="RECODE1_납부순번" name="납부순번">001</column>
+			<column id="RECODE1_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE1_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE1_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE1_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE2" index="2">
+			<column id="RECODE2_납부일자" name="납부일자">2013.01.24</column>
+			<column id="RECODE2_전자납부번호" name="전자납부번호">0127007311160014903</column>
+			<column id="RECODE2_납부순번" name="납부순번">001</column>
+			<column id="RECODE2_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE2_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE2_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE2_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE3" index="3">
+			<column id="RECODE3_납부일자" name="납부일자">2013.01.23</column>
+			<column id="RECODE3_전자납부번호" name="전자납부번호">0127007311160014910</column>
+			<column id="RECODE3_납부순번" name="납부순번">001</column>
+			<column id="RECODE3_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE3_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE3_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE3_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE4" index="4">
+			<column id="RECODE4_납부일자" name="납부일자">2013.01.24</column>
+			<column id="RECODE4_전자납부번호" name="전자납부번호">0127007311160014927</column>
+			<column id="RECODE4_납부순번" name="납부순번">001</column>
+			<column id="RECODE4_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE4_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE4_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE4_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE5" index="5">
+			<column id="RECODE5_납부일자" name="납부일자">2013.01.23</column>
+			<column id="RECODE5_전자납부번호" name="전자납부번호">0127007311160014934</column>
+			<column id="RECODE5_납부순번" name="납부순번">001</column>
+			<column id="RECODE5_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE5_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE5_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE5_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE6" index="6">
+			<column id="RECODE6_납부일자" name="납부일자">2013.01.31</column>
+			<column id="RECODE6_전자납부번호" name="전자납부번호">0127007311160015036</column>
+			<column id="RECODE6_납부순번" name="납부순번">001</column>
+			<column id="RECODE6_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE6_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE6_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE6_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE7" index="7">
+			<column id="RECODE7_납부일자" name="납부일자">2013.01.23</column>
+			<column id="RECODE7_전자납부번호" name="전자납부번호">0127007311160015043</column>
+			<column id="RECODE7_납부순번" name="납부순번">001</column>
+			<column id="RECODE7_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE7_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE7_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE7_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+		<recode ID="RECODE8" index="8">
+			<column id="RECODE8_납부일자" name="납부일자">2013.02.05</column>
+			<column id="RECODE8_전자납부번호" name="전자납부번호">0127007311160015050</column>
+			<column id="RECODE8_납부순번" name="납부순번">001</column>
+			<column id="RECODE8_징수과목명" name="징수과목명">00000000000000</column>
+			<column id="RECODE8_징수기관명" name="징수기관명">관세청 관세평가분류</column>
+			<column id="RECODE8_납부금액" name="납부금액">30,000</column>
+			<column id="RECODE8_납부이용시스템" name="납부이용시스템">B</column>
+		</recode>
+	</recodes>
+</table>
