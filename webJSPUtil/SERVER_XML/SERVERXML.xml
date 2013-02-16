@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--  host사이 -->
+<!--  host사이  -->
      <Context docBase="3.24" path="/3.24" reloadable="true" source="org.eclipse.jst.j2ee.server:3.24">
      <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/oracle3_24" password="kosta" type="javax.sql.DataSource" url="jdbc:oracle:thin:@localhost:1521:ORCL" username="scott"/>
      </Context>
