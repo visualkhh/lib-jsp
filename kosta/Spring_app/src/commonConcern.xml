@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+       
+	<bean id="logging" class="kosta.aop.LoggingAspect"></bean>
+  	
+  	<aop:config><!-- 어드바이즈 -->
+  		<!-- 언제 -->
+  		<aop:pointcut expression="execution(* * *Service. *(..))" id="servicePointcut"/>	
+  		<!-- 어떤놈을 -->
+  		<aop:aspect id="loggingAspect" ref="logging"></aop:aspect>
+  		<!-- 언제 처음?끝? 둘다? -->
+  		<aop:around method="logging"></aop:around>
+  	</aop:config>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
