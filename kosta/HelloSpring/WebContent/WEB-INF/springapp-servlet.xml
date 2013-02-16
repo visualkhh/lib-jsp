@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- the application context definition for the springapp DispatcherServlet -->
+	
+	<!-- 핸들로 맵핑 빈 URL로 맵핑되도록
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+	</bean>
+	 -->
+	 <bean id="helloController" class="kosta.controller.HelloController"></bean>
+	
+	 <bean id="viewResolver" 
+	 class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	<property name="prefix" value="/view/"></property>
+	 	<property name="suffix" value=".jsp"></property>
+	 </bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
