@@ -318,8 +318,17 @@ StringUtil.removeComma=function(input_s) {
 StringUtil.addComma = function( number_s  ){
 	return this.raddGroupChar(number_s,3,",");
 };
-StringUtil.raddGroupChar = function( number_s , jumpsize_n,addchar_s )
-{
+StringUtil.raddGroupChar = function( number_s , jumpsize_n,addchar_s ){
+	
+	/*
+	 var reg = /(^[+-]?\d+)(\d{3})/;   // 정규식
+	  n += '';                          // 숫자를 문자열로 변환
+
+	  while (reg.test(n))
+	    n = n.replace(reg, '$1' + ',' + '$2');
+
+	  return n;
+	  */
 /*	if(!jumpsize_n){
 		jumpsize_n=3;
 	}
@@ -2242,6 +2251,19 @@ XMLUtil.getXMLObj = function(data_s){
 	return doc;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 function AjaxUtil (){};
 AjaxUtil.prototype = new Object();
 AjaxUtil.READYSTATE_UNINITIALIZED		= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
@@ -2648,7 +2670,18 @@ SelectorK.prototype.get = function(index_n){
 
 
 
-
+///////////prototype 확장
+Array.prototype.distinct = function(){
+	 var a = {};
+	 for(var i=0; i <this.length; i++){
+	  if(typeof a[this[i]] == "undefined")
+	   a[this[i]] = 1;
+	 }
+	 this.length = 0;
+	 for(var i in a)
+	  this[this.length] = i;
+	 return this;
+};
 
 
 
