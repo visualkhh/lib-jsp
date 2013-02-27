@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript"  src="../util.js"></script>
+<script type="text/javascript">
+var autoble;
+var i=0;
+window.onload= function(){
+	var list = new Array();
+	list.push(document.getElementById("a"));
+	list.push(document.getElementById("b"));
+	list.push(document.getElementById("c"));
+	list.push(document.getElementById("d"));
+	list.push(document.getElementById("e"));
+	list.push(document.getElementById("f"));
+	
+	
+	
+	autoble = new Autoble(list);
+	autoble.filter = function(o,v){
+		o.value=v+" "+(i++);
+	}
+}
+
+
+
+function va(a){
+	autoble.value(a);
+}
+</script>
+<body>
+<input type="text"  id="a"/>
+<input type="text"  id="b"/>
+<input type="text"  id="c"/>
+<input type="text"  id="d"/>
+<input type="text"  id="e"/>
+<input type="text"  id="f"/>
+
+<input type="button"  value="--------" onclick="va('aaaaaaa')"/>
+<input type="button"  value="--------" onclick="va('c')"/>
+</body>
+</html>

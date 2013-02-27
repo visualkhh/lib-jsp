@@ -2670,6 +2670,43 @@ SelectorK.prototype.get = function(index_n){
 
 
 
+
+//오토블 짱인듯.
+Autoble.prototype = new Object();
+Autoble.prototype.list = new Array();
+Autoble.prototype.val= undefined;
+Autoble.prototype.beforeCallBack =  function(object,value){};;
+Autoble.prototype.afterCallBack = function(object,value){};
+Autoble.prototype.filter = function(object,value){  object.value = value};
+function Autoble(list){
+	if(list){
+		this.list = list;
+	}
+};
+Autoble.prototype.value = function(value){
+	
+	this.val=value;
+	if(this.list){
+		for ( var i = 0; i < this.list.length; i++){
+			var object = this.list[i];
+			if(this.beforeCallBack){
+				this.beforeCallBack(object, this.val);
+			}
+			
+			this.filter(object,this.val);
+			
+			if(this.afterCallBack){
+				this.afterCallBack(object, this.val);
+			}
+		}
+	}
+};
+
+
+
+
+
+
 ///////////prototype 확장
 Array.prototype.distinct = function(){
 	 var a = {};
