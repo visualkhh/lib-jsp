@@ -1,5 +1,5 @@
 
-/**
+/*
 *	@constructor visualkhh@gmail.com, twitter : @visualkhh, facebook : http://www.facebook.com/visualkhh
 */
 
@@ -266,6 +266,12 @@ StringUtil.ltrim=function(input_s){
 StringUtil.rtrim=function(input_s){
 	return input_s.replace(/(\s*$)/, "");
 };
+StringUtil.nvl=function(input_s,replace_s){
+    if (input_s == null)
+        return replace_s != null ? replace_s : "";
+    else
+        return input_s;
+};
 StringUtil.deleteSpace=function(input_s){
 	return input_s.replace(/\s/g,'');
 };
@@ -513,6 +519,9 @@ RegExpUtil.prototype = new Object();
 RegExpUtil.is=function(regexp,msg){
 	return regexp.test(msg);
 };
+
+
+
 function DateUtil(){};
 DateUtil.prototype = new Object();
 DateUtil.getFullMilliSecond=function(){
@@ -565,6 +574,183 @@ DateUtil.getDate  = function(format_s,date_o){
 	//return (sdf.format(date_o)); //출력
 
 };
+
+
+
+/**
+ * 해당년월의 마지막 일자를 계산
+ * @param y
+ * @param m
+ * @return
+ * @author xuny
+ */
+DateUtil.getLastDay = function(y, m) {
+    y = parseInt(y, 10);
+    m = parseInt(m, 10);
+
+    var end = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+    if (isLeapYear(y)) {
+        end[1] = 29;
+    }
+    return end[m - 1];
+};
+
+/**
+ * 윤년인지 아닌년인지
+ * @param year
+ * @return
+ * @author xuny
+ */
+DateUtil.isLeapYear = function(year) {
+    if ((year % 4) == 0) {
+        if ((year % 100) != 0) return true;
+        if ((year % 400) == 0) return true;
+    }
+    return false;
+};
+
+/**
+ * 유효한 날짜인지
+ * @param year
+ * @param month
+ * @param day
+ * @return
+ * @author xuny
+ */
+DateUtil.isValidDate = function(year, month, day) {
+    year  = parseInt(year  ,10);
+    month = parseInt(month ,10);
+    day   = parseInt(day   ,10);
+
+    if (year < 0 || year > 9999) return false;
+    if (month < 1 || month > 12) return false;
+
+    var endDay = getEndDay(year, month);
+    if (day < 1 || day > endDay) return false;
+
+    return true;
+};
+/**
+ * 유효한 년월인지
+ * @param year
+ * @param month
+ * @return
+ * @author xuny
+ */
+DateUtil.isYYYYMM = function(year, month){
+    var yy, mm;
+
+    if (isNull(year) || isNull(month)) {
+        return false;
+    }
+    if (year.length != 4 || month.length != 2) {
+        return false;
+    }
+    if (!isNumeric(year) || !isNumeric(month)) {
+        return false;
+    }
+
+    yy = parseInt(year, 10);
+    mm = parseInt(month, 10);
+    if (yy < 1900 )
+        return false;
+    if (mm < 1 || mm > 12)
+        return false;
+
+    return true;
+};
+
+/**
+ * 유효한 시분인지
+ * @param hour, minute
+ */
+DateUtil.isHHMI = function(hour, minute){
+    var hh, mi;
+
+    if (isNull(hour) || isNull(minute)) {
+        return false;
+    }
+    if (hour.length != 2 || minute.length != 2) {
+        return false;
+    }
+    if (!isNumeric(hour) || !isNumeric(minute)) {
+        return false;
+    }
+
+    hh   = parseInt(hour, 10);
+    mi = parseInt(minute, 10);
+    if (hh < 0  || hh > 24 )
+        return false;
+    if (mi < 0 || mi > 60)
+        return false;
+
+    return true;
+};
+/**
+ * 년월일을 입력 받은 년도 ,월, 일자 만큼 증가/감소 시킨다.
+ * @param   dateStr     원래날짜 String ("YYYYMMDD")
+ * @param   year        원래날짜에 더할 년
+ * @param   month       원래날짜에 더할 월
+ * @param   day         원래날짜에 더할 일
+ * @return              연산결과의 날짜 String ("YYYYMMDD")
+ * @author  xuny
+ */
+DateUtil.shiftDate = function(dateStr, year, month, day) {
+    var date = toDateObject(dateStr);
+    date.setFullYear(date.getFullYear() + year);
+    date.setMonth(date.getMonth() + month);
+    date.setDate(date.getDate() + day);
+
+    return this.toDateString(date);
+};
+/**
+ * 날짜String("YYYYMMDD") ==> Date(object)
+ * @param dateStr
+ * @return
+ */
+DateUtil.toDateObject = function(dateStr) {
+    return new Date(dateStr.substr(0, 4),
+                    dateStr.substr(4, 2) - 1,
+                    dateStr.substr(6, 2));
+};
+
+/**
+ * Date(object) ==> 날짜String("YYYYMMDD")
+ * @param date
+ * @return
+ */
+DateUtil.toDateString = function(date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    y = String(y);
+    m = (String(m).length == 1 ? "0" : "") + m;
+    d = (String(d).length == 1 ? "0" : "") + d;
+
+    return y + m + d;
+};
+/**
+ * 두개의 일자를 입력받아 두 날짜의 차이일수를 리턴한다.
+ * @param   fromDateStr 시작일자("YYYYMMDD")
+ * @param   toDateStr   종료일자("YYYYMMDD")
+ * @return
+ * @author  xuny
+ */
+DateUtil.getBetweenDay = function(fromDateStr, toDateStr) {
+    var fDate = toDateObject(fromDateStr);
+    var tDate = toDateObject(toDateStr);
+    var day = 1000 * 3600 * 24;
+
+    return parseInt((tDate - fDate) / day);
+};
+
+
+
+
+
+
+
+
 
 function Validate(){};
 Validate.prototype = new Object();
