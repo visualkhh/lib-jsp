@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fluid xmlns="http://visualkhh.com/fluid">
-	<template id="/default.html" 	value="/WEB-INF/jsp/default_template.jsp">
-		<view id="title" value="default welcom" />
+	<template id="/default.html" >
+		<view id="title" value="WebReal" />
 		<view id="css" value="/WEB-INF/jsp/default_css.css" />
 		<view id="main" value="/WEB-INF/jsp/default_main.jsp" />
 		<view id="left" value="/WEB-INF/jsp/default_left.jsp" />
 		<view id="right" value="/WEB-INF/jsp/default_right.jsp" />
 	</template>
 	
-	<template id="/khh.html" extendcategory="/default.html">
+	<template id="/khh.html" extends="/default.html">
 		<view id="title" value="khh welcom" />
 		<view id="left" value="/WEB-INF/jsp/khh_left.jsp" />
 		<view id="right" value="/WEB-INF/jsp/khh_right.jsp" />
 	</template>
 	
-	<template id="/openpage.html" value="/WEB-INF/jsp/openpage_template.jsp" extendcategory="/default.html">
+	<template id="/openpage.html" value="/WEB-INF/jsp/openpage_template.jsp" extends="/default.html">
 		<view id="title" value="openpage welcom" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>

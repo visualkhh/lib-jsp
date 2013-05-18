@@ -59,9 +59,9 @@ public class FluidConfigManager {
                     Template template = new Template();
                     template.setNodeid(parser.getString(templatepath+"["+j+"]/@id"));
                     template.setValue(parser.getString(templatepath+"["+j+"]/@value"));
-                    template.setExtendcategory(parser.getString(templatepath+"["+j+"]/@extendcategory"));
+                    template.setExtends(parser.getString(templatepath+"["+j+"]/@extends"));
                     
-                    log.debug("Fluid: Template Id : "+template.getNodeid()+"  extends : "+template.getExtendcategory());
+                    log.debug("Fluid: Template Id : "+template.getNodeid()+"  extends : "+template.getExtends());
                     
                     
                     String viewpath=templatepath+"["+j+"]/view";
@@ -94,8 +94,8 @@ public class FluidConfigManager {
         for (int i = 0; i < templatelist.size(); i++) {
         	try {
 				Template template = templatelist.get(i);
-				if(template.getExtendcategory() != null){
-					Template supertemplate = templatelist.get(template.getExtendcategory());
+				if(template.getExtends() != null){
+					Template supertemplate = templatelist.get(template.getExtends());
 					if(supertemplate==null){
 						continue;
 					}
