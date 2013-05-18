@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<fluid xmlns="http://www.visualkhh@gmail.com">
-	<template id="default" 	value="/WEB-INF/jsp/default_template.jsp">
-		<view id="title" value="welcom" />
-		<view id="main" value="/WEB-INF/jsp/main.jsp" />
-		<view id="left" value="/WEB-INF/jsp/left.jsp" />
-		<view id="right" value="/WEB-INF/jsp/right.jsp" />
+<fluid xmlns="http://visualkhh.com/fluid">
+	<template id="/default.html" 	value="/WEB-INF/jsp/default_template.jsp">
+		<view id="title" value="default welcom" />
+		<view id="css" value="/WEB-INF/jsp/default_css.css" />
+		<view id="main" value="/WEB-INF/jsp/default_main.jsp" />
+		<view id="left" value="/WEB-INF/jsp/default_left.jsp" />
+		<view id="right" value="/WEB-INF/jsp/default_right.jsp" />
 	</template>
-	<template id="/openpage.f" value="/WEB-INF/jsp/openpage_template.jsp" extendcategory="default">
-		<view id="title" value="openpage" />
+	
+	<template id="/khh.html" extendcategory="/default.html">
+		<view id="title" value="khh welcom" />
+		<view id="left" value="/WEB-INF/jsp/khh_left.jsp" />
+		<view id="right" value="/WEB-INF/jsp/khh_right.jsp" />
+	</template>
+	
+	<template id="/openpage.html" value="/WEB-INF/jsp/openpage_template.jsp" extendcategory="/default.html">
+		<view id="title" value="openpage welcom" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>
 </fluid>
