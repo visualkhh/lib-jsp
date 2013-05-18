@@ -7,7 +7,7 @@ public class Template {
 
 	private String nodeid;
 	private String value							= null;
-	private String extendcategory					= null;
+	private String extends_							= null;
 	private AdapterMap<String,View> viewlist		= new AdapterMap<String,View>();
 //	private LogK log = LogK.getInstance();
 	public String getNodeid() {
@@ -22,11 +22,12 @@ public class Template {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public String getExtendcategory() {
-		return extendcategory;
+
+	public String getExtends() {
+		return extends_;
 	}
-	public void setExtendcategory(String extendcategory) {
-		this.extendcategory = extendcategory;
+	public void setExtends(String extends_) {
+		this.extends_ = extends_;
 	}
 	public void addView(String id,View view) throws Exception{
 		viewlist.add(id,view);
