@@ -540,8 +540,10 @@ DateUtil.getDate  = function(format_s,date_o){
 		date_o = new Date();
 	}
 	
-	var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-	var timeType = ["오전", "오후"];
+	//var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+	//var timeType = ["오전", "오후"];
+	var weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	var timeType = ["AM", "PM"];
 	
 	return format_s.replace(/(yyyy|SSS|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
         switch ($1) {
@@ -1757,6 +1759,17 @@ EventUtil.addOnloadEventListener=function(object_o_function_f,function_f){
 		this.addEventListener(window, this.TYPE_ONLOAD, object_o_function_f);
 	};
 };
+EventUtil.addUnloadEventListener=function(object_o_function_f,function_f){
+	if(!object_o_function_f){
+		object_o_function_f=window;
+	}
+	//alert(object_o_function_f+"      "+JavaScriptUtil.isObject(object_o_function_f));
+	if(JavaScriptUtil.isObject(object_o_function_f)){
+		this.addEventListener(object_o_function_f, this.TYPE_UNLOAD, function_f);
+	}else if(JavaScriptUtil.isFunction(object_o_function_f)){
+		this.addEventListener(window, this.TYPE_UNLOAD, object_o_function_f);
+	};
+};
 
 EventUtil.isEnter=function(event_o){
 	if(!event_o){
@@ -1878,7 +1891,8 @@ RexUtil.prototype = new Object();
 
 
 
-///////////기본적인..유틸
+/////////// 기본적인..유틸
+
 function JavaScriptUtil (){};
 JavaScriptUtil.prototype = new Object();
 JavaScriptUtil.UNIQUEID=0;
@@ -1904,7 +1918,9 @@ JavaScriptUtil.isEmptyObject = function(object_o) {
 	
 	return false;
 };
-/*  Null 값 Check */
+
+//  Null 값 Check  
+
 JavaScriptUtil.isNull = function(object_o) {
 	if(object_o==null) {
 		return true;
@@ -1925,14 +1941,14 @@ JavaScriptUtil.isFunction=function(object_o){
 	return  Object.prototype.toString.call(object_o)=='[object Function]';
 };
 JavaScriptUtil.isObject=function(object_o){
-	if(JavaScriptUtil.getTypeOf(object_o)=='object'){
+	if(JavaScriptUtil.getTypeOf (object_o)=='object'){
 		return true;
 	}else{
 		return false;
 	}
 	
 	
-	//g훔.... 브라우저마다 좀다르니...
+	// g browser ...
 	var sw=false;
 	if(JavaScriptUtil.isNetscape()){
 		sw  = Object.prototype.toString.call(object_o)=='[object Object]' || Object.prototype.toString.call(object_o)=='[object global]';
@@ -1964,7 +1980,9 @@ JavaScriptUtil.copyObject=function(object_o){
     }
 	return  return_obj;
 };
-/* 왠만하면 copyObject쓰세요  이건 제이슨 값만 복사됨*/
+
+// 왠만하면 copyObject쓰세요  이건 제이슨 값만 복사됨
+
 JavaScriptUtil.copyJson=function(object_o){
 	return  JSON.parse(JSON.stringify(object_o));
 };
@@ -2033,7 +2051,6 @@ JavaScriptUtil.getTypeOf=function(object_o){
 
 
 
-/*format util*/
 function MathUtil(){};
 MathUtil.prototype = new Object();
 MathUtil.round=function(numValue_n,precision_n){
@@ -2047,7 +2064,7 @@ MathUtil.round=function(numValue_n,precision_n){
 
 
 
-/*format util*/
+//format util
 function FormatUtil(){};
 FormatUtil.prototype = new Object();
 //alert(FormatUtil.format("####/##", "20120203showmethenoney"));
@@ -2080,6 +2097,7 @@ FormatUtil.format= function(format_s,data_s,matchPattern_s){
  * @return 
  * @browser IE6, NS7
  */
+
 FormatUtil.format_mask=function(obj, mask){
     var str = obj.value;
     if(str == "" || str.length == 0) return;
@@ -2169,6 +2187,7 @@ Debug.prototype = new Object();
 //Debug.prototype=Object.prototype;
 
 //이거바꾸면aler로도 가능함니다.
+
 //console.log;
 Debug.loger			= null;
 Debug.LEVEL_OFF		= "OFF";
@@ -2452,15 +2471,15 @@ XMLUtil.getXMLObj = function(data_s){
 
 function AjaxUtil (){};
 AjaxUtil.prototype = new Object();
-AjaxUtil.READYSTATE_UNINITIALIZED		= 0; //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
-AjaxUtil.READYSTATE_LOADING				= 1; //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
-AjaxUtil.READYSTATE_LOADED				= 3 ; //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
-AjaxUtil.READYSTATE_INTERACTIVE			= 4; //데이터의 일부를 받은상태
-AjaxUtil.READYSTATE_COMPLETED			= 5; //데이터를 전부 받은 상태 완전한 데이터의 이용가능
-AjaxUtil.STATE_OK						= 200  ; //요청성공
-AjaxUtil.STATE_FORBIDDEN				= 403  ; //접근거브
-AjaxUtil.STATE_NOTFOUND					= 404  ; //페이지없어
-AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ; //서버 오류 발생
+AjaxUtil.READYSTATE_UNINITIALIZED		= 0;   //객체만 생성되고 아직 초기화 되지 않은 상태(open 메서드가 호출되지 않음)
+AjaxUtil.READYSTATE_LOADING				= 1;   //open 메서드가 호출되고 아직 send 메서드가 불리지 않은상태
+AjaxUtil.READYSTATE_LOADED				= 3 ;   //send 메서드가 불렸지만 status와 헤더는 도착하지 않은상태
+AjaxUtil.READYSTATE_INTERACTIVE			= 4;   //데이터의 일부를 받은상태
+AjaxUtil.READYSTATE_COMPLETED			= 5;   //데이터를 전부 받은 상태 완전한 데이터의 이용가능
+AjaxUtil.STATE_OK						= 200  ;   //요청성공
+AjaxUtil.STATE_FORBIDDEN				= 403  ;   //접근거브
+AjaxUtil.STATE_NOTFOUND					= 404  ;   //페이지없어
+AjaxUtil.STATE_INTERNALSERVERERROR		= 500  ;   //서버 오류 발생
 
 AjaxUtil.getAjaxObj = function(window_o){
 	if(!window_o){
@@ -2769,7 +2788,6 @@ AjaxK.prototype.onReceive = function(){
 	}
 };
 
-
 AjaxK.prototype.start = function(){
 	this.responsed = false;
 	this.onBeforeProcess();
@@ -2795,6 +2813,14 @@ AjaxK.prototype.start = function(){
 	this.requestObj.setRequestHeader("Pragma", "no-cache");
 	this.requestObj.send(concatenateData);
 };
+AjaxK.prototype.send = function(param_o){
+	if(param_o){
+		this.setParam(param_o);
+	}
+	this.start();
+};
+
+
 AjaxK.prototype.stop = function(){
 	this.responsed = true;
 };
@@ -2905,6 +2931,102 @@ Array.prototype.distinct = function(){
 	  this[this.length] = i;
 	 return this;
 };
+
+
+
+
+
+
+
+
+
+//uiflow
+
+//creatClass
+UiFlow.prototype = new Object();
+//param-----start
+UiFlow.prototype.context			= undefined;
+UiFlow.prototype.name				= undefined;
+UiFlow.prototype.onBeforeProcess	= function(){};
+UiFlow.prototype.onViewSetting		= function(){};
+UiFlow.prototype.onDataSetting		= function(){};
+UiFlow.prototype.onAddListener		= function(){};
+UiFlow.prototype.onAction			= function(){};
+UiFlow.prototype.onAfterProcess		= function(){};
+UiFlow.prototype.dispose			= function(){};
+UiFlow.prototype.autoStart			= function(){};
+UiFlow.prototype.outparam				= {
+		onBeforeProcess : function() {
+		},
+		onViewSetting : function() {
+		},
+		onDataSetting : function() {
+		},
+		onAddListener : function() {
+		},
+		onAction : function(gb) {
+		},
+		onAfterProcess : function() {
+		},
+		dispose : function() {
+		},
+		autoStart : false
+	};
+//param------end
+UiFlow.prototype.onreadystatechange = function(){};
+function UiFlow(param_o,name_s){
+	
+	if(param_o){
+		this.setParam(param_o);
+	}else{
+		throw "no input param obj";
+		return;
+	}
+	if(name_s){
+		this.setName(name_s);
+	}
+	
+	this.context = this;
+	if(this.autoStart){
+		this.start();
+	}
+	
+	
+}
+
+
+UiFlow.prototype.start = function(){
+	EventUtil.addUnloadEventListener(this.dispose);
+	this.onBeforeProcess();
+	this.onViewSetting();
+	this.onDataSetting();
+	this.onAddListener();
+	this.onAfterProcess();
+};
+UiFlow.prototype.setName = function(name_s){
+	this.name = name_s;
+};
+UiFlow.prototype.setParam = function(param_o){
+  for (var property in param_o) {
+  	this[property] = param_o[property]; 
+  };
+  this.outparam = JavaScriptUtil.extend(this.outparam,param_o);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
