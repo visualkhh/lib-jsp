@@ -49,7 +49,7 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	
 	public GunLongPolling() {
         super();
-        System.out.println("뭐야씨발");
+       // System.out.println("뭐야씨발");
     }
     
     @Override
@@ -149,6 +149,13 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	    HttpServletResponse response = event.getHttpServletResponse(); 
 	    String sessionId = request.getSession().getId(); 
 	    String function  = request.getRequestURI().replaceAll(request.getContextPath(), "");
+	    
+	    if(null==function || "".equals(function)){
+	    	event.close();
+	    	event=null;
+	    	return;
+	    }
+	    
 	    request.getParameter("test");  //이거빼면POST에서 오류남  이유모름 
 	    request.getParameter("msg");  //이거빼면POST에서 오류남  이유모름 
 	    Function fnc = lpmg.getFunction(function);
@@ -186,7 +193,7 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
 	    		log.debug("not Found Request "+function);
 				//writer.println(request.toString()+"  <br>  "+response.toString()+"    no GubLongPolling uri");
 	    		StringBuffer info = new StringBuffer();
-				info.append("error:not found");
+				info.append("GunLongPolling ERROR:not found");
 				info.append(", funtion:"+function); 
 				info.append(", requestURI:" + request.getRequestURI());
 				info.append(", requestURL:" + request.getRequestURL());

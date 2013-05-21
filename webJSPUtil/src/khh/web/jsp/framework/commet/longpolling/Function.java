@@ -95,7 +95,7 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 					try {
 						event.close();
 					} catch (IOException e1) {
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					}
 					event=null;
 					//e.printStackTrace();
@@ -225,8 +225,21 @@ public abstract class Function extends Thread  implements StrEvent_Interface{
 	}
 	
 	public void write(CometEvent event,String html) throws ServletException, IOException{
+		write(event, FileUtil.MIME_TEXT_HTML, html);
+	}
+	public void write(CometEvent event,String mime,String html) throws ServletException, IOException{
 		HttpServletResponse response =event.getHttpServletResponse();
-		UtilWeb.write(response, FileUtil.MIME_TEXT_HTML, html);
+		UtilWeb.write(response, mime, html);
+		response.flushBuffer();
+		event.close();
+		event = null;
+	}
+	public void write(CometEvent event,byte[] bytes) throws ServletException, IOException{
+		write(event, FileUtil.MIME_TEXT_HTML, bytes);
+	}
+	public void write(CometEvent event,String mime,byte[] bytes) throws ServletException, IOException{
+		HttpServletResponse response =event.getHttpServletResponse();
+		UtilWeb.write(response, mime, bytes);
 		response.flushBuffer();
 		event.close();
 		event = null;
