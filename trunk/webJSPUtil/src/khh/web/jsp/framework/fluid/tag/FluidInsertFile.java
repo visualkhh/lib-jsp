@@ -14,6 +14,7 @@ import khh.web.jsp.tag.custom.TagSupportSimple;
 
 public class FluidInsertFile extends TagSupportSimple {
 	String id;
+	String exception="false";
 	
 	public String getId() {
 		return id;
@@ -21,6 +22,14 @@ public class FluidInsertFile extends TagSupportSimple {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getException() {
+		return exception;
+	}
+
+	public void setException(String exception) {
+		this.exception = exception;
 	}
 
 	@Override
@@ -40,6 +49,7 @@ public class FluidInsertFile extends TagSupportSimple {
 			}
 		} catch (Exception e) {
 			try {
+				if("true".equals(getException()) || "TRUE".equals(getException()))
 				getJspWriter().write(StackTraceUtil.getStackTrace(e));
 			} catch (IOException e1) {
 				e1.printStackTrace();

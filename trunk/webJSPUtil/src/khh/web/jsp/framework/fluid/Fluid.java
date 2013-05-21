@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import khh.callstack.util.StackTraceUtil;
 import khh.debug.LogK;
 import khh.file.util.FileUtil;
 import khh.string.util.StringUtil;
@@ -109,9 +110,9 @@ public class Fluid extends HttpServlet{
 	
 		String id=request.getRequestURI().replaceFirst(request.getContextPath(), "");
 		log.debug("Fluid Request "+request.getRequestURI()+"  template id : "+id);
-		
+		Template template = null ;
 		try{
-			Template template = fmg.getTemplate(id);
+			template = fmg.getTemplate(id);
 			if(template==null){
 				PrintWriter writer  =  response.getWriter();
 				writer.println("Not Found Template id : "+id);
@@ -124,6 +125,14 @@ public class Fluid extends HttpServlet{
 			request.setAttribute(PARAM_NAME_TEMPLATE, template);
 			RequestUtil.forward(request, response, template.getValue());
 		}catch (Exception e) {
+			PrintWriter writer  =  response.getWriter();
+			writer.println("Fluid ERROR Template id : "+id);
+			if(template!=null)
+			writer.println("Fluid Template value : "+template.getValue());
+			writer.println("Fluid Request "+request.getRequestURI()+"  template id : "+id);
+			writer.println(StackTraceUtil.getStackTrace(e));
+			writer.flush();
+			writer.close();
 			e.printStackTrace(); 
 		}
 		//writer.println(StackTraceUtil.getStackTrace(e));

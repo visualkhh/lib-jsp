@@ -74,6 +74,8 @@ public class UtilWeb {
 		response.getOutputStream().close();
 //		out.close();
 		
+
+		
 	}
 	
 
