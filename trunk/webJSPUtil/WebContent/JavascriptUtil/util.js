@@ -2526,6 +2526,7 @@ AjaxUtil.getAjaxClass = function(window_o){
 };
 
 //이거쓰지마세요-_- 별로 객체적이지 않음   아래 prototype으로 만들어논  AjaxK 사용하길
+/*
 AjaxUtil.ajax=function(param_o){
 	var dparam = {
 			url : '',
@@ -2627,7 +2628,7 @@ AjaxUtil.ajax=function(param_o){
 	return param;
 };
 
-
+*/
 /*
 애플릿
     <Applet code="CertUploaderApplet" MAYSCRIPT width="666" height="150" >
