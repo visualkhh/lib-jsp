@@ -2048,6 +2048,14 @@ JavaScriptUtil.hasOwnProperty=function(object_o,propertyName_s){
 JavaScriptUtil.getTypeOf=function(object_o){
 	return typeof object_o;
 };
+JavaScriptUtil.sleep=function(milliseconds){
+	  var start = new Date().getTime();
+	  for (var i = 0; i < 1e7; i++) {
+	    if ((new Date().getTime() - start) > milliseconds){
+	      break;
+	    }
+	  }
+};
 
 
 
