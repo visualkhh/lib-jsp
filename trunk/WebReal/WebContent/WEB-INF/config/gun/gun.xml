@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+gun 에는 인터발 시간이있고
+<gun id="gun_string"   class="com.web.framework.commet.GunTwitter"  interval="1000" ></gun>
+
+function 에는 broadcast = "true"  하면 브로드 케스팅할수있는놈이 된다
+<function id="fnc_script"  class="com.web.framework.commet.FunctionScript"  broadcast="tue" >
+		<gun ref="gun_script" />
+</function>
+	
+pair 는 cometevent가 개인당하나씩 들어간다 쓰레드생성되서
+<function id="fnc_settwitter"  class="com.web.framework.commet.FunctionString"  pair="tue" >
+		<gun id="gun_string"   class="com.web.framework.commet.GunSetTwitter"  interval="1000" pair="true" ></gun>
+</function>
+ -->
+ 
+ 
+<shot xmlns="visualkhh@gmail.com">
+ 	<function id="/getImage.gun"  class="com.function.FunctionImage" >
+		<gun id="GunString"   class="com.gun.GunGetImage"  interval="1000" ></gun>
+	</function>
+	
+ 	<function id="/getTwitter.gun"  class="com.function.FunctionString" >
+		<gun id="GunString"   class="com.gun.GunGetTwitter"  interval="1000" ></gun>
+	</function>
+	
+	 <function id="/setControl.gun"  class="com.function.FunctionGame"  >
+		<gun id="GunString"   class="com.gun.GunGame"  interval="1000" ></gun>
+	</function>
+ 	
+ 	
+ 	<function id="/setTwitter.gun"  class="com.function.FunctionString"  pair="tue" >
+		<gun id="GunString"   class="com.gun.GunSetTwitter"  interval="1000" pair="true" ></gun>
+	</function>
+	
+	
+</shot>
