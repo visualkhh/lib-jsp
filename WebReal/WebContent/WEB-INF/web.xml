@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>WebReal</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  
+  	<context-param>
+            <param-name>logkConfigLocation</param-name>
+            <param-value>/WEB-INF/config/logk/logk.xml</param-value>
+	</context-param>
+	
+	
+	
+	
+  <servlet>
+    <description></description>
+    <display-name>GunLongPolling</display-name>
+    <servlet-name>GunLongPolling</servlet-name>
+    <servlet-class>khh.web.jsp.framework.commet.longpolling.GunLongPolling</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/config/gun/gun.xml</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>GunLongPolling</servlet-name>
+    <url-pattern>*.gun</url-pattern>
+  </servlet-mapping>
+	
+	
+	
+	
+	
+	
+   <servlet>
+    <description></description>
+    <display-name>fluid</display-name>
+    <servlet-name>fluid</servlet-name>
+    <servlet-class>khh.web.jsp.framework.fluid.Fluid</servlet-class>
+             <init-param>
+                 <param-name>contextConfigLocation</param-name> 
+                 <param-value>/WEB-INF/config/fluid/fluid.xml</param-value>
+             </init-param>
+   </servlet>
+   
+  <servlet-mapping>
+    <servlet-name>fluid</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  
+  
+</web-app>

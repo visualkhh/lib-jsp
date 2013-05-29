@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fluid xmlns="http://visualkhh.com/fluid">
+	
+	<template id="/css.html" value="/WEB-INF/view_support/css.jsp">
+		<view id="default.css" value="/WEB-INF/view_support/js_css/themes/ui.jqgrid.css" />
+	</template>
+	
+	<template id="/script.html" value="/WEB-INF/view_support/script.jsp">
+		<view id="jquery.js" value="/WEB-INF/view_support/js_css/jquery.js" />
+		<view id="jquery_util.js" value="/WEB-INF/view_support/js_css/jquery.khh.util.js" />
+		<view id="util.js" value="/WEB-INF/view_support/JavascriptUtil/util.js" />
+	</template>
+
+	
+	<template id="/default.html">
+		<view id="title" value="WebReal" />
+	</template>
+	
+	<template id="/" value="/WEB-INF/view/index.jsp" extends="/default.html">
+	</template>
+	
+	<template id="/board.html" value="/WEB-INF/view/board.jsp" extends="/default.html">
+	</template>
+	
+</fluid>
