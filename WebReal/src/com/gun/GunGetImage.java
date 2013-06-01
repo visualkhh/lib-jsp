@@ -30,7 +30,7 @@ public class GunGetImage extends Gun {
 	@Override
 	public Object trigger() throws Exception {
 		while(thisStatus == afterStatus || data==null){
-			sleep(0);
+			sleep(1);
 		}
 		thisStatus=afterStatus;
 		return data;
