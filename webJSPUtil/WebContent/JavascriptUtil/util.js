@@ -4,6 +4,84 @@
 */
 
 
+function ObjectK (){};
+ObjectK.prototype = new Object();//상속
+ObjectK.prototype.keys = function(type){
+	var values = new Array();
+	for(var key in this){
+		if(!type || String((typeof this[key])).toUpperCase() == String(type).toUpperCase()){
+			values.push(key);
+		}
+	}
+	return values;
+}
+ObjectK.prototype.values = function(type){
+	var values = new Array();
+	for(var key in this){
+		if(!type || String((typeof this[key])).toUpperCase() == String(type).toUpperCase()){
+			values.push(this[key]);
+		}
+	}
+	return values;
+}
+ObjectK.prototype.types = function(type){
+	var values = new Array();
+	for(var key in this){
+		if(!type || String((typeof this[key])).toUpperCase() == String(type).toUpperCase()){
+			values.push(typeof this[key]);
+		}
+	}
+	return values;
+}
+ObjectK.prototype.keyValue = function(type){
+	var values = new Array();
+	for(var key in this){
+		if(!type || String((typeof this[key])).toUpperCase() == String(type).toUpperCase()){
+			values.push(
+						{
+							"key":key,
+							"value":this[key]
+						}
+			);
+		}
+	}
+	return values;
+}
+ObjectK.prototype.toJson = function(type){
+	var jsonString="{";
+	for(var key in this){
+		if(!type || String((typeof this[key])).toUpperCase() == String(type).toUpperCase()){
+			if(jsonString.length>1)
+			jsonString+=",";
+			var isString = (String((typeof this[key])).toUpperCase()=="STRING");
+			jsonString+=("\""+key+ "\":" + (isString?"\"":"") + new Object(this[key]) + (isString?"\"":""));
+		}
+	}
+	return jsonString+="}";
+	//return JSON.stringify(this);
+}
+ObjectK.prototype.clone = function(){
+	var return_obj=new Object();
+    for (var property in this) {
+    	return_obj[property] = this[property]; 
+    }
+	return  return_obj;
+}
+
+function Stack (){};
+Stack.prototype = new Object();//상속
+Stack.prototype.array = new Array();
+Stack.prototype.pop = function(){
+	return this.array.pop();
+}
+Stack.prototype.push = function(item){
+	return this.array.push(item);
+}
+Stack.prototype.size = function(){
+	return this.array.length;
+}
+
+
 
 function StringUtil(){};
 StringUtil.prototype = new Object();
@@ -512,6 +590,45 @@ StringUtil.getByteLength=function(inputStr_s){
 
 
 
+
+/*
+ * msg		템플릿되어진 문자열
+ * param	Object  키값으로 해당 프로퍼티찾아서 값넣어줌
+ * openChar 키시작을 알리는 값   ,기본값{
+ * closeChar 키끝을 알리는 값 ,기본값}
+ */
+ /* 예
+ var msg ="dd{d{g{visu}g}d}dggagasdgdf{gd}fg{visu}gasdad{visu}";
+ var param =  new Object();  
+ param["visu"] = "show";
+ var sss = StringUtil.injection(msg,param);
+ alert(sss); 
+ 결과 ddshowdggagasdgdffgshowgasdadshow
+ */
+ StringUtil.injection = function(msg, param, openChar, closeChar){
+
+	if(openChar==undefined){openChar="{";};
+	if(closeChar==undefined){closeChar="}";};
+	
+	var openIndex = msg.lastIndexOf(openChar);
+	var closeIndex = msg.indexOf(closeChar,openIndex);
+	
+	if(openIndex < 0 || closeIndex < 0 || openIndex > closeIndex){
+		return msg;
+	}
+	
+	var key 	= msg.substring(openIndex+1, closeIndex);
+	var fullKey	= msg.substring(openIndex, closeIndex+1);
+	var regexp	= new RegExp(fullKey,"gi");
+	
+	if(param[key]!=undefined && param[key]!=null){
+		msg = msg.replace(regexp,param[key]);
+	}else{
+		msg = msg.replace(regexp,"");
+	}
+	
+	return StringUtil.injection(msg, param, openChar, closeChar);
+}
 
 
 function RegExpUtil(){};
