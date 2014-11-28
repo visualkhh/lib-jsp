@@ -2582,7 +2582,47 @@ XMLUtil.getXMLObj = function(data_s){
 };
 
 
+XMLUtil.getDocument = function(data_s){
+	return XMLUtil.getXMLObj(data_s);
+};
 
+
+//노드타입(notdType)
+//1:ELEMENT_NODE, 2:ATTRIBUTE_NODE, 3:TEXT_NODE, 4:CDATA_SECTION_NODE, 5:NTITY_REFERENCE_NODE,
+//6:ENTITY_NODE, 7:PROCESSING_INStrUCTION_NODE, 8:COMMENT_NODE, 9:DOCUMENT_NODE, 10:DOCUMENT_TYPE_NODE
+//11:DOCUMENT_FRAGMENT_NODE, 12:NOTATION_NODE
+XMLUtil.setAttribute = function(atE,attrName,value){
+	var setE = null;
+	if(atE.nodeType==9){//document
+		setE = atE.documentElement;
+	}else if(atE.nodeType==1){
+		setE = atE;
+	}
+	setE.setAttribute(attrName,value);
+	return atE;
+	
+}
+XMLUtil.setString = function(doc,elName,value){
+	var baseDoc = doc.documentElement;
+	var nodes = baseDoc.childNodes;
+	var isCreate = true;
+	for ( var i = 0; i < nodes.length; i++) {
+		var atNode = nodes[i];//atNode.nodeName, atNode.nodeType, atNode.nodeValue atNode.text, atNode.xml
+		if(nodes[i].nodeName==elName && nodes[i].nodeType==1){
+			setAttribute(nodes[i],"value",value);
+			isCreate=false;
+			//nodes[i].setAttribute("value",value);//nodes[i].nodeValue=value; 
+		}
+	}
+		
+	if(isCreate){
+		var ce = doc.createElement(elName);
+		setAttribute(ce,"value",value);
+		//ce.setAttribute("value",value);//ce.nodeValue=value;	
+		baseDoc.appendChild(ce);
+	}
+	return doc;
+};
 
 
 
