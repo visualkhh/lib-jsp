@@ -2735,13 +2735,13 @@ Vector.prototype.add = function(indexOrelement,element) {//int index, Object ele
 		this.addElement(indexOrelement)
 	}
 	//this.size++;
-}
+};
 
 //obj 객체를 Vector에 저장한다. 
 Vector.prototype.addElement = function(obj){
 	this.list.push(obj);
 	//this.size++;
-} 
+};
 
 //Vector의 용량을 반환한다. 
 Vector.prototype.capacity = function(){
@@ -2757,7 +2757,7 @@ Vector.prototype.capacity = function(){
 		capacity+=this.scaleCapacity;
 	}
 	return capacity;
-} 
+};
 
 //현재 Vector에 elem의 요소가 있는지 검사하여, 있으면 true, 아니면 false를 반환한다. 
 Vector.prototype.contains = function(elem){
@@ -2767,19 +2767,19 @@ Vector.prototype.contains = function(elem){
 		}
 	}
 	return false;
-} 
+};
 //Vector 내용을 Object 배열로 복사한다. 
 Vector.prototype.copyInto = function(anArray){
 	for ( var i = 0; i < this.size(); i++) {
 		anArray[i] = this.elementAt(i);
 	}
 	return anArray;
-} 
+};
 
 //index 위치의 객체를 반환한다. 
 Vector.prototype.elementAt = function(index){
-	return this.list[i];
-} 
+	return this.list[index];
+};
 
 //Enumeration elements() 
 //이 Vector의 Enumeration을 생성한다. 
@@ -2797,12 +2797,12 @@ Vector.prototype.equals = function(vector){
 	}
 	
 	return true;
-} 
+};
 
 //Vector의 첫 번째 요소를 Object 형태로 반환한다. 
 Vector.prototype.firstElement = function(){
 	return this.elementAt(0);
-} 
+};
 //Object get(int index) 
 //Vector의 index 번째 요소를 Object 형태로 반환한다. 
 //int indexOf(Object elem) 
@@ -2817,7 +2817,7 @@ Vector.prototype.firstElement = function(){
 //Vector의 마지막 요소를 Object 형태로 반환한다. 
 Vector.prototype.firstElement.lastElement = function(){
 	return this.elementAt(this.size());	
-} 
+};
 //int lastIndexOf(Object elem) 
 //elem 객체의 마지막 위치로 반환한다. 
 //int lastIndexOf(Object elem, int index) 
@@ -2841,11 +2841,11 @@ Vector.prototype.firstElement.lastElement = function(){
 //Vector의 size를 새로 설정한다. 
 Vector.prototype.setSize = function(newSize){
 	this.list.length=newSize;
-} 
+};
 //Vector의 현재 size를 반환한다. 
 Vector.prototype.size = function(){
 	return this.list.length;
-} 
+};
 
 //Vector를 Object 배열로 생성하여 반환한다. 
 Vector.prototype.toArray = function(){
@@ -2854,7 +2854,7 @@ Vector.prototype.toArray = function(){
 		newArray.push(this.elementAt[i]);
 	};
 	return newArray;
-} 
+};
 
 
 
