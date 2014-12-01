@@ -2566,25 +2566,79 @@ HistoryUtil.back =function(back_n,histroy_o){
 	histroy_o.back();
 };
 
+
+///////////
 function XMLUtil (){};
 XMLUtil.prototype = new Object();
-XMLUtil.getXMLObj = function(data_s){
-	var doc;
-	if (JavaScriptUtil.isInternetExplorer()){
-		doc = new ActiveXObject('Microsoft.XMLDOM');
-		doc.async = 'false';
-		doc.loadXML(data_s);
-	} else {
-	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
+XMLUtil.getXMLObj = function(data_s){ //쓰지마세요
+//	var doc;
+//	if (JavaScriptUtil.isInternetExplorer()){
+//		doc = new ActiveXObject('Microsoft.XMLDOM');
+//		doc.async = 'false';
+//		doc.loadXML(data_s);
+//	} else {
+//	doc = (new DOMParser()).parseFromString(data_s, 'text/xml');
+//	}
+//	return doc;
+};
+
+XMLUtil.getDocument = function(dataOrFileSrc){
+	var isFile=true;
+	if(dataOrFileSrc.indexOf("<")>=0){  //앞부분이 <시작하면 파일이 아니다.
+		isFile=false;
 	}
 	
-	return doc;
+	
+	// code for IE
+	if (window.ActiveXObject) {
+		xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+		
+		if(isFile){ //파일
+			xmlDoc.async=false;
+			xmlDoc.load(dataOrFileSrc);
+		}else{//아닐경우
+			xmlDoc.async = false;
+			xmlDoc.loadXML(dataOrFileSrc);
+		}
+		
+		
+	}
+
+	// code for Mozilla, Firefox, Opera, etc.
+	else if (document.implementation && document.implementation.createDocument) {
+		xmlDoc=document.implementation.createDocument("","",null);
+		
+		if(isFile){ //파일
+			xmlDoc.async=false;
+			xmlDoc.load(dataOrFileSrc);
+		}else{//아닐경우
+			xmlDoc = (new DOMParser()).parseFromString(dataOrFileSrc, 'text/xml');
+		}
+	}
+	else {
+		//alert('Your browser cannot handle this script');
+	}
+	return xmlDoc;
 };
 
 
-XMLUtil.getDocument = function(data_s){
-	return XMLUtil.getXMLObj(data_s);
+XMLUtil.transform = function(xml,xsl){
+	// code for IE
+	if (window.ActiveXObject) {
+		ex=xml.transformNode(xsl);
+		return ex;
+	}
+	// code for Mozilla, Firefox, Opera, etc.
+	else if (document.implementation && document.implementation.createDocument) {
+		xsltProcessor=new XSLTProcessor();
+		xsltProcessor.importStylesheet(xsl);
+		resultDocument = xsltProcessor.transformToFragment(xml,document);
+		var dev = document.createElement("div");
+		dev.appendChild(resultDocument);
+		return dev.innerHTML;
+	}
 };
+
 
 
 //노드타입(notdType)
@@ -2602,14 +2656,23 @@ XMLUtil.setAttribute = function(atE,attrName,value){
 	return atE;
 	
 }
+XMLUtil.getAttribute = function(atE,attrName){
+	var setE = null;
+	if(atE.nodeType==9){//document
+		setE = atE.documentElement;
+	}else if(atE.nodeType==1){
+		setE = atE;
+	}
+	return setE.getAttribute(attrName);
+}
 XMLUtil.setString = function(doc,elName,value){
 	var baseDoc = doc.documentElement;
 	var nodes = baseDoc.childNodes;
 	var isCreate = true;
 	for ( var i = 0; i < nodes.length; i++) {
 		var atNode = nodes[i];//atNode.nodeName, atNode.nodeType, atNode.nodeValue atNode.text, atNode.xml
-		if(nodes[i].nodeName==elName && nodes[i].nodeType==1){
-			setAttribute(nodes[i],"value",value);
+		if(atNode.nodeName==elName && atNode.nodeType==1){
+			setAttribute(atNode,"value",value);
 			isCreate=false;
 			//nodes[i].setAttribute("value",value);//nodes[i].nodeValue=value; 
 		}
@@ -2623,7 +2686,175 @@ XMLUtil.setString = function(doc,elName,value){
 	}
 	return doc;
 };
+XMLUtil.getString = function(doc,elName){
+	var baseDoc = null;
+	if(doc.nodeType==9){//document
+		baseDoc = doc.documentElement;
+	}else if(doc.nodeType==1){
+		baseDoc = doc;
+	}
+	var nodes = baseDoc.childNodes;
+	var getValue=undefined;
+	for ( var i = 0; i < nodes.length; i++) {
+		var atNode = nodes[i];//atNode.nodeName, atNode.nodeType, atNode.nodeValue atNode.text, atNode.xml
+		if(atNode.nodeName==elName && atNode.nodeType==1){
+			getValue = getAttribute(atNode,"value");
+		}
+	}
+	return getValue;
+}
 
+
+Vector.prototype = new Object();
+Vector.prototype.list = new Array();
+Vector.prototype.type = "Vector";
+Vector.prototype.size = 0;//사이즈
+//Vector.prototype.capacity = 10;//용량  기본용량
+Vector.prototype.scaleCapacity = 10;//초가시 늘어나는 용량
+
+function Vector(capacity_size,scale_capacity_size){
+	var capacity = 10;
+	if(capacity_size!=undefined){
+		capacity = capacity_size;
+	}
+	if(scale_capacity_size!=undefined){
+		this.scaleCapacity = scale_capacity_size;
+	}
+	
+};
+
+//Vector 내의 index 위치에 element 객체를 저장한다. 
+//o 객체를 Vector 내에 저장하고 그 결과 여부를 true, false로 반환한다. 
+Vector.prototype.add = function(indexOrelement,element) {//int index, Object element
+	if(arguments.length==2){
+		if(this.list.length<=indexOrelement){
+			throw "IndexOutOfBoundsException";
+		}
+		this.list.splice(indexOrelement,0, element); //끼워넣기
+	}else if(arguments.length==1){
+		this.addElement(indexOrelement)
+	}
+	//this.size++;
+}
+
+//obj 객체를 Vector에 저장한다. 
+Vector.prototype.addElement = function(obj){
+	this.list.push(obj);
+	//this.size++;
+} 
+
+//Vector의 용량을 반환한다. 
+Vector.prototype.capacity = function(){
+	if(this.list.length<this.scaleCapacity){
+		return this.scaleCapacity;
+	}
+	//자바스크립트는 별도로 미리 만들어놀필요가 없어서..
+	//용량은 는 그냥 맞춰서 그때그때 
+	//  (현재크기/스케일) * 스케일 
+	// if (현재크기%스케일)>0 +스케일
+	var capacity = Math.floor(this.list.length/this.scaleCapacity) * this.scaleCapacity
+	if((this.list.length%this.scaleCapacity)>0){
+		capacity+=this.scaleCapacity;
+	}
+	return capacity;
+} 
+
+//현재 Vector에 elem의 요소가 있는지 검사하여, 있으면 true, 아니면 false를 반환한다. 
+Vector.prototype.contains = function(elem){
+	for ( var i = 0; i < this.size(); i++) {
+		if(elem==this.elementAt(i)){
+			return true;
+		}
+	}
+	return false;
+} 
+//Vector 내용을 Object 배열로 복사한다. 
+Vector.prototype.copyInto = function(anArray){
+	for ( var i = 0; i < this.size(); i++) {
+		anArray[i] = this.elementAt(i);
+	}
+	return anArray;
+} 
+
+//index 위치의 객체를 반환한다. 
+Vector.prototype.elementAt = function(index){
+	return this.list[i];
+} 
+
+//Enumeration elements() 
+//이 Vector의 Enumeration을 생성한다. 
+
+//Vector의 내용이 같은지 비교한다. 
+Vector.prototype.equals = function(vector){
+	if(this.size() == vector.size()){
+		for ( var i = 0; i < this.size(); i++) {
+			if(this.elementAt(i)!=vector.elementAt(i)){
+				return false;
+			}
+		}
+	}else{
+		return false;
+	}
+	
+	return true;
+} 
+
+//Vector의 첫 번째 요소를 Object 형태로 반환한다. 
+Vector.prototype.firstElement = function(){
+	return this.elementAt(0);
+} 
+//Object get(int index) 
+//Vector의 index 번째 요소를 Object 형태로 반환한다. 
+//int indexOf(Object elem) 
+//elem 객체의 위치를 반환한다. 
+//int indexOf(Object elem, int index) 
+//index 위치로부터 elem 객체의 위치를 반환한다. 
+//void insertElementAt(Object obj, int index) 
+//index 위치에 obj를 삽입한다. 
+//boolean isEmpty() 
+//Vector가 비어 있는지 체크하여 true, false로 반환한다. 
+
+//Vector의 마지막 요소를 Object 형태로 반환한다. 
+Vector.prototype.firstElement.lastElement = function(){
+	return this.elementAt(this.size());	
+} 
+//int lastIndexOf(Object elem) 
+//elem 객체의 마지막 위치로 반환한다. 
+//int lastIndexOf(Object elem, int index) 
+//index로부터 시작하여 elem객체의 마지막 위치로 반환한다. 
+//Object remove(int index) 
+//index 위치의 객체를 Vector에서 제거한다. 
+//boolean remove(Object o) 
+//o 객체를 찾아서 Vector에서 제거한다. 
+//void removeAllElements() 
+//Vector의 모든 요소를 제거한다. 
+//boolean removeElement(Object obj) 
+//obj 객체를 Vector에서 제거하고 그 결과를 true, false로 반환한다. 
+//void removeElementAt(int index) 
+//index 위치의 요소를 제거한다. 
+//protected void removeRange(int fromIndex, int toIndex) 
+//fromIndex 위치에서부터 toIndex 위치까지의 Vector의 일부 객체에 요소를 제거한다. 
+//Object set(int index, Object element) 
+//index 위치에 element 객체로 설정하고, 설정 후에는 설정된 객체를 반환한다. 
+//void setElementAt(Object obj, int index) 
+//index 위치에 element 객체로 설정한다. 
+//Vector의 size를 새로 설정한다. 
+Vector.prototype.setSize = function(newSize){
+	this.list.length=newSize;
+} 
+//Vector의 현재 size를 반환한다. 
+Vector.prototype.size = function(){
+	return this.list.length;
+} 
+
+//Vector를 Object 배열로 생성하여 반환한다. 
+Vector.prototype.toArray = function(){
+	var newArray = new Array();
+	for ( var i = 0; i < this.size(); i++) {
+		newArray.push(this.elementAt[i]);
+	};
+	return newArray;
+} 
 
 
 
