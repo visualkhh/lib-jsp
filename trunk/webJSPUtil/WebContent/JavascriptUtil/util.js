@@ -605,7 +605,7 @@ StringUtil.getByteLength=function(inputStr_s){
  alert(sss); 
  결과 ddshowdggagasdgdffgshowgasdadshow
  */
- StringUtil.injection = function(msg, param, openChar, closeChar){
+ StringUtil.inJection = function(msg, openChar, closeChar, param){
 
 	if(openChar==undefined){openChar="{";};
 	if(closeChar==undefined){closeChar="}";};
