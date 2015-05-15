@@ -2398,7 +2398,7 @@ Debug.log = function (level_s,msg_s) {
 					        switch ($1) {
 					        	case "%m": return msg_s;
 					            case "%d": return DateUtil.getDate(Debug.dateformat);
-					            case "%l": return Debug.LEVEL;
+					            case "%l": return level_s;
 					         /*   
 					          	case "yy": return StringUtil.lpad("0",2,(date_o.getFullYear() % 1000).toString());
 					            case "MM": return StringUtil.lpad("0",2,(date_o.getMonth() + 1).toString());
