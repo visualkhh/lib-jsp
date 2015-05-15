@@ -7,7 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div style="color: blue">
 main<p><%= request.getParameter("a") %>
 <p><%= request.getAttribute("v") %>
+</div>
 </body>
 </html>

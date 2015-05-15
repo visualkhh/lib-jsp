@@ -40,13 +40,24 @@
       <param-value>/WEB-INF/config/longpolling/config.xml</param-value>
     </init-param>
   </servlet>
-  
-  
-  
-  
   <servlet-mapping>
     <servlet-name>GunLongPolling</servlet-name>
     <url-pattern>/GunLongPolling/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>fluid</display-name>
+    <servlet-name>fluid</servlet-name>
+    <servlet-class>khh.web.jsp.framework.fluid.Fluid</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/config/fluid/fluidconfig.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>fluid</servlet-name>
+    <url-pattern>*.html</url-pattern>
   </servlet-mapping>
   
   

@@ -18,56 +18,18 @@ pair 는 cometevent가 개인당하나씩 들어간다 쓰레드생성되서
 	<gun id="gun_script"   class="khh.web.jsp.framework.commet.GunScript"  interval="1000" ></gun>
 
 
-<!-- 
-
-	<function id="fnc_hhkhh"  class="com.web.jsp.framework.commet.FunctionHHKHH"  >
-		<gun ref="gun_hhk" />
-		<gun ref="gun_khh" />
-	</function>
-	
-	<function id="fnc_hhk"  class="khh.web.jsp.framework.commet.FunctionHHK"   >
-		<gun ref="gun_hhk" />
-	</function>
-	
-	
-	<function id="fnc_script"  class="khh.web.jsp.framework.commet.FunctionScript"  broadcast="tue" >
-		<gun ref="gun_script" />
-	</function>
-	
-	-->
 	 
 	<function id="/GunLongPolling/fnc_twitter"  class="khh.web.jsp.framework.commet.FunctionString"  >
 		<gun id="gun_string"   class="khh.web.jsp.framework.commet.GunTwitter"  interval="1000" ></gun>
+		<view ref="aaa"></view>
 	</function>
 	
 	<function id="/GunLongPolling/fnc_settwitter"  class="khh.web.jsp.framework.commet.FunctionString"  pair="true" >
 		<gun id="gun_string"   class="khh.web.jsp.framework.commet.GunSetTwitter"  interval="1000" pair="true" ></gun>
 	</function>
 
-<!-- 	
-	<function id="fnc_ssettwitter"  class="com.web.framework.commet.FunctionString" >
-		<gun id="gun_string"   class="com.web.framework.commet.GunSetTwitter"  interval="1000"  ></gun>
-	</function>
-
-
-	
-	<function id="fnc_khh"  class="com.web.framework.commet.FunctionKHH"  >
-		<gun ref="gun_khh" />
-	</function>
-	<function id="fnc_khh2"  class="com.web.framework.commet.FunctionKHH"  >
-		<gun id="gun_khh"   class="com.web.framework.commet.GunKHH"  interval="1000" ></gun>
-	</function>
-
-	
-	<function id="fnc_good"  class="com.web.framework.commet.FunctionKHH"  pair="true">
-		<gun id="gun_khh"   class="com.web.framework.commet.GunHHK"  interval="1000"  pair="true"></gun>
-	</function>
-	
-	
-	<function id="fnc_hhkhh2"  class="com.web.framework.commet.FunctionHHKHH"  pair="true'">
-		<gun ref="gun_hhk" />
-		<gun id="gun_khh"   class="com.web.framework.commet.GunKHH"  interval="1000"  pair="true"></gun>
-	</function>
- -->
+<views>
+	<view id="aaa"  class="vvv"/>
+</views>
 
 </shot>

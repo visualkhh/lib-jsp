@@ -6,10 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
 </head>
-<body>
+<body >
+<div style="color: red">
 left<p><%= request.getParameter("a") %>
 <p><%= request.getAttribute("v") %>
 <p><%= request.getRequestURI() %>
 <p><%= request.getRequestURL() %>
+</div>
 </body>
 </html>
