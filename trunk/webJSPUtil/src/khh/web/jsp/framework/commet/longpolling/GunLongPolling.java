@@ -61,10 +61,20 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     	String logkconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOGK);
     	if(logkconfigpath!=null){
     		log.addConfigfile( config.getServletContext().getRealPath(logkconfigpath) );
+    	}else{
+    		logkconfigpath=config.getInitParameter(CONFIGNAME_LOGK);
+    		if(logkconfigpath!=null){
+    			log.addConfigfile( config.getServletContext().getRealPath(logkconfigpath) );
+    		}
     	};
     	
     	//log4j config
     	String log4jconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOG4J);
+    	if(log4jconfigpath!=null){
+    		//log4j 셋팅 config
+    	}else{
+    		//log4j 셋팅 config
+    	};
     	
     	
     	//서블릿안쪽에 파라미터에서

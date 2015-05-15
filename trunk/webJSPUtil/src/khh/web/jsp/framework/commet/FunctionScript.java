@@ -2,22 +2,22 @@ package khh.web.jsp.framework.commet;
 
 import org.apache.catalina.CometEvent;
 
-import khh.std.adapter.Adapter_Std;
+import khh.std.adapter.AdapterMap;
 import khh.web.jsp.framework.commet.longpolling.Function;
 
 
 public class FunctionScript extends Function{
 	@Override
-	public String makeResult(Adapter_Std<String, Object> set) {
+	public AdapterMap<String, Object> makeResult(AdapterMap<String, Object> set) {
 //		String ip = null;
 //		if(getEvent()!=null)
 //		{
 //			ip=getEvent().getHttpServletRequest().getParameter("ip");
 //		}
 //		System.out.println("functuion hhk "+ip);
-		String str=null;
+		AdapterMap<String, Object> str=null;
 		try {
-			str = (String) set.get("gun_script");
+			str.set("msg", (String) set.get("gun_script"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -26,9 +26,10 @@ public class FunctionScript extends Function{
 	}
 
 	@Override
-	public void finish(CometEvent event, Adapter_Std<String, Object> result)
+	public void finish(CometEvent event, AdapterMap<String, Object> result)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
