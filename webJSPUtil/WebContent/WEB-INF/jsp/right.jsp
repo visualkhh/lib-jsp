@@ -7,7 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div style="color: green">
 rgiht<p><%= request.getParameter("a") %>
 <p><%= request.getAttribute("v") %>
+</div>
 </body>
 </html>

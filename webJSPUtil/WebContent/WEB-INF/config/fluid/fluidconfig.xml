@@ -2,7 +2,7 @@
 
 <fluid xmlns="http://www.visualkhh@gmail.com">
 
-	<template id="default" 	value="/WEB-INF/jsp/default_template.jsp">
+	<template id="/default.html" 	value="/WEB-INF/jsp/default_template.jsp">
 		<view id="title" value="welcom" />
 		<view id="main" value="/WEB-INF/jsp/main.jsp" />
 		<view id="left" value="/WEB-INF/jsp/left.jsp" />
@@ -11,7 +11,7 @@
 	
 	
 	
-	<template id="/openpage.f" value="/WEB-INF/jsp/openpage_template.jsp" extendcategory="default">
+	<template id="/hhk.html" value="/WEB-INF/jsp/openpage_template.jsp" extends="/default.html">
 		<view id="title" value="openpage" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>

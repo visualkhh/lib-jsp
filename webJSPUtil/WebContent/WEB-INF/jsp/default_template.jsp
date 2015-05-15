@@ -17,6 +17,6 @@ title:[<fluid:insertString id="title"></fluid:insertString>]<p>
 </tr>
 </table>
  </p>
- 김현하 템플릿
+ 기본 템플릿
 </body>
 </html>
