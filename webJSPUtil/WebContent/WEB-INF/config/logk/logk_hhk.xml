@@ -54,7 +54,7 @@
 	</target>
 
 	
-	<target id="agg"  category="^*"  extendcategory="super_target" ></target> 
+	<target id="agg"  category="^*"  extends="super_target" ></target> 
 <!--
 	<target id="gg"  category="^com.khh.util.file.pack"  extendcategory="super_target" ></target>
 	
