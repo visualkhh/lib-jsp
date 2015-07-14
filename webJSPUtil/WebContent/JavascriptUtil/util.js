@@ -2007,7 +2007,16 @@ RexUtil.prototype = new Object();
 
 
 
-
+function ColorUtil (){};
+ColorUtil.prototype = new Object();
+ColorUtil.prototype.getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 /////////// 기본적인..유틸
 
 function JavaScriptUtil (){};
@@ -3387,8 +3396,6 @@ function UiFlow(param_o,name_s){
 	if(this.autoStart){
 		this.start();
 	}
-	
-	
 }
 
 
