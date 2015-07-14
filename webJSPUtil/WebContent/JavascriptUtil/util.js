@@ -2009,7 +2009,7 @@ RexUtil.prototype = new Object();
 
 function ColorUtil (){};
 ColorUtil.prototype = new Object();
-ColorUtil.prototype.getRandomColor() {
+ColorUtil.prototype.getRandomColor = function(){
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++ ) {
