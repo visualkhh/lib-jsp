@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 //MessageSender.java 
 public class GunCommetMessageSender implements Runnable {

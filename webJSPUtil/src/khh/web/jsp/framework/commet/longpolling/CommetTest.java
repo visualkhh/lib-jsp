@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import khh.web.jsp.request.RequestUtil;
 import khh.web.jsp.response.ResponseUtil;
 
-import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometProcessor;
+import org.apache.catalina.comet.CometEvent;
+import org.apache.catalina.comet.CometProcessor;
 
 
 

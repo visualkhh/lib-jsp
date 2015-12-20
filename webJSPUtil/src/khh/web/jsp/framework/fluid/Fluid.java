@@ -23,22 +23,18 @@ public class Fluid extends HttpServlet{
 	public final static String CONFIGNAME_CONTEXT_PATTERN="contextConfigLocationPattern";
 	public final static String PARAM_NAME_TEMPLATE="fluid_template_dskfj4gkerjk";
 	private FluidConfigManager fmg = new FluidConfigManager(); 
-//	private FluidConfigManager fmg = FluidConfigManager.getInstance(); 
 	private LogK log = LogK.getInstance();
 	private static final long serialVersionUID = 1L;
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		super.init();
+		super.init(config);
 		
-	//서블릿컨텍스트에서
-    	
+		//서블릿컨텍스트에서
     	//logk config
-    	String logkconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOGK);
-    	if(logkconfigpath!=null){
-    		log.addConfigfile( config.getServletContext().getRealPath(logkconfigpath) );
+    	String logkconfigpath = config.getServletContext().getInitParameter(CONFIGNAME_LOGK);
+    	if(logkconfigpath != null){
+    		log.addConfigfile(config.getServletContext().getRealPath(logkconfigpath));
     	};
-    	
-    	
     	
     	//서블릿안쪽에 파라미터에서
     	//longpolling GunConfigPath
@@ -86,18 +82,14 @@ public class Fluid extends HttpServlet{
 		}
 	}
 	
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		this.doPost(req,resp);
+	public FluidConfigManager getFluidConfigManager() {
+		return fmg;
 	}
-	
-	
-	
+
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//request.getServletContext().getRealPath(path)
 		/*
 		 HttpSession session = request.getSession();
 		PrintWriter writer  =  response.getWriter();
@@ -109,6 +101,17 @@ public class Fluid extends HttpServlet{
 		 */
 	
 		String id=request.getRequestURI().replaceFirst(request.getContextPath(), "");
+		forwordView(id, request, response);
+		//writer.println(StackTraceUtil.getStackTrace(e));
+		
+//		log.debug("=====start========="+request.getRequestURI().replaceFirst(request.getContextPath(), ""));
+	//	RequestUtil.forward(request, response, request.getRequestURI().replaceFirst(request.getContextPath(), ""));
+//		RequestUtil.forward(request, response, "/WEB-INF/jsp/NewFile.jsp");
+//		RequestUtil.forward(request, response, request.getRequestURL().toString());
+		
+	}
+	
+	public void forwordView(String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		log.debug("Fluid Request "+request.getRequestURI()+"  template id : "+id);
 		Template template = null ;
 		try{
@@ -135,15 +138,9 @@ public class Fluid extends HttpServlet{
 			writer.close();
 			e.printStackTrace(); 
 		}
-		//writer.println(StackTraceUtil.getStackTrace(e));
-		
-//		log.debug("=====start========="+request.getRequestURI().replaceFirst(request.getContextPath(), ""));
-	//	RequestUtil.forward(request, response, request.getRequestURI().replaceFirst(request.getContextPath(), ""));
-//		RequestUtil.forward(request, response, "/WEB-INF/jsp/NewFile.jsp");
-//		RequestUtil.forward(request, response, request.getRequestURL().toString());
 		
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();

@@ -21,8 +21,8 @@ import khh.file.util.FileUtil;
 import khh.string.util.StringUtil;
 import khh.web.UtilWeb;
 
-import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometProcessor;
+import org.apache.catalina.comet.CometEvent;
+import org.apache.catalina.comet.CometProcessor;
 
 
 
@@ -56,7 +56,6 @@ public class GunLongPolling extends HttpServlet  implements CometProcessor {
     public void init(ServletConfig config) throws ServletException  {
     	super.init(config);
     	//서블릿컨텍스트에서
-    	
     	//logk config
     	String logkconfigpath=config.getServletContext().getInitParameter(CONFIGNAME_LOGK);
     	if(logkconfigpath!=null){

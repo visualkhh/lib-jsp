@@ -16,7 +16,7 @@ import khh.std.adapter.AdapterMap;
 import khh.web.jsp.db.util.ConnectionWebUtil;
 import khh.xml.XMLparser;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 public class GunLongPollingConfigManager {
 	private AdapterMap<String,File> configlist=null;

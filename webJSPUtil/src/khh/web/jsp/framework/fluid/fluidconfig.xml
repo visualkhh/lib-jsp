@@ -18,4 +18,9 @@
 		<view id="title" value="openpage welcom" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>
+	
+	<template id="/hello.k" value="/WEB-INF/jsp/openpage_template.jsp" extends="/default.html">
+		<view id="title" value="openpage welcom" />
+		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
+	</template>
 </fluid>

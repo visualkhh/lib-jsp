@@ -41,6 +41,7 @@ public class FluidInsertView extends TagSupportSimple {
 		try {
 			String value = template.getViewValue(getId());
 			if(value!=null){
+				//getPageContext().include(value);
 				RequestDispatcher  dis =  getPageContext().getServletContext().getRequestDispatcher(value);
 				dis.include(getRequest(), getResponse());
 			}

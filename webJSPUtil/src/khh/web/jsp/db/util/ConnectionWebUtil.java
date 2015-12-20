@@ -19,7 +19,6 @@ public class ConnectionWebUtil {
 		DataSource ds = (DataSource)ctx.lookup("java:comp/env/"+name);
 		return ds.getConnection();
 		
-		
 		/*Context initCtx = new InitialContext();
 		Context envCtx = (Context) initCtx.lookup("java:comp/env");
 		DataSource ds = (DataSource) envCtx.lookup(name);
@@ -50,6 +49,48 @@ public class ConnectionWebUtil {
 	 </Context>*/
 		
 		
+		
+		
+		/*
+			1. server.xml
+			1.1. GlobalNamingResources에 JDBC Resource 추가하기
+			<GlobalNamingResources>
+			
+			        <Resource name="jdbc/TestDB"
+			            auth="Container" 
+			            type="javax.sql.DataSource"
+			            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+			            maxActive="30"
+			            minIdle="30"
+			            maxWait="10000"
+			            initialSize="10"
+			            validationQuery="SELECT 1 FROM dual"
+			            driverClassName="com.mysql.jdbc.Driver"
+			            defaultAutoCommit="true"
+			            username="test"
+			            password="test"
+			            url="jdbc:mysql://127.0.0.1:3316/testDB" />
+			
+			</GlobalNamingResources>
+			
+			1.2. Context 추가하여 리소스 링크 설정
+			<Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
+			
+			<Context docBase="test" path="/test" reloadable="true" >
+			   <ResourceLink global="jdbc/TestDB" name="jdbc/TestDB" type="javax.sql.DataSource" />
+			</Context>
+			
+			</Host>
+			
+			2. web.xml
+			  <resource-ref>
+			      <description>DB Connection</description>
+			      <res-ref-name>jdbc/TestDB</res-ref-name>
+			      <res-type>javax.sql.DataSource</res-type>
+			      <res-auth>Container</res-auth>
+			  </resource-ref>
+
+		 */
 	}
 	
 	

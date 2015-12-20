@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import khh.interfaces.StrEvent_Interface;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 public abstract class Gun extends Thread {
 	private ArrayList<StrEvent_Interface> listenerlist 	= new ArrayList<StrEvent_Interface>();

@@ -9,7 +9,7 @@ import khh.file.util.FileUtil;
 import khh.property.util.PropertyUtil;
 import khh.web.UtilWeb;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 
 public class GunJS {

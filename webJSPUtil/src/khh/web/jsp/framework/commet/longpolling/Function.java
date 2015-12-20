@@ -16,7 +16,7 @@ import khh.string.util.StringUtil;
 import khh.web.UtilWeb;
 import khh.web.jsp.request.RequestUtil;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 
 public abstract class Function extends Thread  implements StrEvent_Interface{
