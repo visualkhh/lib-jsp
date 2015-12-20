@@ -11,7 +11,7 @@
 <title><fluid:insertString id="title"/></title>
 </head>
 <body>
-<div class="title"><fluid:insertString id="title"/>[openpage_template.jsp]</div>
+<div class="title"><fluid:insertString id="title"/>[openpage_template.jsp]zz</div>
 
 <div class="content"><fluid:insertView id="left"/></div>
 <div class="content"><fluid:insertView id="main"/></div>

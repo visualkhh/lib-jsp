@@ -37,6 +37,17 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" v
 	</attribute>
 </tag>
 	
+<!-- <tag> -->
+<!-- 	<name>include</name> -->
+<!-- 	<tagclass>khh.web.jsp.framework.fluid.tag.FluidInsertInclude</tagclass> -->
+<!-- 	<body-content>scriptless</body-content> -->
+<!-- 	<attribute> -->
+<!-- 		<name>id</name> -->
+<!-- 		<required>true</required> -->
+<!-- 		<rtexprvalue>true</rtexprvalue> -->
+<!-- 	</attribute> -->
+	
+<!-- </tag> -->
 <tag>
 	<name>insertString</name>
 	<tagclass>khh.web.jsp.framework.fluid.tag.FluidInsertString</tagclass>
