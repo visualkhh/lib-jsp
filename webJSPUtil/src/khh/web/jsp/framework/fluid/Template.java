@@ -8,7 +8,8 @@ public class Template {
 	private String nodeid;
 	private String value							= null;
 	private String extends_							= null;
-	private AdapterMap<String,View> viewlist		= new AdapterMap<String,View>();
+	private boolean enable							= true;
+	private AdapterMap<String, View> viewlist		= new AdapterMap<String, View>();
 //	private LogK log = LogK.getInstance();
 	public String getNodeid() {
 		return nodeid;
@@ -29,7 +30,13 @@ public class Template {
 	public void setExtends(String extends_) {
 		this.extends_ = extends_;
 	}
-	public void addView(String id,View view) throws Exception{
+	public boolean isEnable() {
+		return enable;
+	}
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
+	public void addView(String id, View view) throws Exception{
 		viewlist.add(id,view);
 	}
 	public View getView(String id) throws Exception{
@@ -43,6 +50,9 @@ public class Template {
 	}
 	public String getViewValue(String id) throws Exception{
 		return viewlist.get(id).getValue();
+	}
+	public boolean isViewEnable(String id) throws Exception{
+		return viewlist.get(id).isEnable();
 	}
 
 }

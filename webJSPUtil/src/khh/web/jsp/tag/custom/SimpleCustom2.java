@@ -24,6 +24,7 @@ public class SimpleCustom2 extends SimpleTagSupport {
 		this.age = age;
 	}
 
+	
 
 	@Override
 	public void doTag() throws JspException, IOException {

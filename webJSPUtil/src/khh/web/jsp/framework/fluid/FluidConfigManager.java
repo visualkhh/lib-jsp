@@ -57,8 +57,11 @@ public class FluidConfigManager {
                 
                 for(int j = 1; j <= templatecnt; j++) {
                     Template template = new Template();
+                    
                     template.setNodeid(parser.getString(templatepath+"["+j+"]/@id"));
                     template.setValue(parser.getString(templatepath+"["+j+"]/@value"));
+                    Boolean tb = parser.getBoolean(templatepath+"["+j+"]/@enable");
+                    template.setEnable(tb==null?true:tb);
                     template.setExtends(parser.getString(templatepath+"["+j+"]/@extends"));
                     
                     log.debug("Fluid: Template Id : "+template.getNodeid()+"  extends : "+template.getExtends());
@@ -71,6 +74,8 @@ public class FluidConfigManager {
                     	View view = new View() ;
                     	view.setNodeid(parser.getString(viewpath+"["+s+"]/@id"));
                     	view.setValue(parser.getString(viewpath+"["+s+"]/@value"));
+                    	Boolean b = parser.getBoolean(viewpath+"["+s+"]/@enable");
+                    	view.setEnable(b==null?true:b);
                     	template.addView(view.getNodeid(),view);
                     }
                     
@@ -121,12 +126,12 @@ public class FluidConfigManager {
 
 
 
-	public ServletConfig getServletConfig() {
-		return servletConfig;
-	}
-	public void setServletConfig(ServletConfig servletConfig) {
-		this.servletConfig = servletConfig;
-	}
+//	public ServletConfig getServletConfig() {
+//		return servletConfig;
+//	}
+//	public void setServletConfig(ServletConfig servletConfig) {
+//		this.servletConfig = servletConfig;
+//	}
 	
 	public Template getTemplate(String id) throws Exception{
 		return templatelist.get(id);

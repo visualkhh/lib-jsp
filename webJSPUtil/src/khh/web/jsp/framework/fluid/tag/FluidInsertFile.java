@@ -15,7 +15,7 @@ import khh.web.jsp.tag.custom.TagSupportSimple;
 public class FluidInsertFile extends TagSupportSimple {
 	String id;
 	String exception="false";
-	
+	String enable	= "true";
 	public String getId() {
 		return id;
 	}
@@ -31,7 +31,20 @@ public class FluidInsertFile extends TagSupportSimple {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
+	
+	public String getEnable() {
+		return enable;
+	}
 
+	public void setEnable(String enable) {
+		this.enable = enable;
+	}
+	public boolean isTagEnable(){
+		return "true".equals(getEnable()) || "TRUE".equals(getEnable());
+	}
+	public boolean isTagException(){
+		return "true".equals(getException()) || "TRUE".equals(getException());
+	}
 	@Override
 	public int doStartTag() throws JspException {
 		Template template = (Template) getRequest().getAttribute(Fluid.PARAM_NAME_TEMPLATE);
@@ -43,13 +56,14 @@ public class FluidInsertFile extends TagSupportSimple {
 		
 		try {
 			String value = template.getViewValue(getId());
-			String fileinfo = FileUtil.readeFileToString(getRequest().getRealPath(value));
-			if(value!=null){
+			boolean enable 	= template.isViewEnable(getId());
+			if(enable && isTagEnable() && value!=null){
+				String fileinfo = FileUtil.readeFileToString(getRequest().getRealPath(value));
 				getJspWriter().write(fileinfo);
 			}
 		} catch (Exception e) {
 			try {
-				if("true".equals(getException()) || "TRUE".equals(getException()))
+				if(isTagException())
 				getJspWriter().write(StackTraceUtil.getStackTrace(e));
 			} catch (IOException e1) {
 				e1.printStackTrace();

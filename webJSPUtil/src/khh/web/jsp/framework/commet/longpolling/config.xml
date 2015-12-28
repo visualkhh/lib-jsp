@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<shot xmlns="http://www.visualkhh@gmail.com">
+
+<!-- 
+gun 에는 인터발 시간이있고
+function 에는 broadcast = "true"  하면 브로드 케스팅할수있는놈이 된다
+pair 는 cometevent가 개인당하나씩 들어간다 쓰레드생성되서
+ -->
+ 
+ 	<db>
+		<jndi id="mproject" name="jdbc/mproject" maxsize="100"></jndi>
+	</db>
+	
+	
+	<gun id="gun_hhk"   class="khh.web.jsp.framework.commet.GunHHK"  interval="3000" ></gun>
+	<gun id="gun_khh"   class="khh.web.jsp.framework.commet.GunKHH"  interval="3000" ></gun>
+	<gun id="gun_script"   class="khh.web.jsp.framework.commet.GunScript"  interval="1000" ></gun>
+
+
+	 
+	<function id="/GunLongPolling/fnc_twitter"  class="khh.web.jsp.framework.commet.FunctionString"  >
+		<gun id="gun_string"   class="khh.web.jsp.framework.commet.GunTwitter"  interval="1000" ></gun>
+		<view ref="aaa"></view>
+	</function>
+	
+	<function id="/GunLongPolling/fnc_settwitter"  class="khh.web.jsp.framework.commet.FunctionString"  pair="true" >
+		<gun id="gun_string"   class="khh.web.jsp.framework.commet.GunSetTwitter"  interval="1000" pair="true" ></gun>
+	</function>
+
+<views>
+	<view id="aaa"  class="vvv"/>
+</views>
+
+</shot>

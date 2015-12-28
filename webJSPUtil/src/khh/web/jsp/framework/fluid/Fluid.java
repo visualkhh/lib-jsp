@@ -73,7 +73,7 @@ public class Fluid extends HttpServlet{
 
     	try{
     		log.debug("ServletrContextPathReal "+config.getServletContext().getRealPath(""));
-    		fmg.setServletConfig(config);
+    		//fmg.setServletConfig(config);
     		fmg.addConfigFile(realpath);
         	fmg.setting();
     		
@@ -112,27 +112,27 @@ public class Fluid extends HttpServlet{
 	}
 	
 	public void forwordView(String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		log.debug("Fluid Request "+request.getRequestURI()+"  template id : "+id);
+		log.debug("Fluid Request "+request.getRequestURI()+"  template id : ("+id+")");
 		Template template = null ;
 		try{
 			template = fmg.getTemplate(id);
 			if(template==null){
 				PrintWriter writer  =  response.getWriter();
-				writer.println("Not Found Template id : "+id);
-				writer.println("Fluid Request "+request.getRequestURI()+"  template id : "+id);
+				writer.println("Not Found Template id : ("+id+")");
+				writer.println("Fluid Request "+request.getRequestURI()+"  template id : ("+id+")");
 				writer.flush();
 				writer.close();
 				return;
 			}
-			log.debug("Fluid forward Real :  "+template.getValue());
+			log.debug("Fluid forward Real :  ("+template.getValue()+")");
 			request.setAttribute(PARAM_NAME_TEMPLATE, template);
 			RequestUtil.forward(request, response, template.getValue());
 		}catch (Exception e) {
 			PrintWriter writer  =  response.getWriter();
-			writer.println("Fluid ERROR Template id : "+id);
+			writer.println("Fluid ERROR Template id : ("+id+")");
 			if(template!=null)
-			writer.println("Fluid Template value : "+template.getValue());
-			writer.println("Fluid Request "+request.getRequestURI()+"  template id : "+id);
+			writer.println("Fluid Template value : ("+template.getValue()+")");
+			writer.println("Fluid Request "+request.getRequestURI()+"  template id : ("+id+")");
 			writer.println(StackTraceUtil.getStackTrace(e));
 			writer.flush();
 			writer.close();

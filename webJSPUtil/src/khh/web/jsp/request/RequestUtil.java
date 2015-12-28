@@ -70,6 +70,16 @@ dispatcher.forward(request,response);
 	public static String getHeaderReferer(HttpServletRequest request,String header){
 		return getHeader(request,"Referer");
 	}
+	public static String getURIFULL(HttpServletRequest request){
+		String uri = request.getScheme() + "://" +   // "http" + "://
+	             request.getServerName() +       // "myhost"
+	             ":" +                           // ":"
+	             request.getServerPort() +       // "8080"
+	             request.getRequestURI() +       // "/people"
+	             "?" +                           // "?"
+	             request.getQueryString();       // "lastname=Fox&age=30"
+		return uri;
+	}
 
 
 	 /**
