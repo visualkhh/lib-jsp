@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roles>
+
+<!-- 	<role id="super"> -->
+<!-- 		<join url="/view.*"> -->
+<!-- 			<fnc name="C" enable="false"/> -->
+<!-- 			<fnc name="R" enable="false"/> -->
+<!-- 			<fnc name="U" enable="false"/> -->
+<!-- 			<fnc name="D" enable="false"/> -->
+<!-- 		</join> -->
+<!-- 	</role> -->
+	
+	<role id="guest" do="zzz">
+		<join url="/view">
+			<fnc name="C" value="false"/>
+			<fnc name="R" value="true"/>
+			<fnc name="U" value="false"/>
+			<fnc name="D" value="false"/>
+		</join>
+		<join url="/signin">
+			<fnc name="C" value="true"/>
+		</join>
+	</role>
+	
+
+	<role id="a" extends="guest" do="vvv">
+		<join url="/view">
+			<fnc name="D" value="true"></fnc>
+		</join>
+		<join url="/vava" type="new">
+			<fnc name="C" value="true"></fnc>
+			<fnc name="Z" value="true"></fnc>
+		</join>
+	</role>
+	
+	<role id="b" extends="a">
+		<join url="/view" type="new" >
+			<fnc name="DD" value="false"></fnc>
+		</join>
+		<join url="/vava" >
+			<fnc name="C" value="false"></fnc>
+			<fnc name="A" value="true"></fnc>
+			<fnc name="B" value="false"></fnc>
+		</join>
+	</role>
+	
+	
+<!-- 	<role id="b"></role> -->
+<!-- 	<role id="c"></role> -->
+<!-- 	<role id="d"></role> -->
+<!-- 	<role id="e"></role> -->
+<!-- 	<role id="f"></role> -->
+<!-- 	<role id="g"></role> -->
+<!-- 	<role id="h"></role> -->
+<!-- 	<role id="i"></role> -->
+<!-- 	<role id="j"></role> -->
+<!-- 	<role id="k"></role> -->
+<!-- 	<role id="l"></role> -->
+<!-- 	<role id="m"></role> -->
+<!-- 	<role id="n"></role> -->
+<!-- 	<role id="o"></role> -->
+<!-- 	<role id="p"></role> -->
+<!-- 	<role id="q"></role> -->
+<!-- 	<role id="r"></role> -->
+<!-- 	<role id="s"></role> -->
+<!-- 	<role id="t"></role> -->
+<!-- 	<role id="u"></role> -->
+<!-- 	<role id="v"></role> -->
+<!-- 	<role id="w"></role> -->
+<!-- 	<role id="x"></role> -->
+<!-- 	<role id="y"></role> -->
+<!-- 	<role id="z"></role> -->
+	
+</roles>

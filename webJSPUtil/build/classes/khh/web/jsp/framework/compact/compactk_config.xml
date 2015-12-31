@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compact>
+<!-- 
+
+bean -> view -> request 차례대로 적어라
+
+ -->
+
+
+
+	<!-- views start-->
+	<class id="FluidViewResovler" classpath="khh.web.jsp.framework.compact.view.FluidViewResovler" type="view">
+		<method id="setServletConfig" name="setServletConfig" type="compact-init-method">
+			<class classpath="javax.servlet.ServletConfig" type="compact-injection-parameter"></class>
+		</method>
+		<method id="init" name="init">
+			<class id="configPath" classpath="java.lang.String" value="/WEB-INF/config/fluidconfig.xml"></class>
+		</method>
+		<method id="gg" name="doRequest" type="compact-service-method">
+			<class classpath="javax.servlet.http.HttpServletRequest" type="compact-injection-parameter"></class>
+			<class classpath="javax.servlet.http.HttpServletResponse" type="compact-injection-parameter"></class>
+		</method>
+	</class>
+	<!-- views end-->
+	
+	
+	
+	<!-- class start-->
+	<class id="nameBean" type="class" classpath="java.lang.String" value="KHH_BEAN"></class>      
+	<class id="targetBean" type="class" classpath="java.lang.String" value="TARGET_KHH"></class>      
+	<class id="valBean" type="class" classpath="java.lang.Integer" value="500"></class>          
+	<class id="bBean" type="class" classpath="java.lang.Boolean" value="true"></class>         
+	<!-- class end -->
+	
+	
+	
+
+
+
+	<!-- services start-->
+	<class id="aService"  url=".*(hello|khh|hhh)\.k" classpath="khh.web.jsp.framework.compact.CompactKServiceTest" type="service">
+		<constructor>
+			<class ref="nameBean"></class>
+			<class id="age" classpath="java.lang.Integer" value="30"></class>
+		</constructor>
+		
+		<method id="aRequest_setTarget" name="setTarget">
+			<class ref="targetBean"></class>
+		</method>
+		
+		<method id="aRequest_doRequest" name="doRequest" type="compact-service-method">
+			<class classpath="javax.servlet.http.HttpServletRequest" type="compact-injection-parameter"></class>
+			<class classpath="javax.servlet.http.HttpServletResponse" type="compact-injection-parameter"></class>
+			<class ref="valBean"></class>
+		</method>
+	</class>
+	
+	<class id="bService"  url=".*(good|bad)\.k" classpath="khh.web.jsp.framework.compact.CompactKServiceTest2" type="service">
+		<method id="aRequest_doRequest" name="doRequest" type="compact-service-method">
+			<class classpath="javax.servlet.http.HttpServletRequest" type="compact-injection-parameter"></class>
+<!-- 			<class classpath="javax.servlet.http.HttpServletResponse" type="compact-injection-parameter"></class> -->
+		</method>
+	</class>
+	
+	<class id="defaultService"  url=".*(view)\.k" classpath="loggerss.service.ViewForwordService" type="service">
+		<method id="aRequest_doRequest" name="doRequest" type="compact-service-method">
+			<class classpath="javax.servlet.http.HttpServletRequest" type="compact-injection-parameter"></class>
+			<class classpath="javax.servlet.http.HttpServletResponse" type="compact-injection-parameter"></class>
+		</method>
+	</class>
+	<!-- services end-->
+	
+</compact>
