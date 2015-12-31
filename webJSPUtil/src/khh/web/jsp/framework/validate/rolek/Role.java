@@ -1,4 +1,4 @@
-package khh.web.jsp.framework.filter.validate;
+package khh.web.jsp.framework.validate.rolek;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +16,9 @@ public class Role {
 //	private LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> roleList = null;
 	//url petton, 			fncName, value
 	private LinkedHashMap<String, LinkedHashMap<String, String>> roleList = null;
-	private LinkedHashMap<String, String> info = new LinkedHashMap<>();;
+	private LinkedHashMap<String, String> session = new LinkedHashMap<>();
+	//그때그때 바뀌는 페이지별 롤...
+	private LinkedHashMap<String, String> pageRole	 = null;
 	LogK log = LogK.getInstance();
 	public Role(LinkedHashMap<String, LinkedHashMap<String, String>> roleList){
 		this.roleList=roleList;
@@ -56,14 +58,25 @@ public class Role {
 		}catch(Exception e){
 		}
 	}
-	public LinkedHashMap<String, String> getInfo() {
-		return info;
+	
+	
+	public LinkedHashMap<String, String> getPageRole() {
+		return pageRole;
 	}
-	public void setInfo(LinkedHashMap<String, String> info) {
-		this.info = info;
+	public void setPageRole(LinkedHashMap<String, String> pageRole) {
+		this.pageRole = pageRole;
 	}
-	public void putInfo(String key, String value){
-		info.put(key, value);
+	public LinkedHashMap<String, String> getSession() {
+		return session;
+	}
+	public void setInfo(LinkedHashMap<String, String> session) {
+		this.session = session;
+	}
+	public void putSession(String key, String value){
+		session.put(key, value);
+	}
+	public String getSession(String key){
+		return session.get(key);
 	}
 	public LinkedHashMap<String, LinkedHashMap<String, String>> getRoleList() {
 		return roleList;

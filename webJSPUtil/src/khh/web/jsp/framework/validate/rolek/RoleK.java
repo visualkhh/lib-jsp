@@ -1,4 +1,4 @@
-package khh.web.jsp.framework.filter.validate;
+package khh.web.jsp.framework.validate.rolek;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -39,10 +39,10 @@ public class RoleK implements Filter {
 	public final static String CONFIGNAME_LOGK 				= "logkConfigLocation";
 	public final static String CONFIGNAME_CONTEXT 			= "contextConfigLocation";
 	public final static String CONFIGNAME_CONTEXT_PATTERN 	= "contextConfigLocationPattern";
-	public final static String PARAM_NAME_SESSION			= "ROLEK_SESSION_dgsjhsey4idwefhu";
+	public final static String PARAM_NAME_SESSION			= "ROLEK"; //"ROLEK_SESSION";
 	public LogK log 		= LogK.getInstance();
 	private XMLK xml 		= new XMLK();
-	private Map<String, Element> targetElement;
+	static private Map<String, Element> targetElement;
 	private String 	failPage	= "/";
     public RoleK() {
     }
@@ -104,25 +104,41 @@ public class RoleK implements Filter {
     		xml.setLogicExtendsAddChild((Element parent, Element child)->{
     			//우선 자기걸로 부모꺼 머지든 가져오자.  type이 new가 아닌건 모두다 merge다..  url속성있어야한다.
 //    			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->"new".equals(cJE.getAttr("type"))).forEach(cJE->{
-    			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->!"new".equals(cJE.getAttr("type"))&&cJE.isAttr("url")).forEach(cJE->{
+    			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->!"new".equals(cJE.getAttr("type"))&&cJE.isAttr("url")).forEach(cJE->{//typ이없거나 delete
     				LinkedHashMap<String,Element> fncMap = new LinkedHashMap<String,Element> ();
     				String url = cJE.getAttr("url");
     				((ArrayList<Element>)parent.getChildElementByTagName("join")).//무조꺼에서 join중 나랑같은url가진 join의 fnc를 가져온다
     				stream().filter(pJE->url.equals(pJE.getAttr("url"))).collect(Collectors.toList()).forEach(pJE->{
-    					fncMap.putAll( ((ArrayList<Element>)pJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(pJFE->((Element)pJFE).getAttr("name"),pJFE->pJFE)) );
+    					fncMap.putAll( ((ArrayList<Element>)pJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(pJFE->((Element)pJFE).getAttr("id"),pJFE->pJFE)) );
     				});
     				//마지막 자식것이 중요하기때문에 자식걸 마지막 덛칠하다
-    				fncMap.putAll( ((ArrayList<Element>)cJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(cJFE->((Element)cJFE).getAttr("name"),cJFE->cJFE)) );
+    				fncMap.putAll( ((ArrayList<Element>)cJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(cJFE->((Element)cJFE).getAttr("id"),cJFE->cJFE)) );
     				//마지막 셋팅
     				cJE.setChildElement(fncMap.entrySet().stream().map(at->at.getValue()).collect(Collectors.toCollection(ArrayList::new)));
     				
     			});
+    			
     			//부모join이름이  자식과 겹치지 않는놈들만 아래 내려간다. 즉 자식이 재정의 한거 아닌것만 내려간다.
     			child.addAllChildElement(
     				((ArrayList<Element>)parent.getChildElementByTagName("join")).stream().
     				filter(pJE->child.getChildElementByAttr("url",pJE.getAttr("url")).size()<=0).collect(Collectors.toCollection(ArrayList::new))
                  );
+    			
+    			//delete지운다.
+    			ArrayList<Element> deleteList = new ArrayList<Element>();
+    			((ArrayList<Element>)child.getChildElementByAttr("type","delete")).stream().filter(at->at.isAttr("url")).forEach(at->{
+    				String url = at.getAttr("url");
+    				((ArrayList<Element>)child.getChildElementByTagName("join")).stream().forEach(sat->{
+    					if(StringUtil.isMatches(sat.getAttr("url"), url)){
+    						deleteList.add(sat);
+    					}
+    				});
+    			});
+    			child.removeChildElement(deleteList);
+    			
     		});
+    		
+    		
     		xml.start();
     		log.debug("RoleK!!");
     		xml.loopNode(xml.getTargetElements(),(Element e,Integer depth)->{
@@ -149,30 +165,15 @@ public class RoleK implements Filter {
             response.sendRedirect("/");
             //chain.doFilter(request, response);
             return;
-        }
-        Object userSession = session.getAttribute(PARAM_NAME_SESSION);
-        if(null == userSession){
-        	String roleName="guest";
+        } 
+        Object userRoleSession = session.getAttribute(PARAM_NAME_SESSION);
+        if(null == userRoleSession){
+        	String roleName="default";
         	log.debug("RoleK init guest join");
     		//url petton, fncName, value
-    		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = new LinkedHashMap<>();
-    		//사용자 셋팅
-    		targetElement.entrySet().stream().filter(at->roleName.equals(at.getKey())).map(at->at.getValue()).collect(Collectors.toList()).stream().forEach(at->{
-    			((ArrayList<Element>)at.getChildElementByTagName("join")).stream().forEach(aj->{
-    				String url = aj.getAttr("url");
-    				LinkedHashMap<String, String> join = new LinkedHashMap<String, String>();
-    				((ArrayList<Element>)aj.getChildElementByTagName("fnc")).stream().forEach(ajf->{
-    					join.put(ajf.getAttr("name"), ajf.getAttr("value"));
-    				});
-//    				if(join.size()>0)
-    				userRole.put(url, join);
-    			});
-    		});
+    		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = getBaseRole(roleName);
         	session.setAttribute(PARAM_NAME_SESSION, new Role(userRole));
         }
-        
-        
-        
         
         Role userRole = (Role)session.getAttribute(PARAM_NAME_SESSION);
         
@@ -181,11 +182,28 @@ public class RoleK implements Filter {
         if(null==pageRole){
       	    response.sendRedirect(failPage);
         }else{
+        	userRole.setPageRole(pageRole);
         	chain.doFilter(request, response);
         }
-        
+         
 	}
 
+	public static LinkedHashMap<String, LinkedHashMap<String, String>> getBaseRole (String roleName){
+		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = new LinkedHashMap<>();
+		//사용자 셋팅
+		targetElement.entrySet().stream().filter(at->roleName.equals(at.getKey())).map(at->at.getValue()).collect(Collectors.toList()).stream().forEach(at->{
+			((ArrayList<Element>)at.getChildElementByTagName("join")).stream().forEach(aj->{
+				String url = aj.getAttr("url"); 
+				LinkedHashMap<String, String> join = new LinkedHashMap<String, String>();
+				((ArrayList<Element>)aj.getChildElementByTagName("fnc")).stream().forEach(ajf->{
+					join.put(ajf.getAttr("id"), ajf.getAttr("value"));
+				});
+//				if(join.size()>0)
+				userRole.put(url, join);
+			});
+		});
+		return userRole;
+	}
 
 
 }

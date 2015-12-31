@@ -1,4 +1,4 @@
-package khh.web.jsp.framework.filter.validate;
+package khh.web.jsp.framework.validate.rolek;
 
 import java.io.File;
 import java.io.FilenameFilter;

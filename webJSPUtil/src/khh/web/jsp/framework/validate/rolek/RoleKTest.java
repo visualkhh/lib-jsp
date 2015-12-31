@@ -1,4 +1,4 @@
-package khh.web.jsp.framework.filter.validate;
+package khh.web.jsp.framework.validate.rolek;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,30 +19,50 @@ public class RoleKTest {
 	Map<String, Element> targetElement = null;
 	public void start() throws Exception{
 		
+		
 		XMLK xml = new XMLK("Z:\\me\\project\\personal\\web\\logger\\workspace\\logerss\\WebContent\\WEB-INF\\config\\rolek_config.xml");
 		xml.setTargetXPath("/roles/role");
-		
 		xml.setLogicExtendsAddChild((Element parent, Element child)->{
 			//우선 자기걸로 부모꺼 머지든 가져오자.  type이 new가 아닌건 모두다 merge다..  url속성있어야한다.
 //			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->"new".equals(cJE.getAttr("type"))).forEach(cJE->{
-			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->!"new".equals(cJE.getAttr("type"))&&cJE.isAttr("url")).forEach(cJE->{
+			((ArrayList<Element>)child.getChildElementByTagName("join")).stream().filter(cJE->!"new".equals(cJE.getAttr("type"))&&cJE.isAttr("url")).forEach(cJE->{//typ이없거나 delete
 				LinkedHashMap<String,Element> fncMap = new LinkedHashMap<String,Element> ();
 				String url = cJE.getAttr("url");
 				((ArrayList<Element>)parent.getChildElementByTagName("join")).//무조꺼에서 join중 나랑같은url가진 join의 fnc를 가져온다
 				stream().filter(pJE->url.equals(pJE.getAttr("url"))).collect(Collectors.toList()).forEach(pJE->{
-					fncMap.putAll( ((ArrayList<Element>)pJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(pJFE->((Element)pJFE).getAttr("name"),pJFE->pJFE)) );
+					fncMap.putAll( ((ArrayList<Element>)pJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(pJFE->((Element)pJFE).getAttr("id"),pJFE->pJFE)) );
 				});
 				//마지막 자식것이 중요하기때문에 자식걸 마지막 덛칠하다
-				fncMap.putAll( ((ArrayList<Element>)cJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(cJFE->((Element)cJFE).getAttr("name"),cJFE->cJFE)) );
+				fncMap.putAll( ((ArrayList<Element>)cJE.getChildElementByTagName("fnc")).stream().collect(Collectors.toMap(cJFE->((Element)cJFE).getAttr("id"),cJFE->cJFE)) );
 				//마지막 셋팅
 				cJE.setChildElement(fncMap.entrySet().stream().map(at->at.getValue()).collect(Collectors.toCollection(ArrayList::new)));
 				
 			});
+			
 			//부모join이름이  자식과 겹치지 않는놈들만 아래 내려간다. 즉 자식이 재정의 한거 아닌것만 내려간다.
 			child.addAllChildElement(
 				((ArrayList<Element>)parent.getChildElementByTagName("join")).stream().
 				filter(pJE->child.getChildElementByAttr("url",pJE.getAttr("url")).size()<=0).collect(Collectors.toCollection(ArrayList::new))
              );
+			
+			
+			
+			
+			//delete지운다.
+			ArrayList<Element> deleteList = new ArrayList<Element>();
+			((ArrayList<Element>)child.getChildElementByAttr("type","delete")).stream().filter(at->at.isAttr("url")).forEach(at->{
+				String url = at.getAttr("url");
+				((ArrayList<Element>)child.getChildElementByTagName("join")).stream().forEach(sat->{
+					log.debug("delete--> "+sat.getAttr("url")+"   "+url+"  "+sat);
+					if(StringUtil.isMatches(sat.getAttr("url"), url)){
+						deleteList.add(sat);
+					}
+				});
+			});
+			child.removeChildElement(deleteList);
+			
+			
+			
 		});
 		
 		xml.start();
@@ -53,7 +73,7 @@ public class RoleKTest {
 		
 		targetElement = ((ArrayList<Element>)xml.getTargetElements()).stream().collect(Collectors.toMap(i->((Element)i).getAttr("id"),i->i));
 		
-		final String roleName="guest";
+		final String roleName="normal";
 //		if(roleName==null){
 //			targetElement.
 //		}
@@ -66,17 +86,17 @@ public class RoleKTest {
 				String url = aj.getAttr("url");
 				LinkedHashMap<String, String> join = new LinkedHashMap<String, String>();
 				((ArrayList<Element>)aj.getChildElementByTagName("fnc")).stream().forEach(ajf->{
-					join.put(ajf.getAttr("name"), ajf.getAttr("value"));
+					join.put(ajf.getAttr("id"), ajf.getAttr("value"));
 				});
 				//if(join.size()>0)
 				totalRoleList.put(url, join);
 			});
 		});
 		
-		
-		totalRoleList.entrySet().stream().forEach(at->System.out.println(at));
-		//totalRoleList
-		
+		  System.out.println("-334=");
+		totalRoleList.entrySet().stream().forEach(at->System.out.println("**********"+at));
+		//totalRoleList 
+		 
 		
 //		targetElement.entrySet().stream().forEach(aE->{
 //			Element e = aE.getValue();
