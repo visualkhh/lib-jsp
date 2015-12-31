@@ -35,14 +35,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Utilities</name>
+			<name>javasrc</name>
 			<type>2</type>
-			<locationURI>Utilities</locationURI>
+			<location>Z:/git/javautil-visualkhh/Utilkhh/src</location>
 		</link>
 		<link>
-			<name>WebUtil</name>
+			<name>websrc</name>
 			<type>2</type>
-			<locationURI>WebUtil</locationURI>
+			<location>Z:/git/jsputil-visualkhh/webJSPUtil/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

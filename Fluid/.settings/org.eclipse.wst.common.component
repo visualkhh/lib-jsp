@@ -1,10 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="1.5.0">
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="Fluid">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebUtil"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/Utilities"/>
         <property name="context-root" value="Fluid"/>
         <property name="java-output-path" value="/Fluid/build/classes"/>
     </wb-module>

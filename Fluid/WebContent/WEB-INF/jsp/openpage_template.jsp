@@ -5,13 +5,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+
+
+<fluid:insertTag id="title" name="script" attribute="wow='vvv'" enable="false" >
+alert('1');
+</fluid:insertTag>
+
 <style type="text/css">
 <fluid:insertFile id="css"/>
 </style>
-<title><fluid:insertString id="title"/></title>
+
+<title><fluid:insertString id="title" enable="false"/></title>
 </head>
 <body>
-<div class="title"><fluid:insertString id="title"/>[openpage_template.jsp]zz</div>
+<div class="title" style="e"><fluid:insertString id="title"/>[openpage_template.jsp]zz</div>
 
 <div class="content"><fluid:insertView id="left"/></div>
 <div class="content"><fluid:insertView id="main"/></div>

@@ -15,7 +15,7 @@
 	</template>
 	
 	<template id="/openpage.html" value="/WEB-INF/jsp/openpage_template.jsp" extends="/default.html">
-		<view id="title" value="openpage welcom" />
+		<view id="title" value="openpage welcom" enable="true" />
 		<view id="main" value="/WEB-INF/jsp/openpage_main.jsp" />
 	</template>
 </fluid>

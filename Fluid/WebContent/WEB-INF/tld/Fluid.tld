@@ -8,6 +8,46 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" v
 <short-name>Fluid</short-name>
 <display-name>Fluid</display-name>
 <uri>http://visualkhh.com/fluid</uri>
+
+<tag>
+	<name>insertTag</name>
+	<tagclass>khh.web.jsp.framework.fluid.tag.FluidInsertTag</tagclass>
+	<body-content>scriptless</body-content>
+	<attribute>
+		<name>id</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>name</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	
+	<attribute>
+		<name>attribute</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>target</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>enable</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	
+	<attribute>
+		<name>exception</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+</tag>
+
+
 <tag>
 	<name>insertView</name>
 	<tagclass>khh.web.jsp.framework.fluid.tag.FluidInsertView</tagclass>
@@ -35,6 +75,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" v
 		-->
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
+	<attribute>
+		<name>enable</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>exception</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
 </tag>
 	
 <!-- <tag> -->
@@ -57,6 +107,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" v
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
+	<attribute>
+		<name>enable</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>exception</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
 </tag>
 
 
@@ -67,6 +127,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" v
 	<attribute>
 		<name>id</name>
 		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>enable</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>exception</name>
+		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 </tag>
