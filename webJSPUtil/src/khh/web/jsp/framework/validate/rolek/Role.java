@@ -1,88 +1,82 @@
 package khh.web.jsp.framework.validate.rolek;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import khh.debug.LogK;
 import khh.string.util.StringUtil;
-
-public class Role {
-	//roleType,							url petton, 			fncName, value
-//	private LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> roleList = null;
+//session...
+public class Role extends LinkedHashMap<String,String>{
 	//url petton, 			fncName, value
-	private LinkedHashMap<String, LinkedHashMap<String, String>> roleList = null;
-	private LinkedHashMap<String, String> session = new LinkedHashMap<>();
+	private ArrayList<Join> joinList = null;
+	//private LinkedHashMap<String, String> session = new LinkedHashMap<>();
+	private HttpServletRequest request;
 	//그때그때 바뀌는 페이지별 롤...
-	private LinkedHashMap<String, String> pageRole	 = null;
+	private Join pageJoin = null; 
+//	private LinkedHashMap<String, String> pageRole	 = null;
 	LogK log = LogK.getInstance();
-	public Role(LinkedHashMap<String, LinkedHashMap<String, String>> roleList){
-		this.roleList=roleList;
+	public Role(ArrayList<Join> joinList){
+		this.joinList = joinList;
 	}
-	public LinkedHashMap<String, String> getPageRole(HttpServletRequest request){
+	public Join getJoin(){
+		return getJoin(getRequest());
+	}
+	public Join getJoin(HttpServletRequest request){
 		String requestURI = request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():"");
 		log.debug("Role service  URI:"+requestURI);
-		LinkedHashMap<String, String> info = new LinkedHashMap<>();
-		boolean isURLMapping=false;
+		Join join = null;
 		try{
-			ArrayList<Entry<String, LinkedHashMap<String, String>>> list =  new ArrayList<Entry<String, LinkedHashMap<String, String>>>();
-			list.addAll(roleList.entrySet());
-			for (int i = 0; i < list.size(); i++) {
-				if(StringUtil.isMatches(requestURI,list.get(i).getKey())){
-					isURLMapping = true;
-					info.putAll(list.get(i).getValue());
-				}
-			}
-//			roleList.entrySet().stream().filter(rJE->StringUtil.isMatches(requestURI,rJE.getKey())).forEach(rJE->{
-//				info.putAll(rJE.getValue());
+			join = joinList.stream().filter(jn->StringUtil.isMatches(requestURI,jn.getUrl())).findFirst().get();
+		}catch(Exception e){
+		}
+		return join;
+	}
+	
+//	public void putRole(String url,String fncName, String value){
+//		LinkedHashMap<String, String> info = new LinkedHashMap<>();
+//		try{
+//			roleList.entrySet().stream().filter(rJE->StringUtil.isMatches(url,rJE.getKey().getUrl())).forEach(rJE->{
+//				info.put(fncName,value);
 //			});
-		}catch(Exception e){
-		}
-		
-		if(isURLMapping==false){ //url못찾으면 널로 보낸다.
-			info = null;
-		}
-		return info;
-	}
-	
-	public void putRole(String url,String fncName, String value){
-		LinkedHashMap<String, String> info = new LinkedHashMap<>();
-		try{
-			roleList.entrySet().stream().filter(rJE->StringUtil.isMatches(url,rJE.getKey())).forEach(rJE->{
-				info.put(fncName,value);
-			});
-		}catch(Exception e){
-		}
-	}
+//		}catch(Exception e){
+//		}
+//	}
 	
 	
-	public LinkedHashMap<String, String> getPageRole() {
-		return pageRole;
+	public HttpServletRequest getRequest() {
+		return request;
 	}
-	public void setPageRole(LinkedHashMap<String, String> pageRole) {
-		this.pageRole = pageRole;
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
 	}
-	public LinkedHashMap<String, String> getSession() {
-		return session;
+//	public LinkedHashMap<String, String> getSession() {
+//		return session;
+//	}
+//	public void setInfo(LinkedHashMap<String, String> session) {
+//		this.session = session;
+//	}
+//	public void putSession(String key, String value){
+//		session.put(key, value);
+//	}
+//	public String getSession(String key){
+//		return session.get(key);
+//	}
+	public ArrayList<Join> getJoinList() {
+		return joinList;
 	}
-	public void setInfo(LinkedHashMap<String, String> session) {
-		this.session = session;
+	public void setJoinList(ArrayList<Join> joinList) {
+		this.joinList = joinList;
 	}
-	public void putSession(String key, String value){
-		session.put(key, value);
+	public Join getPageJoin() {
+		return pageJoin;
 	}
-	public String getSession(String key){
-		return session.get(key);
+	public void setPageJoin(Join pageJoin) {
+		this.pageJoin = pageJoin;
 	}
-	public LinkedHashMap<String, LinkedHashMap<String, String>> getRoleList() {
-		return roleList;
-	}
-	public void setRoleList(LinkedHashMap<String, LinkedHashMap<String, String>> roleList) {
-		this.roleList = roleList;
-	}
+	
+	
 
 }

@@ -1,6 +1,7 @@
 package khh.web.jsp.framework.fluid;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 
@@ -12,6 +13,7 @@ import khh.xml.XMLparser;
 public class FluidConfigManager {
 	private AdapterMap<String,File> configfile			= null;
 	private AdapterMap<String,Template> templatelist	= null;
+	private ArrayList<Bypass> bypasslist			= null;
 	private LogK log = LogK.getInstance();
 	private ServletConfig servletConfig 				= null;
 	
@@ -25,6 +27,7 @@ public class FluidConfigManager {
 	public FluidConfigManager() {
 		configfile = new AdapterMap<String, File>();
 		templatelist = new AdapterMap<String, Template>();
+		bypasslist = new ArrayList<Bypass>();
 	}
 
 	public void setting() {
@@ -47,13 +50,29 @@ public class FluidConfigManager {
 
 	private void setConfig() {
         String templatepath="//template";
+        String bypasspath="//bypass/url";
         for (int i = 0; i < configfile.size(); i++) {
             XMLparser parser = null;
             try {
                 parser = new XMLparser((File) configfile.get(i));
+                log.debug("Fluid: ConfigFilePath : "+configfile.get(i));
+                
+                //bypass
+                Integer bypasscnt = parser.getInt("count("+bypasspath+")");
+                log.debug("templatecnt : "+bypasscnt);
+                bypasscnt = bypasscnt==null?0:bypasscnt;
+                for(int j = 1; j <= bypasscnt; j++) {
+                	Bypass b = new Bypass();
+                	b.setPattern(parser.getString(bypasspath+"["+j+"]/@pattern"));
+                	b.setForward(parser.getString(bypasspath+"["+j+"]/@forward"));
+                	bypasslist.add(b);
+                }     
+                
+                
+                //template
                 Integer templatecnt = parser.getInt("count("+templatepath+")");
                 templatecnt = templatecnt==null?0:templatecnt;
-                log.debug("Fluid: ConfigFilePath : "+configfile.get(i)+" \t templatecnt : "+templatecnt);
+                log.debug("templatecnt : "+templatecnt);
                 
                 for(int j = 1; j <= templatecnt; j++) {
                     Template template = new Template();
@@ -135,6 +154,10 @@ public class FluidConfigManager {
 	
 	public Template getTemplate(String id) throws Exception{
 		return templatelist.get(id);
+	}
+
+	public ArrayList<Bypass> getBypasslist() {
+		return bypasslist;
 	}
 	
 	

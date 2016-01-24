@@ -100,8 +100,9 @@ public class Fluid extends HttpServlet{
 		writer.close();
 		 */
 	
-		String id=request.getRequestURI().replaceFirst(request.getContextPath(), "");
-		forwordView(id, request, response);
+		//String id=request.getRequestURI().replaceFirst(request.getContextPath(), "");
+		String id=request.getRequestURI();
+		forwardTemplate(id, request, response);
 		//writer.println(StackTraceUtil.getStackTrace(e));
 		
 //		log.debug("=====start========="+request.getRequestURI().replaceFirst(request.getContextPath(), ""));
@@ -111,10 +112,28 @@ public class Fluid extends HttpServlet{
 		
 	}
 	
-	public void forwordView(String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		log.debug("Fluid Request "+request.getRequestURI()+"  template id : ("+id+")");
+	public void forwardTemplate(String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.debug("Fluid Request-> ("+request.getRequestURI()+")  template id : ("+id+")");
+		
+		
+
+		
+		
+		
 		Template template = null ;
 		try{
+			
+			for (int i = 0; i < fmg.getBypasslist().size(); i++) {
+				Bypass bypass = fmg.getBypasslist().get(i);
+				if(StringUtil.isMatches(id, bypass.getPattern())){
+					String forward = StringUtil.transRegex(id,bypass.getForward());
+					log.debug("Fluid is ByPass  forward-> (id:"+id+" pt:"+bypass.getPattern()+") real:"+forward);
+					RequestUtil.forward(request, response, forward);
+					return;
+				}
+			} 
+			
+			
 			template = fmg.getTemplate(id);
 			if(template==null){
 				PrintWriter writer  =  response.getWriter();

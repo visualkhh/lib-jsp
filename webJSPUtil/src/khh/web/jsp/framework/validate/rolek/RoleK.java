@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -160,6 +161,7 @@ public class RoleK implements Filter {
         HttpServletRequest request = (HttpServletRequest) requesti;
         HttpServletResponse response = (HttpServletResponse) responsei;
         //String url = request.getServletPath();
+        String requestURI = request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():"");
         HttpSession session = request.getSession(false);
         if (null == session) {
             response.sendRedirect("/");
@@ -171,39 +173,62 @@ public class RoleK implements Filter {
         	String roleName="default";
         	log.debug("RoleK init guest join");
     		//url petton, fncName, value
-    		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = getBaseRole(roleName);
+        	ArrayList<Join> userRole = getBaseJoin(roleName);
         	session.setAttribute(PARAM_NAME_SESSION, new Role(userRole));
         }
         
         Role userRole = (Role)session.getAttribute(PARAM_NAME_SESSION);
-        
-        LinkedHashMap<String, String> pageRole = userRole.getPageRole(request);
-        log.debug("RoleK  filter  returl role :"+pageRole);
-        if(null==pageRole){
+        userRole.setRequest(request);
+        Join join = userRole.getJoin();
+        userRole.setPageJoin(join);
+        log.debug("RoleK  filter  returl role :"+join);
+        if(null==join){
       	    response.sendRedirect(failPage);
+        }else if(null != join.getForward()){
+        	//String forward = StringUtil.inJection(join.getForward(), "${ROLEK.session.", "}", userRole.getSession());
+        	String forward = StringUtil.transRegex(requestURI, join.getForward(), userRole);
+        	log.debug("RoleK redirect:"+forward);
+        	session.getServletContext().getRequestDispatcher(forward).forward(request,response);
         }else{
-        	userRole.setPageRole(pageRole);
+        	//userRole.setPageRole(pageRole);
         	chain.doFilter(request, response);
         }
          
 	}
 
-	public static LinkedHashMap<String, LinkedHashMap<String, String>> getBaseRole (String roleName){
-		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = new LinkedHashMap<>();
+	public static ArrayList<Join> getBaseJoin (String roleName){
+		ArrayList<Join> userRole = new ArrayList<>();
 		//사용자 셋팅
 		targetElement.entrySet().stream().filter(at->roleName.equals(at.getKey())).map(at->at.getValue()).collect(Collectors.toList()).stream().forEach(at->{
 			((ArrayList<Element>)at.getChildElementByTagName("join")).stream().forEach(aj->{
-				String url = aj.getAttr("url"); 
-				LinkedHashMap<String, String> join = new LinkedHashMap<String, String>();
+				Join join = new Join(); 
+				join.setUrl(aj.getAttr("url")); 
+				join.setForward(aj.getAttr("forward"));
 				((ArrayList<Element>)aj.getChildElementByTagName("fnc")).stream().forEach(ajf->{
 					join.put(ajf.getAttr("id"), ajf.getAttr("value"));
 				});
 //				if(join.size()>0)
-				userRole.put(url, join);
+				userRole.add(join);
 			});
 		});
 		return userRole;
 	}
+//	public static LinkedHashMap<String, LinkedHashMap<String, String>> getBaseRole (String roleName){
+//		LinkedHashMap<String, LinkedHashMap<String, String>> userRole = new LinkedHashMap<>();
+//		//사용자 셋팅
+//		targetElement.entrySet().stream().filter(at->roleName.equals(at.getKey())).map(at->at.getValue()).collect(Collectors.toList()).stream().forEach(at->{
+//			((ArrayList<Element>)at.getChildElementByTagName("join")).stream().forEach(aj->{
+//				String url = aj.getAttr("url"); 
+//				LinkedHashMap<String, String> join = new LinkedHashMap<String, String>();
+//				((ArrayList<Element>)aj.getChildElementByTagName("fnc")).stream().forEach(ajf->{
+//					join.put(ajf.getAttr("id"), ajf.getAttr("value"));
+//				});
+////				if(join.size()>0)
+//				userRole.put(url, join);
+//			});
+//		});
+//		return userRole;
+//	}
 
 
 }

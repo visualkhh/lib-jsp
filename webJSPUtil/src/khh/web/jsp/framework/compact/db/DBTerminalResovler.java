@@ -16,7 +16,7 @@ public class DBTerminalResovler {
 	private LogK log = LogK.getInstance();
 	private ServletConfig servletConfig = null;
 	private ConnectionCreator_I connectioncreator = null;
-	
+	private String configPath=null;
 	
 	
 	public DBTerminalResovler(ConnectionCreator_I connectioncreator) {
@@ -26,22 +26,38 @@ public class DBTerminalResovler {
 		
 	}
 	
-	public void setServletConfig(ServletConfig servletConfig) {
-		this.servletConfig = servletConfig;
-		log.debug("DBTerminalResovler setServletConfig  "+servletConfig);
-	}
-	public ServletConfig getServletConfig() {
-		log.debug("DBTerminalResovler getServletConfig  "+servletConfig);
-		return servletConfig;
+	public DBTerminalResovler(ServletConfig servletConfig,String configPath,ConnectionCreator_I connectioncreator) {
+		this.connectioncreator = connectioncreator;
+		this.servletConfig=servletConfig;
+		this.configPath=configPath;
+		log.debug("DBTerminalResovler  "+connectioncreator+"   "+configPath+"  "+connectioncreator);
+		init();
+		
 	}
 	
-	public void init(String configPath){
+
+	
+	public void init(){
 		log.debug("DBTerminalResovler init : "+configPath);
-		DBTerminal.addConfigfile(getServletConfig().getServletContext().getRealPath(configPath));
+		DBTerminal.addConfigfile(getServletConfig().getServletContext().getRealPath(getConfigPath()));
 		//db.addConfigfile(getServletConfig().getServletContext().getRealPath(configPath));
 	}
 	
 	
+	
+	
+	public ServletConfig getServletConfig() {
+		return servletConfig;
+	}
+
+	public ConnectionCreator_I getConnectioncreator() {
+		return connectioncreator;
+	}
+
+	public String getConfigPath() {
+		return configPath;
+	}
+
 	public DBTerminal getDBTerminal(){
 		return new DBTerminal(this.connectioncreator);
 	}

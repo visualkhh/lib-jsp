@@ -35,6 +35,11 @@ public class CompactK extends HttpServlet{
 	private LogK log 			= LogK.getInstance();
 	private Dynamin dynamin 	= new Dynamin();
 	
+	
+	private final static String INIT_CLASS 		= "init";
+	private final static String SERVICE_CLASS 	= "service";
+	private final static String VIEW_CLASS 		= "view";
+	
 	private final static String SERVICE_METHOD 		= "service-method";
 	private final static String INIT_METHOD 		= "init-method";
 	private final static String BIND_PARAMETER 		= "bind-parameter";
@@ -98,6 +103,8 @@ public class CompactK extends HttpServlet{
     		LinkedHashMap<String, DynaminClass> classList = dynamin.getTargetDClass();
     		log.debug("DClass Size("+classList.size()+")");
     		
+    		
+    		//타입이 없는건 init이다?
     		classList.entrySet().stream().filter(aE->!aE.getValue().isAttr("type")).forEach(aE->{
     			DynaminClass atDclass = aE.getValue();
     			String atDClassId = atDclass.getAttr("id");
@@ -105,11 +112,12 @@ public class CompactK extends HttpServlet{
 				log.debug("atDClass  Id = ("+atDClassId+")    Type = "+atDClassType);
 				
 				((ArrayList<Element>)atDclass.getElement().getChildElement()).stream().
-				filter(aM->"method".equals(aM.getName()) && INIT_METHOD.equals(aM.getAttr("type"))).
+//				filter(aM->"method".equals(aM.getName()) && INIT_METHOD.equals(aM.getAttr("type"))).
+				filter(aM->INIT_METHOD.equals(aM.getAttr("type"))).
 				forEach(aM->{
 					injection(aM,new Object[]{config});
 				});
-				
+				 
 				try {
 					atDclass.call();
 				} catch (Exception e) {

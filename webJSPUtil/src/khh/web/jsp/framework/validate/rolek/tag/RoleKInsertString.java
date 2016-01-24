@@ -14,6 +14,7 @@ import javax.servlet.jsp.JspException;
 import khh.callstack.util.StackTraceUtil;
 import khh.web.jsp.framework.fluid.Fluid;
 import khh.web.jsp.framework.fluid.Template;
+import khh.web.jsp.framework.validate.rolek.Join;
 import khh.web.jsp.framework.validate.rolek.Role;
 import khh.web.jsp.framework.validate.rolek.RoleK;
 import khh.web.jsp.tag.custom.TagSupportSimple;
@@ -72,7 +73,8 @@ public class RoleKInsertString extends TagSupportSimple {
 			//if(null==enable && null!=role){	//enable안들어오면 값에서..추출
 			String value="";
 			if(null!=getId()&&null!=role){ //아이디있을시..
-				LinkedHashMap<String, String> pageRole = role.getPageRole();
+				//Join pageRole = role.getJoin(request);
+				Join pageRole = role.getPageJoin();
 				value = pageRole.get(getId());
 				//setValue(value);
 			}
