@@ -14,16 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.w3c.dom.Node;
-
 import khh.callstack.util.StackTraceUtil;
 import khh.debug.LogK;
-import khh.dynamick.DynamicClass;
 import khh.dynamin.Dynamin;
 import khh.dynamin.DynaminClass;
 import khh.file.util.FileUtil;
 import khh.reflection.ReflectionUtil;
-import khh.std.adapter.AdapterMap;
 import khh.string.util.StringUtil;
 import khh.xml.Element;
 
@@ -136,7 +132,6 @@ public class CompactK extends HttpServlet{
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		
 //		String requestURI = request.getRequestURI();
 		String requestURI = request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():"");
 		log.debug("CompactK service  URI:"+requestURI);
@@ -161,6 +156,7 @@ public class CompactK extends HttpServlet{
 					Object returnVal = atDclass.call();
 					if(null != returnVal && returnVal instanceof String){
 						sendView((String)returnVal,request,response);
+					}else if(null==returnVal){
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

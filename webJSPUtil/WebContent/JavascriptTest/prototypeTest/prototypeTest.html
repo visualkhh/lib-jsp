@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+
+
+function Graph() {
+	  this.vertexes = [];
+	  this.edges = [];
+	}
+
+Graph.prototype.id=10;
+Graph.prototype.addVertex =  function(v){
+	    this.vertexes.push(v);
+	  };
+Graph.prototype.clear = function(i,y){
+	    this.vertexes.length=i;
+	  };
+Graph.prototype.print = function(){
+	    console.log(this.id);
+	    
+	  };
+	
+	
+	
+function Graph2() {
+	  this.vertexes = [];
+	  this.edges = [];
+	}
+Graph2.prototype = Object.create(Graph.prototype);//new Graph();
+Graph2.prototype.id=14;
+Graph2.prototype.clear = function(i,y){
+	alert('noclear');
+	Graph.prototype.clear.call(this,i,y)
+}
+Graph2.prototype.print = function(){
+    console.log(this.id);
+  };
+	
+var a = new Graph();
+var b = new Graph2();
+b.addVertex("1");
+b.addVertex("2");
+b.addVertex("3");
+
+b.clear(2,5);
+console.log(b.vertexes);
+console.log("-------");
+
+
+
+</script>
+
+<body>
+
+</body>
+</html>

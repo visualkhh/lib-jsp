@@ -2,7 +2,7 @@ package khh.web.jsp.framework.commet;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 import khh.file.util.FileUtil;
 import khh.std.adapter.AdapterMap;

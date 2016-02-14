@@ -12,6 +12,7 @@ public class ForWardViewResovler extends ViewResovler {
 	private LogK log = LogK.getInstance();
 	private String viewPath = null;
 	public ForWardViewResovler() {
+		log.debug("ForWardViewResovler create");
 	}
 	
 	public String getViewPath() {

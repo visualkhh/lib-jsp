@@ -26,96 +26,11 @@ import khh.web.jsp.db.util.ConnectionWebUtil;
 import khh.web.jsp.framework.compact.db.DBTerminalResovler;
 import khh.web.jsp.framework.compact.view.ViewResovler;
 
-public  class ParamDivisionService {
-	LogK log = LogK.getInstance();
-	//파라미터 이름들
-	final static String serviceMethodParamName	= "MN";
-	final static String serviceIdParamName		= "IN";
-	final static String serviceViweParamName 	= "VM";
-	
-	//위파라미터 이름으로 지정된 값이 없을경우 아래 디폴트값으로.. 콜된다.
-	String defaultServiceMethod	= "doRequest";
-	String defaultServiceId		= "defaultService";
-	String defaultServiceViewId	= "defaultView";
-	AdapterMap<String, Object> serviceObjects = new AdapterMap<String, Object>();
+public  class ParamDivisionService extends ControllerService{
+
 	
 	public ParamDivisionService() {
 	}
-	
-	
-	public void addObject(Object targetObject){
-		addObject(getDefaultServiceId(),targetObject);
-	}
-	public void addObject(String id, Object targetObject){
-		try {
-			getServiceObjects().add(id,targetObject);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-
-	public String getServiceMethodParamName() {
-		return serviceMethodParamName;
-	}
-
-
-
-
-	public String getServiceIdParamName() {
-		return serviceIdParamName;
-	}
-
-
-
-
-
-
-	public String getServiceViweParamName() {
-		return serviceViweParamName;
-	}
-
-
-
-
-	public String getDefaultServiceMethod() {
-		return defaultServiceMethod;
-	}
-
-
-	public void setDefaultServiceMethod(String defaultServiceMethod) {
-		this.defaultServiceMethod = defaultServiceMethod;
-	}
-
-
-	public String getDefaultServiceId() {
-		return defaultServiceId;
-	}
-
-
-	public void setDefaultServiceId(String defaultServiceId) {
-		this.defaultServiceId = defaultServiceId;
-	}
-
-
-	public String getDefaultServiceViewId() {
-		return defaultServiceViewId;
-	}
-
-
-	public void setDefaultServiceViewId(String defaultServiceViewId) {
-		this.defaultServiceViewId = defaultServiceViewId;
-	}
-
-
-	public AdapterMap<String, Object> getServiceObjects() {
-		return serviceObjects;
-	}
-	private void setServiceObjects(AdapterMap<String, Object> serviceObjects) {
-		this.serviceObjects = serviceObjects;
-	}
-
 
 	//파라미터값에 따라서 매소드 호출한다.
 	public String doRequest(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -126,6 +41,8 @@ public  class ParamDivisionService {
 		serviceIdParamName 				= (null==serviceIdParamName ? getDefaultServiceId() : serviceIdParamName);
 		String serviceViewIdParamName	= request.getParameter(getServiceViweParamName());
 		serviceViewIdParamName 			= (null==serviceViewIdParamName ? getDefaultServiceViewId() : serviceViewIdParamName);
+		
+		
 		
 		Object atServiceObject = getServiceObjects().get(serviceIdParamName);
 		Object returnVal = null;

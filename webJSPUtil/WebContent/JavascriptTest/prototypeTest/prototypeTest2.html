@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+function Log(){};
+Log.prototype = new Object();
+Log.prototype.id;
+Log..prototype.type = "log";
+Log.prototype.open="N"; //공개 비공개  기본 비공개
+Log.prototype.isSearch; // 서치대상인가 아닌가. 서치버튼누를때마다 false 되고 완료되면 트루된다. 
+Log.prototype.min_date;//14554165155 초기 
+Log.prototype.max_date;//14554165155 초기 
+Log.prototype.chartAxisYCount	= 5;
+Log.prototype.chartAxisXCount	= 5;
+Log.prototype.title; //$('#map-form-title').val(),
+Log.prototype.data;//:eval("["+$('#map-form-data').val()+"]"),
+Log.prototype.init	= function(){}
+Log.prototype.chartData	= function(){return this.data;};
+Log.prototype.save		= function(){return save(this.id);};
+Log.prototype.edit = function(){};////각자
+Log.prototype.add		= function(){return addLog(this.id);};
+Log.prototype.remove	= function(){remove(this.id);};
+Log.prototype.insertData	= function(){return JavaScriptUtil.arrayToString(this.data);};		//DB에 저장히기전에 디코딩 컨버팅 역활한다
+Log.prototype.selectData	= function(getData){this.data=getData;};		// DB에서 가져온뒤 엔코딩 컨버팅 역활을한다.
+Log.prototype.setTime	= function(time){} //각자
+Log.prototype.finalize	= function(){
+		$("#container-"+this.id).remove();
+		$("#log-list-item-"+this.id).remove();
+};
+
+
+
+//class..........
+function MapLog(){};
+MapLog.prototype = new Log(); //상속
+MapLog.prototype.type='map';
+MapLog.prototype.chartType='linefill';
+MapLog.prototype.toggle=function(){
+	this.polyline['visible']=!this.polyline['visible'];
+	if(this.polyline['visible']){
+		this.polyline.setMap(getMap());
+	}else{
+		this.polyline.setMap(null);
+	}
+};
+MapLog.prototype.chartData	= function(){return chartMapSpeedData(this.id);};
+MapLog.prototype.edit 		= function(){return loadMapForm(this.id);};
+MapLog.prototype.add		= function(){var a = Log.prototype.add.call(this); this.polyline.setMap(getMap()); return a;};
+MapLog.prototype.setTime	= function(time){
+	if(this.min_date> time || time > this.max_date ){return};
+	var btw = MathUtil.getBetweenSize($("#slider").data("slider").options.min, $("#slider").data("slider").options.max) //전체크기차
+	var point = MathUtil.getBetweenSize($("#slider").data("slider").options.min, time); //특정시간대 포인트
+	var per = MathUtil.getPercentByTot(btw,point);
+	var index = Math.ceil( MathUtil.getValueByTotInPercent(this.data.length-1,per) );
+	var atData = this.data[index];
+	var lat = atData.latlng.split(",")[0];
+	var lng = atData.latlng.split(",")[1];
+	var map = getMap();
+	var markerop = {icon:"http://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-a.png"};
+	if(this.point && this.point['dataIndex'] == index){
+		return;
+	}
+	GmapUtil.removeMarker(map,this.point);
+	this.point = null;
+	this.point = undefined;
+	this.point = GmapUtil.createMarker(map,Number(lat),Number(lng),markerop);
+	this.point['latlng']=GmapUtil.createLatLng(Number(lat),Number(lng));
+	this.point['dataIndex']= index;
+	return GmapUtil.createLatLng(Number(lat),Number(lng));
+}
+MapLog.prototype.finalize	= function(){
+	Log.prototype.finalize.call(this);
+	try{
+		if(this.point)
+			GmapUtil.removeMarker(getMap(),this.point);
+		this.polyline.setMap(null);
+	}catch(e){}
+};
+
+
+
+function DataLog(){};
+DataLog.prototype = new Log(); //상속
+DataLog.prototype.type		= 'data';
+DataLog.prototype.chartType	= 'linefill',
+DataLog.prototype.edit		= function(){return loadDataForm(this.id);};
+
+
+
+
+
+function PhotoLog(){};
+PhotoLog.prototype = new Log(); //상속
+PhotoLog.prototype.type				= 'photo';
+PhotoLog.prototype.chartType		= 'dot';
+PhotoLog.prototype.chartAxisYCount	= 0;
+PhotoLog.prototype.toggle = function(){
+			this.markers['visible']=!this.markers['visible'];
+			if(this.markers['visible']){
+				for(var i=0;i<this.markers.length;i++)
+					this.markers[i].setMap(getMap());
+			}else{
+				for(var i=0;i<this.markers.length;i++)
+					this.markers[i].setMap(null);
+			}
+		};
+PhotoLog.prototype.chartData = function(){return chartPhotoData(this.id);};
+PhotoLog.prototype.edit = function(){ return	loadPhotoForm(this.id);};
+PhotoLog.prototype.add =  function(){
+	var a = Log.prototype.add.call(this); 
+	for(var i=0;i<this.markers.length;i++)
+		this.markers[i].setMap(getMap());
+	return a;
+};
+PhotoLog.prototype.setTime	= function(time){
+	if(this.min_date> time || time > this.max_date ){return};	
+	var btw = MathUtil.getBetweenSize($("#slider").data("slider").options.min, $("#slider").data("slider").options.max) //전체크기차
+	var point = MathUtil.getBetweenSize($("#slider").data("slider").options.min, time); //특정시간대 포인트
+	var per = MathUtil.getPercentByTot(btw,point);
+	var index = Math.ceil( MathUtil.getValueByTotInPercent(this.data.length-1,per) );
+	var atData = this.data[index];
+	var lat = atData.latlng.split(",")[0];
+	var lng = atData.latlng.split(",")[1];
+	var map = getMap();
+	var markerop = {icon:"http://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-a.png"};
+	if(this.point && this.point['dataIndex'] == index){
+		return;
+	}
+	GmapUtil.removeMarker(map,this.point);
+	this.point = null;
+	this.point = undefined;
+	this.point = GmapUtil.createMarker(map,Number(lat),Number(lng),markerop);
+	var infowindow = new google.maps.InfoWindow({
+		content: "<div class='thumbnail'><img src='"+ConvertingUtil.Base64DecodeUrl(atData.src)+"'/></div>"
+	    //maxWidth: 200
+	  });
+	this.point.addListener('click', function(){
+		infowindow.open(map, this.point);
+  	});
+	infowindow.open(map, this.point);
+	
+	this.point['dataIndex']= index;
+	return GmapUtil.createLatLng(Number(lat),Number(lng));
+}
+PhotoLog.prototype.finalize = function(){
+	Log.prototype.finalize.call(this);
+	try{
+		if(this.point)
+			GmapUtil.removeMarker(getMap(),this.point);
+		for(var i=0;i<this.markers.length;i++)
+			this.markers[i].setMap(null);
+	}catch(e){}
+}
+
+
+function MsgLog(){};
+MsgLog.prototype = new Log(); //상속
+MsgLog.prototype.type			= 'msg';
+MsgLog.prototype.chartType		= 'dot';
+MsgLog.prototype.chartAxisYCount= 0;
+MsgLog.prototype.toggle = function(){
+			this.markers['visible']=!this.markers['visible'];
+			if(this.markers['visible']){
+				for(var i=0;i<this.markers.length;i++)
+					this.markers[i].setMap(getMap());
+			}else{
+				for(var i=0;i<this.markers.length;i++)
+					this.markers[i].setMap(null);
+			}
+		};
+MsgLog.prototype.chartData = function(){return chartMsgData(this.id);};
+MsgLog.prototype.edit=function(){ return	loadMsgForm(this.id);};
+MsgLog.prototype.add=function(){
+	var a = Log.prototype.add.call(this); 
+	for(var i=0;i<this.markers.length;i++)
+		this.markers[i].setMap(getMap());
+	return a; 
+};
+MsgLog.prototype.setTime	= function(time){
+	if(this.min_date> time || time > this.max_date ){return};	
+	//time = time - this.min_date;
+	var btw = MathUtil.getBetweenSize($("#slider").data("slider").options.min, $("#slider").data("slider").options.max) //전체크기차
+	var point = MathUtil.getBetweenSize($("#slider").data("slider").options.min, time); //특정시간대 포인트
+	var per = MathUtil.getPercentByTot(btw,point);
+	var index = Math.ceil( MathUtil.getValueByTotInPercent(this.data.length-1,per) );
+	var atData = this.data[index];
+	var lat = atData.latlng.split(",")[0];
+	var lng = atData.latlng.split(",")[1];
+	var map = getMap();
+	var markerop = {icon:"http://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-a.png"};
+	if(this.point && this.point['dataIndex'] == index){
+		return;
+	}
+	GmapUtil.removeMarker(map,this.point);
+	this.point = null;
+	this.point = undefined;
+	this.point = GmapUtil.createMarker(map,Number(lat),Number(lng),markerop);
+	var infowindow = new google.maps.InfoWindow({
+		content: atData.msg
+	  });
+	this.point.addListener('click', function(){
+		infowindow.open(map, this.point);
+  	});
+	infowindow.open(map, this.point);
+	this.point['dataIndex']= index; 
+// 	return GmapUtil.createLatLng(Number(lat),Number(lng));
+}
+MsgLog.prototype.finalize=function(){
+	Log.prototype.finalize.call(this);
+	try{
+		if(this.point)
+			GmapUtil.removeMarker(getMap(),this.point);
+		for(var i=0;this.markers&&i<this.markers.length;i++)
+			this.markers[i].setMap(null);
+	}catch(e){}
+};
+	
+	
+
+
+console.log("-------");
+
+
+
+</script>
+
+<body>
+
+</body>
+</html>

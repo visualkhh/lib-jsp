@@ -1,6 +1,6 @@
 package khh.web.jsp.framework.commet;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 import khh.std.adapter.AdapterMap;
 import khh.web.jsp.framework.commet.longpolling.Function;

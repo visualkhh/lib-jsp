@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ import khh.dynamin.Dynamin;
 import khh.dynamin.DynaminClass;
 import khh.file.util.FileUtil;
 import khh.string.util.StringUtil;
+import khh.web.jsp.request.RequestUtil;
 import khh.xml.Element;
 import khh.xml.XMLK;
 
@@ -162,12 +164,7 @@ public class RoleK implements Filter {
         HttpServletResponse response = (HttpServletResponse) responsei;
         //String url = request.getServletPath();
         String requestURI = request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():"");
-        HttpSession session = request.getSession(false);
-        if (null == session) {
-            response.sendRedirect("/");
-            //chain.doFilter(request, response);
-            return;
-        } 
+        HttpSession session = request.getSession();
         Object userRoleSession = session.getAttribute(PARAM_NAME_SESSION);
         if(null == userRoleSession){
         	String roleName="default";
@@ -186,7 +183,24 @@ public class RoleK implements Filter {
       	    response.sendRedirect(failPage);
         }else if(null != join.getForward()){
         	//String forward = StringUtil.inJection(join.getForward(), "${ROLEK.session.", "}", userRole.getSession());
-        	String forward = StringUtil.transRegex(requestURI, join.getForward(), userRole);
+        	
+        	
+        	HashMap<String, String> param = new HashMap<String,String>(); 
+        	HashMap<String, String> reParam = RequestUtil.getParametersFirst(request); 
+        	HashMap<String, Object> sAttr = RequestUtil.getSessionAttr(request.getSession()); 
+        	reParam.entrySet().stream().forEach(at->{
+        		param.put("param."+at.getKey(),at.getValue());
+        	});
+        	sAttr.entrySet().stream().forEach(at->{
+        		param.put("session."+at.getKey(),at.getValue().toString());
+        	});
+        	userRole.entrySet().stream().forEach(at->{
+        		param.put("ROLEK."+at.getKey(),at.getValue());
+        	});
+        	
+        	
+        	String forward = StringUtil.transRegex(requestURI, join.getForward(), param);
+        	//RequestUtil.getParameters(request);
         	log.debug("RoleK redirect:"+forward);
         	session.getServletContext().getRequestDispatcher(forward).forward(request,response);
         }else{

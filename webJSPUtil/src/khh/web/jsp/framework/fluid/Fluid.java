@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -126,6 +127,22 @@ public class Fluid extends HttpServlet{
 			for (int i = 0; i < fmg.getBypasslist().size(); i++) {
 				Bypass bypass = fmg.getBypasslist().get(i);
 				if(StringUtil.isMatches(id, bypass.getPattern())){
+					
+					HashMap<String, String> param = new HashMap<String,String>(); 
+		        	HashMap<String, String> reParam = RequestUtil.getParametersFirst(request); 
+		        	HashMap<String, Object> sAttr = RequestUtil.getSessionAttr(request.getSession()); 
+		        	reParam.entrySet().stream().forEach(at->{
+		        		param.put("param."+at.getKey(),at.getValue());
+		        	});
+		        	sAttr.entrySet().stream().forEach(at->{
+		        		param.put("session."+at.getKey(),at.getValue().toString());
+		        	});
+					
+					
+					
+//					HashMap<String, Object> param = ;
+//					param.putAll(RequestUtil.getParametersFirst(request));
+					
 					String forward = StringUtil.transRegex(id,bypass.getForward());
 					log.debug("Fluid is ByPass  forward-> (id:"+id+" pt:"+bypass.getPattern()+") real:"+forward);
 					RequestUtil.forward(request, response, forward);

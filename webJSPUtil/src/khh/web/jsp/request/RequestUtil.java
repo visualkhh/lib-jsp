@@ -1,6 +1,8 @@
 package khh.web.jsp.request;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +10,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import khh.std.adapter.AdapterMap;
 import khh.string.util.StringUtil;
@@ -28,6 +31,28 @@ public static AdapterMap<String, Object> getParameters(HttpServletRequest reques
 	return adapter;
 }
 	
+public static HashMap<String, String> getParametersFirst(HttpServletRequest request){
+	HashMap<String, String> adapter = new HashMap<String, String>();
+	Map map  = request.getParameterMap();
+	Set keyset = map.keySet();
+	Iterator i = keyset.iterator();
+	while(i.hasNext()){
+		Object key 		= i.next();
+		String[] value  	= (String[]) map.get(key);
+		adapter.put((String)key, (value)[0] );
+	}
+	return adapter;
+}
+public static HashMap<String, Object> getSessionAttr(HttpSession session){
+	Enumeration<String> e = session.getAttributeNames();
+	HashMap<String, Object> adapter = new HashMap<String, Object>();
+	while(e.hasMoreElements()){
+		String name = e.nextElement().toString();
+		adapter.put(name, session.getAttribute(name));
+	}
+	return adapter;
+}
+
 	/*
 	1. response.sendRedirect("/contextName/helloWorld.jsp");
 	
@@ -64,7 +89,12 @@ dispatcher.forward(request,response);
 	public static String getURL(HttpServletRequest request) throws ServletException, IOException{
 		return request.getRequestURL().toString();
 	}
-
+   public static String getRemoteAddr(HttpServletRequest request) {
+	   return request.getRemoteAddr();
+   }
+   public static int getServerPort(HttpServletRequest request) {
+	   return request.getServerPort();
+   }
 
 	//전에 호출한 url
 	public static String getHeaderReferer(HttpServletRequest request,String header){
@@ -150,5 +180,6 @@ dispatcher.forward(request,response);
        }
        return header;
    }
+
    
 }

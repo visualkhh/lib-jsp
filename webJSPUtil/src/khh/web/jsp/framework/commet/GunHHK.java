@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import khh.web.jsp.framework.commet.longpolling.Gun;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 
 public class GunHHK extends Gun {

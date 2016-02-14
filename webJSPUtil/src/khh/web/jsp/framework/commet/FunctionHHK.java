@@ -3,7 +3,7 @@ package khh.web.jsp.framework.commet;
 import khh.std.adapter.AdapterMap;
 import khh.web.jsp.framework.commet.longpolling.Function;
 
-import org.apache.catalina.CometEvent;
+import org.apache.catalina.comet.CometEvent;
 
 
 public class FunctionHHK extends Function{
@@ -15,14 +15,14 @@ public class FunctionHHK extends Function{
 //			ip=getEvent().getHttpServletRequest().getParameter("ip");
 //		}
 //		System.out.println("functuion hhk "+ip);
-		String str=null;
-		try {
-			str = (String) set.get("gun_hhk");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		String str=null;
+//		try {
+//			str = (String) set.get("gun_hhk");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 //		System.out.println("FUNCTION HHK  "+str);
-		return str;
+		return set;
 	}
 
 	@Override
