@@ -101,11 +101,12 @@ public class CompactK extends HttpServlet{
     		
     		
     		//타입이 없는건 init이다?
-    		classList.entrySet().stream().filter(aE->!aE.getValue().isAttr("type")).forEach(aE->{
+//    		classList.entrySet().stream().filter(aE->!aE.getValue().isAttr("type")).forEach(aE->{
+    		classList.entrySet().stream().forEach(aE->{
     			DynaminClass atDclass = aE.getValue();
     			String atDClassId = atDclass.getAttr("id");
 				String atDClassType = atDclass.getAttr("type");
-				log.debug("atDClass  Id = ("+atDClassId+")    Type = "+atDClassType);
+				log.debug("atDClass  Id = ("+atDClassId+")    Type = "+atDClassType + "   "+config);
 				
 				((ArrayList<Element>)atDclass.getElement().getChildElement()).stream().
 //				filter(aM->"method".equals(aM.getName()) && INIT_METHOD.equals(aM.getAttr("type"))).
@@ -114,11 +115,11 @@ public class CompactK extends HttpServlet{
 					injection(aM,new Object[]{config});
 				});
 				 
-				try {
-					atDclass.call();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+//				try {
+//					atDclass.call();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
     		});
     		
     		
@@ -154,10 +155,11 @@ public class CompactK extends HttpServlet{
 						injection(aM,new Object[]{request,response});
 					});
 					Object returnVal = atDclass.call();
-					if(null != returnVal && returnVal instanceof String){
-						sendView((String)returnVal,request,response);
-					}else if(null==returnVal){
-					}
+					sendView((String)returnVal,request,response);
+//					if(null != returnVal && returnVal instanceof String){
+//						sendView((String)returnVal,request,response);
+//					}else if(null==returnVal){
+//					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
