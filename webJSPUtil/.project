@@ -35,6 +35,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>javasrc</name>
+			<type>2</type>
+			<location>C:/khh/git/javautil-visualkhh/Utilkhh/src</location>
+		</link>
+		<link>
 			<name>srcjava</name>
 			<type>2</type>
 			<location>Z:/git/javautil-visualkhh/Utilkhh/src</location>
