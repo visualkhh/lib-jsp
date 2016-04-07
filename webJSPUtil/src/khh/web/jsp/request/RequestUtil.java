@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -181,5 +182,11 @@ dispatcher.forward(request,response);
        return header;
    }
 
+   public static String getRealPath(HttpServletRequest request,String fileName) {
+	   return getRealPath(request.getSession().getServletContext(),fileName);
+   }
+   public static String getRealPath(ServletContext context,String fileName) {
+	   return context.getRealPath(fileName);
+   }
    
 }
